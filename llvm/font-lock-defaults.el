@@ -1,560 +1,481 @@
-(defface llvm/font/accurate-garbage-collection-intrinsic
+(defface llvm/font/attribute
   '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for accurate garbage collection intrinsics.")
+      :inherit 'font-lock-preprocessor-face))
+  "Font for attributes.")
 
-(defface llvm/font/aggregate-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for aggregate operations.")
-
-(defface llvm/font/arithmetic-with-overflow-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for arithmetic with overflow intrinsics.")
-
-(defface llvm/font/binary-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for binary operations.")
-
-(defface llvm/font/boolean-constant
+(defface llvm/font/constant
   '((t
       :inherit 'font-lock-constant-face))
-  "Font for boolean constants.")
+  "Font for constants.")
 
-(defface llvm/font/bit-manipulation-intrinsic
+(defface llvm/font/global
   '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for bit manipulation intrinsics.")
-
-(defface llvm/font/bitwise-binary-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for bitwise binary operations.")
-
-(defface llvm/font/calling-convention
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for calling conventions.")
-
-(defface llvm/font/code-generator-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for code-generator-intrinsics.")
-
-(defface llvm/font/conversion-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for conversion operations.")
-
-(defface llvm/font/dll-storage-class
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for DLL storage classes.")
-
-(defface llvm/font/floating-point-constant
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for floating point constants.")
-
-(defface llvm/font/floating-point-type
-  '((t
-      :inherit 'font-lock-type-face))
-  "Font for floating point types.")
-
-(defface llvm/font/function-define
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font...")
-
-(defface llvm/font/function-attribute
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for function attributes.")
-
-(defface llvm/font/general-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for general intrinsics.")
-
-(defface llvm/font/global-variable
-  '((t
+      :underline t
       :inherit 'font-lock-variable-name-face))
   "Font for global variables.")
 
-(defface llvm/font/half-precision-floating-point-intrinsic
+(defface llvm/font/keyword
   '((t
       :inherit 'font-lock-keyword-face))
-  "Font for half precision floating point intrinsics.")
+  "Font for keywords")
 
-(defface llvm/font/integer-constant
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for integer constants.")
-
-(defface llvm/font/integer-type
-  '((t
-      :inherit 'font-lock-type-face))
-  "Font for integer types.")
-
-(defface llvm/font/linkage-type
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for linkage types.")
-
-(defface llvm/font/local-variable
+(defface llvm/font/local
   '((t
       :inherit 'font-lock-variable-name-face))
   "Font for local variables.")
 
-(defface llvm/font/memory-access-and-addressing-operation
-  '((t
-      :foreground "brightblue"
-      :inherit 'font-lock-variable-name-face))
-  "Font for memory access and addressing operations.")
-
-(defface llvm/font/memory-use-marker-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for memory use marker intrinsics.")
-
-(defface llvm/font/null-pointer-constant
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for null pointer constants.")
-
-(defface llvm/font/other-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for other operations.")
-
-(defface llvm/font/specialized-arithmetic-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for specialized arithmetic intrinsics.")
-
-(defface llvm/font/standard-c-library-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for standard C library intrinsics.")
-
-(defface llvm/font/structure-constant
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for structure constants.")
-
-(defface llvm/font/structure-type
+(defface llvm/font/type
   '((t
       :inherit 'font-lock-type-face))
-  "Font for terminator instructions.")
+  "Font for constants.")
 
-(defface llvm/font/terminator-instruction
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for terminator instructions.")
-
-(defface llvm/font/thread-local-storage-model
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for thread local storage models.")
-
-(defface llvm/font/trampoline-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for trampoline intrinsics.")
-
-(defface llvm/font/undefined-value
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for undefined value.")
-
-(defface llvm/font/variable-argument-handling-intrinsic
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for variable argument handling intrinsics.")
-
-(defface llvm/font/vector-operation
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for vection operations.")
-
-(defface llvm/font/visibility-style
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for visibility styles.")
-
-(defface llvm/font/void-type
-  '((t
-      :inherit 'font-lock-type-face))
-  "Font for the void type.")
+;; @see http://lists.gnu.org/archive/html/help-gnu-emacs/2014-03/msg00130.html
+(defconst llvm/font/attribute 'llvm/font/attribute)
+(defconst llvm/font/constant  'llvm/font/constant)
+(defconst llvm/font/global    'llvm/font/global)
+(defconst llvm/font/keyword   'llvm/font/keyword)
+(defconst llvm/font/local     'llvm/font/local)
+(defconst llvm/font/type      'llvm/font/type)
 
 (defconst llvm/font-lock-defaults
   (eval-when-compile
-    (require 're)
+    (let ( (__attributes (list))
+           (__constants  (list))
+           (__keywords   (list))
+           (__types      (list))
+           (__result     (list)))
 
-    (let ()
-      (list
-        ;; This directly follows the language reference
-        ;; @see http://llvm.org/docs/LangRef.html
+      (defun style (pattern font)
+        (setq __result
+          (cons
+            (cons pattern font)
+            __result)))
 
-        ;; ------------------- High Level Structure -------------------- ;;
+      (defun attributes (&rest args) (setq __attributes (nconc args __attributes)))
+      (defun constants  (&rest args) (setq __constants  (nconc args __constants )))
+      (defun keywords   (&rest args) (setq __keywords   (nconc args __keywords  )))
+      (defun types      (&rest args) (setq __types      (nconc args __types     )))
 
-        `(,(re/keyword
-             "appending"
-             "available_externally"
-             "common"
-             "external"
-             "extern_weak"
-             "internal"
-             "linkonce"
-             "linkonce_odr"
-             "private"
-             "weak"
-             "weak_odr")
-           . 'llvm/font/linkage-type)
+      ;; This directly follows the language reference.
+      ;; @see http://llvm.org/docs/LangRef.html
 
-        `(,(re/keyword
-             "ccc"
-             "fastcc"
-             "coldcc"
-             ; cc 10
-             ; cc 11
-             "webkit_jscc"
-             "anyregcc"
-             "preserve_mostcc"
-             "preserve_allcc")
-             ; cc <n>
-           . 'llvm/font/calling-convention)
+      ; Identifiers
 
-        `(,(re/keyword
-             "default"
-             "hidden"
-             "protected")
-           . 'llvm/font/visibility-style)
+      (style
+        "\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
+        'llvm/font/global)
 
-        `(,(re/keyword
-             "dllimport"
-             "dllexport")
-           . 'llvm/font/dll-storage-class)
+      (style
+        "\\<%[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
+        'llvm/font/local)
 
-        `(,(re/keyword
-             "localdynamic"
-             "initialexec"
-             "localexec")
-           . 'llvm/font/thread-local-storage-model)
+      ; Linkage Types
 
-        `(,(re/keyword "type")
-           . 'llvm/font/structure-type)
+      (attributes
+        "private"
+        "internal"
+        "available_externally"
+        "linkonce"
+        "weak"
+        "common"
+        "appending"
+        "extern_weak"
+        "linkonce_odr"
+        "weak_odr"
+        "external")
 
-        '("\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
-           . 'llvm/font/global-variable)
+      ; Calling Conventions
 
-        '("\\<%[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
-           . 'llvm/font/local-variable)
+      (attributes
+        "ccc"
+        "fastcc"
+        "coldcc"
+        ; cc 10
+        ; cc 11
+        "webkit_jscc"
+        "anyregcc"
+        "preserve_mostcc"
+        "preserve_allcc")
 
-        ; define [linkage] [visibility] [DLLStorageClass]
-        ;        [cconv] [ret attrs]
-        ;        <ResultType> @<FunctionName> ([argument list])
-        ;        [unnamed_addr] [fn Attrs] [section "name"] [comdat $<ComdatName>]
-        ;        [align N] [gc] [prefix Constant] [prologue Constant] { ... }
+      ; Visibility Styles
 
-        `(,(re/keyword "define")
-           . 'llvm/font/function-define)
+      (attributes
+        "default"
+        "hidden"
+        "protected")
 
-        ; Aliases
-        ; Comdats
-        ; Named Metadata
-        ; Parameter Attributes
-        ; Garbage Collector Names
-        ; Prefix Data
-        ; Prologue Data
-        ; Attribute Groups
+      ; DLL Storage Classes
 
-        `(,(re/keyword
-             "alignstack"
-             "alwaysinline"
-             "builtin"
-             "cold"
-             "inlinehint"
-             "jumptable"
-             "minsize"
-             "naked"
-             "nobuiltin"
-             "noduplicate"
-             "noimplicitfloat"
-             "noinline"
-             "nonlazybind"
-             "noredzone"
-             "noreturn"
-             "nounwind"
-             "optnone"
-             "optsize"
-             "readnone"
-             "readonly"
-             "returns_twice"
-             "sanitize_address"
-             "sanitize_memory"
-             "sanitize_thread"
-             "ssp"
-             "sspreq"
-             "sspstrong"
-             "uwtable")
-           . 'llvm/font/function-attribute)
+      (attributes
+        "dllimport"
+        "dllexport")
 
-        ; Module-Level Inline Assembly
-        ; Data Layout
-        ; Target Triple
+      ; Thread Local Storage Models
 
-        ;; ------------------- Type System -------------------- ;;
+      (attributes
+        "localdynamic"
+        "initialexec"
+        "localexec")
 
-        `(,(re/keyword "void")
-           . 'llvm/font/void-type)
+      ; Structure Types
 
-        ; Function Type
+      (keywords
+        "type")
 
-        '("\\<i[0-9]+\\>"
-           . 'llvm/font/integer-type)
+      ; Global Variables
 
-        `(,(re/keyword
-             "half"
-             "float"
-             "double"
-             "fp128"
-             "x86_fp80"
-             "ppc_fp128")
-           . 'llvm/font/floating-point-type)
+      (attributes
+        "constant")
 
-        ;; ------------------- Constants -------------------- ;;
+      ; Functions
+      ; define [linkage] [visibility] [DLLStorageClass]
+      ;        [cconv] [ret attrs]
+      ;        <ResultType> @<FunctionName> ([argument list])
+      ;        [unnamed_addr] [fn Attrs] [section "name"] [comdat $<ComdatName>]
+      ;        [align N] [gc] [prefix Constant] [prologue Constant] { ... }
 
-        ; X86_mmx Type
-        ; Pointer Type
-        ; Vector Type
-        ; Label Type
-        ; Metadata Type
-        ; Aggregate Types
-        ; Array Type
-        ; Structure Type
-        ; Opaque Structure Types
+      (keywords
+        "define")
 
-        `(,(re/keyword
-             "true"
-             "false")
-           . 'llvm/font/boolean-constant)
+      ; Aliases
+      ; Comdats
+      ; Named Metadata
+      ; Parameter Attributes
+      ; Garbage Collector Names
+      ; Prefix Data
+      ; Prologue Data
+      ; Function Attributes
 
-        '("\\<[-]?[0-9]+\\>"
-           . 'llvm/font/integer-constant)
+      (attributes
+        "alignstack"
+        "alwaysinline"
+        "builtin"
+        "cold"
+        "inlinehint"
+        "jumptable"
+        "minsize"
+        "naked"
+        "nobuiltin"
+        "noduplicate"
+        "noimplicitfloat"
+        "noinline"
+        "nonlazybind"
+        "noredzone"
+        "noreturn"
+        "nounwind"
+        "optnone"
+        "optsize"
+        "readnone"
+        "readonly"
+        "returns_twice"
+        "sanitize_address"
+        "sanitize_memory"
+        "sanitize_thread"
+        "ssp"
+        "sspreq"
+        "sspstrong"
+        "uwtable")
 
-        '("\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
-           . 'llvm/font/floating-point-constant)
+      ;; ; Target-independent attributes:
+      ;; attributes #0 = { alwaysinline alignstack=4 }
+      ;; ; Target-dependent attributes:
+      ;; attributes #1 = { "no-sse" }
+      ;; ;  Function @f has attributes: alwaysinline, alignstack=4, and "no-sse".
+      ;; define void @f() #0 #1 { ... }
 
-        `(,(re/keyword "null")
-           . 'llvm/font/null-pointer-constant)
+      (keywords
+        "attributes")
 
-        `(,(re/keyword "constant")
-           . 'llvm/font/structure-constant)
+      ; Module-Level Inline Assembly
+      ; Data Layout
+      ; Target Triple
+      ; Atomic Memory Ordering Constraints
+      ; Fast-Math Flags
+      ; Use-list Order Directives
+      ; Void Type
 
-        ; Array constants
-        ; Vector constants
-        ; Zero initialization
-        ; Metadata node
-        ; Global Variable and Function Addresses
+      (types
+        "void")
 
-        `(,(re/keyword "undef")
-           . 'llvm/font/undefined-value)
+      ; Function Type
+      ; Integer Type
 
-        ; Inline Assembler Expressions
-        ; Metadata
+      (style
+        "\\<i[0-9]+\\>"
+        'llvm/font/type)
 
-        `(,(re/keyword
-             "ret"
-             "br"
-             "switch"
-             "indirectbr"
-             "invoke"
-             "resume"
-             "unreachable")
-           . 'llvm/font/terminator-instruction)
+      ; Floating Point Types
 
-        `(,(re/keyword
-             "add"
-             "fadd"
-             "sub"
-             "fsub"
-             "mul"
-             "fmul"
-             "udiv"
-             "sdiv"
-             "fdiv"
-             "urem"
-             "srem"
-             "frem")
-           . 'llvm/font/binary-operation)
+      (types
+        "half"
+        "float"
+        "double"
+        "fp128"
+        "x86_fp80"
+        "ppc_fp128")
 
-        `(,(re/keyword
-             "shl"
-             "lshr"
-             "ashr"
-             "and"
-             "or"
-             "xor")
-           . 'llvm/font/bitwise-binary-operation)
+      ; X86_mmx Type
+      ; Pointer Type
+      ; Vector Type
+      ; Label Type
+      ; Metadata Type
+      ; Aggregate Types
+      ; Array Type
+      ; Structure Type
+      ; Opaque Structure Types
+      ; Boolean Constants
 
-        `(,(re/keyword
-             "extractelement"
-             "insertelement"
-             "shufflevector")
-           . 'llvm/font/vector-operation)
+      (constants
+        "true"
+        "false")
 
-        `(,(re/keyword
-             "extractvalue"
-             "insertvalue")
-           . 'llvm/font/aggregate-operation)
+      ; Integer Constants
 
-        `(,(re/keyword
-             "alloca"
-             "load"
-             "store"
-             "fence"
-             "cmpxchg"
-             "atomicrmw"
-             "getelementptr")
-           . 'llvm/font/memory-access-and-addressing-operation)
+      (style
+        "\\<[-]?[0-9]+\\>"
+        'llvm/font/constant)
 
-        `(,(re/keyword
-             "trunc"         ; .. to
-             "zext"          ; .. to
-             "sext"          ; .. to
-             "fptrunc"       ; .. to
-             "fpext"         ; .. to
-             "fptoui"        ; .. to
-             "fptosi"        ; .. to
-             "uitofp"        ; .. to
-             "sitofp"        ; .. to
-             "ptrtoint"      ; .. to
-             "inttoptr"      ; .. to
-             "bitcast"       ; .. to
-             "addrspacecast"); .. to
-           . 'llvm/font/conversion-operation)
+      ; Floating point constants
 
-        `(,(re/keyword
-             "icmp"
-             "fcmp"
-             "phi"
-             "select"
-             "call"
-             "va_arg"
-             "landingpad")
-           . 'llvm/font/other-operation)
+      (style
+        "\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
+        'llvm/font/constant)
 
-        `(,(re/keyword
-             "llvm.va_start"
-             "llvm.va_end"
-             "llvm.va_copy")
-           . 'llvm/font/variable-argument-handling-intrinsic)
+      ; Null Pointer Constants
 
-        `(,(re/keyword
-             "llvm.gcroot"
-             "llvm.gcread"
-             "llvm.gcwrite")
-           . 'llvm/font/accurate-garbage-collection-intrinsic)
+      (constants
+        "null")
 
-        `(,(re/keyword
-             "llvm.returnaddress"
-             "llvm.frameaddress"
-             "llvm.read_register"
-             "llvm.write_register"
-             "llvm.stacksave"
-             "llvm.stackrestore"
-             "llvm.prefetch"
-             "llvm.pcmarker"
-             "llvm.readcyclecounter"
-             "llvm.clear_cache"
-             "llvm.instrprof_increment")
-           . 'llvm/font/code-generator-intrinsic)
+      ; Structure Constants
+      ; Array constants
+      ; Vector constants
+      ; Zero initialization
+      ; Metadata node
+      ; Global Variable and Function Addresses
 
-        `(,(re/keyword
-             "llvm.memcpy"
-             "llvm.memmove"
-             "llvm.memset."
-             "llvm.sqrt."
-             "llvm.powi."
-             "llvm.sin."
-             "llvm.cos."
-             "llvm.pow."
-             "llvm.exp."
-             "llvm.exp2."
-             "llvm.log."
-             "llvm.log10."
-             "llvm.log2."
-             "llvm.fma."
-             "llvm.fabs."
-             "llvm.minnum."
-             "llvm.maxnum."
-             "llvm.copysign."
-             "llvm.floor."
-             "llvm.ceil."
-             "llvm.trunc."
-             "llvm.rint."
-             "llvm.nearbyint."
-             "llvm.round.")
-           . 'llvm/font/standard-c-library-intrinsic)
+      (constants
+        "undef")
 
-        `(,(re/keyword
-             "llvm.bswap."
-             "llvm.ctpop."
-             "llvm.ctlz."
-             "llvm.cttz.")
-           . 'llvm/font/bit-manipulation-intrinsic)
+      ; Inline Assembler Expressions
+      ; Metadata
+      ; Terminator Instructions
 
-        `(,(re/keyword
-             "llvm.sadd.with.overflow."
-             "llvm.uadd.with.overflow."
-             "llvm.usub.with.overflow."
-             "llvm.smul.with.overflow."
-             "llvm.umul.with.overflow.")
-           . 'llvm/font/arithmetic-with-overflow-intrinsic)
+      (keywords
+        "ret"
+        "br"
+        "switch"
+        "indirectbr"
+        "invoke"
+        "resume"
+        "unreachable")
 
-        `(,(re/keyword
-             "llvm.fmuladd.")
-           . 'llvm/font/specialized-arithmetic-intrinsic)
+      ; Binary Operations
 
-        `(,(re/keyword
-             "llvm.convert.to.fp16"
-             "llvm.convert.from.fp16")
-           . 'llvm/font/half-precision-floating-point-intrinsic)
+      (keywords
+        "add"
+        "fadd"
+        "sub"
+        "fsub"
+        "mul"
+        "fmul"
+        "udiv"
+        "sdiv"
+        "fdiv"
+        "urem"
+        "srem"
+        "frem")
 
-        ; Debugger Intrinsics
-        ; Exception Handling Intrinsics
+      ; Bitwise Binary Operations
 
-        `(,(re/keyword
-             "llvm.init.trampoline"
-             "llvm.adjust.trampoline")
-           . 'llvm/font/trampoline-intrinsic)
+      (keywords
+        "shl"
+        "lshr"
+        "ashr"
+        "and"
+        "or"
+        "xor")
 
-        `(,(re/keyword
-             "llvm.lifetime.start"
-             "llvm.lifetime.end"
-             "llvm.invariant.start"
-             "llvm.invariant.end")
-           . 'llvm/font/memory-use-marker-intrinsic)
+      ; Vector Operations
 
-        `(,(re/keyword
-             "llvm.var.annotation"
-             "llvm.ptr.annotation."
-             "llvm.annotation."
-             "llvm.trap"
-             "llvm.debugtrap"
-             "llvm.stackprotector"
-             "llvm.stackprotectorcheck"
-             "llvm.objectsize"
-             "llvm.expect"
-             "llvm.assume"
-             "llvm.donothing")
-           . 'llvm/font/general-intrinsic)
+      (keywords
+        "extractelement"
+        "insertelement"
+        "shufflevector")
 
-        ; Stack Map Intrinsics
-        )))
+      ; Aggregate Operations
+
+      (keywords
+        "extractvalue"
+        "insertvalue")
+
+      ; Memory and Addressing Operations
+
+      (keywords
+        "alloca"
+        "load"
+        "store"
+        "fence"
+        "cmpxchg"
+        "atomicrmw"
+        "getelementptr")
+
+      ; Conversion Operations
+
+      (keywords
+        "trunc"
+        "zext"
+        "sext"
+        "fptrunc"
+        "fpext"
+        "fptoui"
+        "fptosi"
+        "uitofp"
+        "sitofp"
+        "ptrtoint"
+        "inttoptr"
+        "bitcast"
+        "addrspacecast"
+
+        "to")
+
+      ; Other Operations
+
+      (keywords
+        "icmp"
+        "fcmp"
+        "phi"
+        "select"
+        "call"
+        "va_arg"
+        "landingpad")
+
+      ; Variable Argument Handling Intrinsics
+
+      (keywords
+        "llvm.va_start"
+        "llvm.va_end"
+        "llvm.va_copy")
+
+      ; Accurate Garbage Collection Intrinsics
+
+      (keywords
+        "llvm.gcroot"
+        "llvm.gcread"
+        "llvm.gcwrite")
+
+      ; Code Generator Intrinsics
+
+      (keywords
+        "llvm.returnaddress"
+        "llvm.frameaddress"
+        "llvm.read_register"
+        "llvm.write_register"
+        "llvm.stacksave"
+        "llvm.stackrestore"
+        "llvm.prefetch"
+        "llvm.pcmarker"
+        "llvm.readcyclecounter"
+        "llvm.clear_cache"
+        "llvm.instrprof_increment")
+
+      ; Standard C Library Intrinsics
+
+      (keywords
+        "llvm.memcpy"
+        "llvm.memmove"
+        "llvm.memset."
+        "llvm.sqrt."
+        "llvm.powi."
+        "llvm.sin."
+        "llvm.cos."
+        "llvm.pow."
+        "llvm.exp."
+        "llvm.exp2."
+        "llvm.log."
+        "llvm.log10."
+        "llvm.log2."
+        "llvm.fma."
+        "llvm.fabs."
+        "llvm.minnum."
+        "llvm.maxnum."
+        "llvm.copysign."
+        "llvm.floor."
+        "llvm.ceil."
+        "llvm.trunc."
+        "llvm.rint."
+        "llvm.nearbyint."
+        "llvm.round.")
+
+      ; Bit Manipulation Intrinsics
+
+      (keywords
+        "llvm.bswap."
+        "llvm.ctpop."
+        "llvm.ctlz."
+        "llvm.cttz.")
+
+      ; Arithmetic with Overflow Intrinsics
+
+      (keywords
+        "llvm.sadd.with.overflow."
+        "llvm.uadd.with.overflow."
+        "llvm.usub.with.overflow."
+        "llvm.smul.with.overflow."
+        "llvm.umul.with.overflow.")
+
+      ; Specialized Arithmetic Intrinsics
+
+      (keywords
+        "llvm.fmuladd.")
+
+      ; Half Precision Floating Point Intrinsics
+
+      (keywords
+        "llvm.convert.to.fp16"
+        "llvm.convert.from.fp16")
+
+      ; Debugger Intrinsics
+      ; Exception Handling Intrinsics
+      ; Trampoline Intrinsics
+
+      (keywords
+        "llvm.init.trampoline"
+        "llvm.adjust.trampoline")
+
+      ; Memory Use Marker Intrinsics
+
+      (keywords
+        "llvm.lifetime.start"
+        "llvm.lifetime.end"
+        "llvm.invariant.start"
+        "llvm.invariant.end")
+
+      ; General Intrinsics
+
+      (keywords
+        "llvm.var.annotation"
+        "llvm.ptr.annotation."
+        "llvm.annotation."
+        "llvm.trap"
+        "llvm.debugtrap"
+        "llvm.stackprotector"
+        "llvm.stackprotectorcheck"
+        "llvm.objectsize"
+        "llvm.expect"
+        "llvm.assume"
+        "llvm.donothing")
+
+      ; Stack Map Intrinsics
+
+      ;; End of declarations
+
+      (style (concat "\\<" (regexp-opt __attributes) "\\>") 'llvm/font/attribute)
+      (style (concat "\\<" (regexp-opt __constants ) "\\>") 'llvm/font/constant )
+      (style (concat "\\<" (regexp-opt __keywords  ) "\\>") 'llvm/font/keyword  )
+      (style (concat "\\<" (regexp-opt __types     ) "\\>") 'llvm/font/type     )
+
+      __result))
+
   "`font-lock-defaults' for `llvm-mode'.")
 
 (provide 'llvm/font-lock-defaults)
