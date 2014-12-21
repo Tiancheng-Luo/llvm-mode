@@ -363,8 +363,7 @@
         '("\\<[-]?[0-9]+\\>"
            . 'll/font/integer-constant)
 
-        ; FIXME: does not work
-        '("\\<[-+]?[0-9]+\.[0-9]*\([eE][-+]?[0-9]+\)?\\>"
+        '("\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
            . 'll/font/floating-point-constant)
 
         '("\\<null\\>"
