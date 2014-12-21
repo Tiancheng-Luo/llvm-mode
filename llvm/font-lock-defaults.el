@@ -201,52 +201,47 @@
         ;; ------------------- High Level Structure -------------------- ;;
 
         `(,(re/keyword
-                "appending"
-                "available_externally"
-                "common"
-                "external"
-                "extern_weak"
-                "internal"
-                "linkonce"
-                "linkonce_odr"
-                "private"
-                "weak"
-                "weak_odr"
-             )
+             "appending"
+             "available_externally"
+             "common"
+             "external"
+             "extern_weak"
+             "internal"
+             "linkonce"
+             "linkonce_odr"
+             "private"
+             "weak"
+             "weak_odr")
            . 'llvm/font/linkage-type)
 
         `(,(re/keyword
-                "ccc"
-                "fastcc"
-                "coldcc"
-                ; cc 10
-                ; cc 11
-                "webkit_jscc"
-                "anyregcc"
-                "preserve_mostcc"
-                "preserve_allcc"
-                ; cc <n>
-             )
+             "ccc"
+             "fastcc"
+             "coldcc"
+             ; cc 10
+             ; cc 11
+             "webkit_jscc"
+             "anyregcc"
+             "preserve_mostcc"
+             "preserve_allcc")
+             ; cc <n>
            . 'llvm/font/calling-convention)
 
         `(,(re/keyword
-                "default"
-                "hidden"
-                "protected"
-             )
+             "default"
+             "hidden"
+             "protected")
            . 'llvm/font/visibility-style)
 
         `(,(re/keyword
-                "dllimport"
-                "dllexport"
-             )
+             "dllimport"
+             "dllexport")
            . 'llvm/font/dll-storage-class)
 
         `(,(re/keyword
-                "localdynamic"
-                "initialexec"
-                "localexec"
-             )
+             "localdynamic"
+             "initialexec"
+             "localexec")
            . 'llvm/font/thread-local-storage-model)
 
         `(,(re/keyword "type")
@@ -277,35 +272,34 @@
         ; Attribute Groups
 
         `(,(re/keyword
-                "alignstack"
-                "alwaysinline"
-                "builtin"
-                "cold"
-                "inlinehint"
-                "jumptable"
-                "minsize"
-                "naked"
-                "nobuiltin"
-                "noduplicate"
-                "noimplicitfloat"
-                "noinline"
-                "nonlazybind"
-                "noredzone"
-                "noreturn"
-                "nounwind"
-                "optnone"
-                "optsize"
-                "readnone"
-                "readonly"
-                "returns_twice"
-                "sanitize_address"
-                "sanitize_memory"
-                "sanitize_thread"
-                "ssp"
-                "sspreq"
-                "sspstrong"
-                "uwtable"
-             )
+             "alignstack"
+             "alwaysinline"
+             "builtin"
+             "cold"
+             "inlinehint"
+             "jumptable"
+             "minsize"
+             "naked"
+             "nobuiltin"
+             "noduplicate"
+             "noimplicitfloat"
+             "noinline"
+             "nonlazybind"
+             "noredzone"
+             "noreturn"
+             "nounwind"
+             "optnone"
+             "optsize"
+             "readnone"
+             "readonly"
+             "returns_twice"
+             "sanitize_address"
+             "sanitize_memory"
+             "sanitize_thread"
+             "ssp"
+             "sspreq"
+             "sspstrong"
+             "uwtable")
            . 'llvm/font/function-attribute)
 
         ; Module-Level Inline Assembly
@@ -323,13 +317,12 @@
            . 'llvm/font/integer-type)
 
         `(,(re/keyword
-                "half"
-                "float"
-                "double"
-                "fp128"
-                "x86_fp80"
-                "ppc_fp128"
-             )
+             "half"
+             "float"
+             "double"
+             "fp128"
+             "x86_fp80"
+             "ppc_fp128")
            . 'llvm/font/floating-point-type)
 
         ;; ------------------- Constants -------------------- ;;
