@@ -4,9 +4,11 @@
   (kill-all-local-variables)
 
   (require 'll/font-lock-defaults)
+  (require 'll/indent-line-function)
   (require 'll/syntax-table)
 
-  (set (make-local-variable `font-lock-defaults) '(ll/font-lock-defaults))
+  (set (make-local-variable `font-lock-defaults)  '(ll/font-lock-defaults))
+  (set (make-local-variable `indent-line-function) 'll/indent-line-function)
 
   (set-syntax-table ll/syntax-table)
 
