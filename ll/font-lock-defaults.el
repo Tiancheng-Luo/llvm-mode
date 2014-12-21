@@ -191,6 +191,8 @@
 
 (defconst ll/font-lock-defaults
   (eval-when-compile
+    (require 're)
+
     (let ()
       (list
         ;; This directly follows the language reference
@@ -198,8 +200,7 @@
 
         ;; ------------------- High Level Structure -------------------- ;;
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "appending"
                 "available_externally"
                 "common"
@@ -211,12 +212,10 @@
                 "private"
                 "weak"
                 "weak_odr"
-                )
-             'words)
+             )
            . 'll/font/linkage-type)
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "ccc"
                 "fastcc"
                 "coldcc"
@@ -227,37 +226,30 @@
                 "preserve_mostcc"
                 "preserve_allcc"
                 ; cc <n>
-                )
-             'words)
+             )
            . 'll/font/calling-convention)
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "default"
                 "hidden"
                 "protected"
-                )
-             'words)
+             )
            . 'll/font/visibility-style)
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "dllimport"
                 "dllexport"
-                )
-             'words)
+             )
            . 'll/font/dll-storage-class)
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "localdynamic"
                 "initialexec"
                 "localexec"
-                )
-             'words)
+             )
            . 'll/font/thread-local-storage-model)
 
-        '("\\<type\\>"
+        `(,(re/keyword "type")
            . 'll/font/structure-type)
 
         '("\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
@@ -272,8 +264,8 @@
         ;        [unnamed_addr] [fn Attrs] [section "name"] [comdat $<ComdatName>]
         ;        [align N] [gc] [prefix Constant] [prologue Constant] { ... }
 
-        '("\\<\\(define\\)\\>"
-           1 'll/font/function-define)
+        `(,(re/keyword "define")
+           . 'll/font/function-define)
 
         ; Aliases
         ; Comdats
@@ -284,8 +276,7 @@
         ; Prologue Data
         ; Attribute Groups
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "alignstack"
                 "alwaysinline"
                 "builtin"
@@ -314,8 +305,7 @@
                 "sspreq"
                 "sspstrong"
                 "uwtable"
-                )
-             'words)
+             )
            . 'll/font/function-attribute)
 
         ; Module-Level Inline Assembly
@@ -324,7 +314,7 @@
 
         ;; ------------------- Type System -------------------- ;;
 
-        '("\\<void\\>"
+        `(,(re/keyword "void")
            . 'll/font/void-type)
 
         ; Function Type
@@ -332,16 +322,14 @@
         '("\\<i[0-9]+\\>"
            . 'll/font/integer-type)
 
-        `(,(regexp-opt
-             '(
+        `(,(re/keyword
                 "half"
                 "float"
                 "double"
                 "fp128"
                 "x86_fp80"
                 "ppc_fp128"
-                )
-             'words)
+             )
            . 'll/font/floating-point-type)
 
         ;; ------------------- Constants -------------------- ;;
@@ -356,7 +344,9 @@
         ; Structure Type
         ; Opaque Structure Types
 
-        '("\\<true\\|false\\>"
+        `(,(re/keyword
+             "true"
+             "false")
            . 'll/font/boolean-constant)
 
         '("\\<[-]?[0-9]+\\>"
@@ -365,10 +355,10 @@
         '("\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
            . 'll/font/floating-point-constant)
 
-        '("\\<null\\>"
+        `(,(re/keyword "null")
            . 'll/font/null-pointer-constant)
 
-        '("\\<constant\\>"
+        `(,(re/keyword "constant")
            . 'll/font/structure-constant)
 
         ; Array constants
@@ -377,254 +367,197 @@
         ; Metadata node
         ; Global Variable and Function Addresses
 
-        '("\\<undef\\>"
+        `(,(re/keyword "undef")
            . 'll/font/undefined-value)
 
         ; Inline Assembler Expressions
         ; Metadata
 
-        `(,(regexp-opt
-             '(
-                "ret"
-                "br"
-                "switch"
-                "indirectbr"
-                "invoke"
-                "resume"
-                "unreachable"
-                )
-             'words)
+        `(,(re/keyword
+             "ret"
+             "br"
+             "switch"
+             "indirectbr"
+             "invoke"
+             "resume"
+             "unreachable")
            . 'll/font/terminator-instruction)
 
-        `(,(regexp-opt
-             '(
-                "add"
-                "fadd"
-                "sub"
-                "fsub"
-                "mul"
-                "fmul"
-                "udiv"
-                "sdiv"
-                "fdiv"
-                "urem"
-                "srem"
-                "frem"
-                )
-             'words)
+        `(,(re/keyword
+             "add"
+             "fadd"
+             "sub"
+             "fsub"
+             "mul"
+             "fmul"
+             "udiv"
+             "sdiv"
+             "fdiv"
+             "urem"
+             "srem"
+             "frem")
            . 'll/font/binary-operation)
 
-        `(,(regexp-opt
-             '(
-                "shl"
-                "lshr"
-                "ashr"
-                "and"
-                "or"
-                "xor"
-                )
-             'words)
+        `(,(re/keyword
+             "shl"
+             "lshr"
+             "ashr"
+             "and"
+             "or"
+             "xor")
            . 'll/font/bitwise-binary-operation)
 
-        `(,(regexp-opt
-             '(
-                "extractelement"
-                "insertelement"
-                "shufflevector"
-                )
-             'words)
+        `(,(re/keyword
+             "extractelement"
+             "insertelement"
+             "shufflevector")
            . 'll/font/vector-operation)
 
-        `(,(regexp-opt
-             '(
-                "extractvalue"
-                "insertvalue"
-                )
-             'words)
+        `(,(re/keyword
+             "extractvalue"
+             "insertvalue")
            . 'll/font/aggregate-operation)
 
-        `(,(regexp-opt
-             '(
-                "alloca"
-                "load"
-                "store"
-                "fence"
-                "cmpxchg"
-                "atomicrmw"
-                "getelementptr"
-                )
-             'words)
+        `(,(re/keyword
+             "alloca"
+             "load"
+             "store"
+             "fence"
+             "cmpxchg"
+             "atomicrmw"
+             "getelementptr")
            . 'll/font/memory-access-and-addressing-operation)
 
-        `(,(regexp-opt
-             '(
-                "trunc"         ; .. to
-                "zext"          ; .. to
-                "sext"          ; .. to
-                "fptrunc"       ; .. to
-                "fpext"         ; .. to
-                "fptoui"        ; .. to
-                "fptosi"        ; .. to
-                "uitofp"        ; .. to
-                "sitofp"        ; .. to
-                "ptrtoint"      ; .. to
-                "inttoptr"      ; .. to
-                "bitcast"       ; .. to
-                "addrspacecast" ; .. to
-                )
-             'words)
+        `(,(re/keyword
+             "trunc"         ; .. to
+             "zext"          ; .. to
+             "sext"          ; .. to
+             "fptrunc"       ; .. to
+             "fpext"         ; .. to
+             "fptoui"        ; .. to
+             "fptosi"        ; .. to
+             "uitofp"        ; .. to
+             "sitofp"        ; .. to
+             "ptrtoint"      ; .. to
+             "inttoptr"      ; .. to
+             "bitcast"       ; .. to
+             "addrspacecast"); .. to
            . 'll/font/conversion-operation)
 
-        `(,(regexp-opt
-             '(
-                "icmp"
-                "fcmp"
-                "phi"
-                "select"
-                "call"
-                "va_arg"
-                "landingpad"
-                )
-             'words)
+        `(,(re/keyword
+             "icmp"
+             "fcmp"
+             "phi"
+             "select"
+             "call"
+             "va_arg"
+             "landingpad")
            . 'll/font/other-operation)
 
-        `(,(regexp-opt
-             '(
-                "llvm.va_start"
-                "llvm.va_end"
-                "llvm.va_copy"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.va_start"
+             "llvm.va_end"
+             "llvm.va_copy")
            . 'll/font/variable-argument-handling-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.gcroot"
-                "llvm.gcread"
-                "llvm.gcwrite"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.gcroot"
+             "llvm.gcread"
+             "llvm.gcwrite")
            . 'll/font/accurate-garbage-collection-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.returnaddress"
-                "llvm.frameaddress"
-                "llvm.read_register"
-                "llvm.write_register"
-                "llvm.stacksave"
-                "llvm.stackrestore"
-                "llvm.prefetch"
-                "llvm.pcmarker"
-                "llvm.readcyclecounter"
-                "llvm.clear_cache"
-                "llvm.instrprof_increment"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.returnaddress"
+             "llvm.frameaddress"
+             "llvm.read_register"
+             "llvm.write_register"
+             "llvm.stacksave"
+             "llvm.stackrestore"
+             "llvm.prefetch"
+             "llvm.pcmarker"
+             "llvm.readcyclecounter"
+             "llvm.clear_cache"
+             "llvm.instrprof_increment")
            . 'll/font/code-generator-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.memcpy"
-                "llvm.memmove"
-                "llvm.memset.";*
-                "llvm.sqrt.";*
-                "llvm.powi.";*
-                "llvm.sin.";*
-                "llvm.cos.";*
-                "llvm.pow.";*
-                "llvm.exp.";*
-                "llvm.exp2.";*
-                "llvm.log.";*
-                "llvm.log10.";*
-                "llvm.log2.";*
-                "llvm.fma.";*
-                "llvm.fabs.";*
-                "llvm.minnum.";*
-                "llvm.maxnum.";*
-                "llvm.copysign.";*
-                "llvm.floor.";*
-                "llvm.ceil.";*
-                "llvm.trunc.";*
-                "llvm.rint.";*
-                "llvm.nearbyint.";*
-                "llvm.round.";*
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.memcpy"
+             "llvm.memmove"
+             "llvm.memset."
+             "llvm.sqrt."
+             "llvm.powi."
+             "llvm.sin."
+             "llvm.cos."
+             "llvm.pow."
+             "llvm.exp."
+             "llvm.exp2."
+             "llvm.log."
+             "llvm.log10."
+             "llvm.log2."
+             "llvm.fma."
+             "llvm.fabs."
+             "llvm.minnum."
+             "llvm.maxnum."
+             "llvm.copysign."
+             "llvm.floor."
+             "llvm.ceil."
+             "llvm.trunc."
+             "llvm.rint."
+             "llvm.nearbyint."
+             "llvm.round.")
            . 'll/font/standard-c-library-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.bswap.";*
-                "llvm.ctpop.";*
-                "llvm.ctlz.";*
-                "llvm.cttz.";*
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.bswap."
+             "llvm.ctpop."
+             "llvm.ctlz."
+             "llvm.cttz.")
            . 'll/font/bit-manipulation-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.sadd.with.overflow.";*
-                "llvm.uadd.with.overflow.";*
-                "llvm.usub.with.overflow.";*
-                "llvm.smul.with.overflow.";*
-                "llvm.umul.with.overflow.";*
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.sadd.with.overflow."
+             "llvm.uadd.with.overflow."
+             "llvm.usub.with.overflow."
+             "llvm.smul.with.overflow."
+             "llvm.umul.with.overflow.")
            . 'll/font/arithmetic-with-overflow-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.fmuladd.";*
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.fmuladd.")
            . 'll/font/specialized-arithmetic-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.convert.to.fp16"
-                "llvm.convert.from.fp16"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.convert.to.fp16"
+             "llvm.convert.from.fp16")
            . 'll/font/half-precision-floating-point-intrinsic)
 
         ; Debugger Intrinsics
         ; Exception Handling Intrinsics
 
-        `(,(regexp-opt
-             '(
-                "llvm.init.trampoline"
-                "llvm.adjust.trampoline"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.init.trampoline"
+             "llvm.adjust.trampoline")
            . 'll/font/trampoline-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.lifetime.start"
-                "llvm.lifetime.end"
-                "llvm.invariant.start"
-                "llvm.invariant.end"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.lifetime.start"
+             "llvm.lifetime.end"
+             "llvm.invariant.start"
+             "llvm.invariant.end")
            . 'll/font/memory-use-marker-intrinsic)
 
-        `(,(regexp-opt
-             '(
-                "llvm.var.annotation"
-                "llvm.ptr.annotation.";*
-                "llvm.annotation.";*
-                "llvm.trap"
-                "llvm.debugtrap"
-                "llvm.stackprotector"
-                "llvm.stackprotectorcheck"
-                "llvm.objectsize"
-                "llvm.expect"
-                "llvm.assume"
-                "llvm.donothing"
-                )
-             'words)
+        `(,(re/keyword
+             "llvm.var.annotation"
+             "llvm.ptr.annotation."
+             "llvm.annotation."
+             "llvm.trap"
+             "llvm.debugtrap"
+             "llvm.stackprotector"
+             "llvm.stackprotectorcheck"
+             "llvm.objectsize"
+             "llvm.expect"
+             "llvm.assume"
+             "llvm.donothing")
            . 'll/font/general-intrinsic)
 
         ; Stack Map Intrinsics
