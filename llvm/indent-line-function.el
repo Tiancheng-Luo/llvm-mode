@@ -10,7 +10,7 @@
   (let ((left  (llvm/occurrences-backward "{"))
         (right (llvm/occurrences-backward "}")))
 
-    (if (> left right)
+    (if (not (< left right))
       (indent-line-to (* llvm/indent/offset (- left right))))))
 
 ;; Helpers
