@@ -1,4 +1,4 @@
-(defconst ll/syntax-table
+(defconst llvm/syntax-table
   (let ((result (make-syntax-table)))
     ; Comments
     (modify-syntax-entry ?\; "< b" result)
@@ -10,6 +10,6 @@
     (modify-syntax-entry ?. "w" result)
 
     result)
-  "Syntax table for LL mode")
+  "Syntax table for `llvm-mode'")
 
-(provide 'll/syntax-table)
+(provide 'llvm/syntax-table)

@@ -1,195 +1,195 @@
-(defface ll/font/accurate-garbage-collection-intrinsic
+(defface llvm/font/accurate-garbage-collection-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for accurate garbage collection intrinsics.")
 
-(defface ll/font/aggregate-operation
+(defface llvm/font/aggregate-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for aggregate operations.")
 
-(defface ll/font/arithmetic-with-overflow-intrinsic
+(defface llvm/font/arithmetic-with-overflow-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for arithmetic with overflow intrinsics.")
 
-(defface ll/font/binary-operation
+(defface llvm/font/binary-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for binary operations.")
 
-(defface ll/font/boolean-constant
+(defface llvm/font/boolean-constant
   '((t
       :inherit 'font-lock-constant-face))
   "Font for boolean constants.")
 
-(defface ll/font/bit-manipulation-intrinsic
+(defface llvm/font/bit-manipulation-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for bit manipulation intrinsics.")
 
-(defface ll/font/bitwise-binary-operation
+(defface llvm/font/bitwise-binary-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for bitwise binary operations.")
 
-(defface ll/font/calling-convention
+(defface llvm/font/calling-convention
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for calling conventions.")
 
-(defface ll/font/code-generator-intrinsic
+(defface llvm/font/code-generator-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for code-generator-intrinsics.")
 
-(defface ll/font/conversion-operation
+(defface llvm/font/conversion-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for conversion operations.")
 
-(defface ll/font/dll-storage-class
+(defface llvm/font/dll-storage-class
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for DLL storage classes.")
 
-(defface ll/font/floating-point-constant
+(defface llvm/font/floating-point-constant
   '((t
       :inherit 'font-lock-constant-face))
   "Font for floating point constants.")
 
-(defface ll/font/floating-point-type
+(defface llvm/font/floating-point-type
   '((t
       :inherit 'font-lock-type-face))
   "Font for floating point types.")
 
-(defface ll/font/function-define
+(defface llvm/font/function-define
   '((t
       :inherit 'font-lock-keyword-face))
   "Font...")
 
-(defface ll/font/function-attribute
+(defface llvm/font/function-attribute
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for function attributes.")
 
-(defface ll/font/general-intrinsic
+(defface llvm/font/general-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for general intrinsics.")
 
-(defface ll/font/global-variable
+(defface llvm/font/global-variable
   '((t
       :inherit 'font-lock-variable-name-face))
   "Font for global variables.")
 
-(defface ll/font/half-precision-floating-point-intrinsic
+(defface llvm/font/half-precision-floating-point-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for half precision floating point intrinsics.")
 
-(defface ll/font/integer-constant
+(defface llvm/font/integer-constant
   '((t
       :inherit 'font-lock-constant-face))
   "Font for integer constants.")
 
-(defface ll/font/integer-type
+(defface llvm/font/integer-type
   '((t
       :inherit 'font-lock-type-face))
   "Font for integer types.")
 
-(defface ll/font/linkage-type
+(defface llvm/font/linkage-type
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for linkage types.")
 
-(defface ll/font/local-variable
+(defface llvm/font/local-variable
   '((t
       :inherit 'font-lock-variable-name-face))
   "Font for local variables.")
 
-(defface ll/font/memory-access-and-addressing-operation
+(defface llvm/font/memory-access-and-addressing-operation
   '((t
       :foreground "brightblue"
       :inherit 'font-lock-variable-name-face))
   "Font for memory access and addressing operations.")
 
-(defface ll/font/memory-use-marker-intrinsic
+(defface llvm/font/memory-use-marker-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for memory use marker intrinsics.")
 
-(defface ll/font/null-pointer-constant
+(defface llvm/font/null-pointer-constant
   '((t
       :inherit 'font-lock-constant-face))
   "Font for null pointer constants.")
 
-(defface ll/font/other-operation
+(defface llvm/font/other-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for other operations.")
 
-(defface ll/font/specialized-arithmetic-intrinsic
+(defface llvm/font/specialized-arithmetic-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for specialized arithmetic intrinsics.")
 
-(defface ll/font/standard-c-library-intrinsic
+(defface llvm/font/standard-c-library-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for standard C library intrinsics.")
 
-(defface ll/font/structure-constant
+(defface llvm/font/structure-constant
   '((t
       :inherit 'font-lock-constant-face))
   "Font for structure constants.")
 
-(defface ll/font/structure-type
+(defface llvm/font/structure-type
   '((t
       :inherit 'font-lock-type-face))
   "Font for terminator instructions.")
 
-(defface ll/font/terminator-instruction
+(defface llvm/font/terminator-instruction
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for terminator instructions.")
 
-(defface ll/font/thread-local-storage-model
+(defface llvm/font/thread-local-storage-model
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for thread local storage models.")
 
-(defface ll/font/trampoline-intrinsic
+(defface llvm/font/trampoline-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for trampoline intrinsics.")
 
-(defface ll/font/undefined-value
+(defface llvm/font/undefined-value
   '((t
       :inherit 'font-lock-constant-face))
   "Font for undefined value.")
 
-(defface ll/font/variable-argument-handling-intrinsic
+(defface llvm/font/variable-argument-handling-intrinsic
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for variable argument handling intrinsics.")
 
-(defface ll/font/vector-operation
+(defface llvm/font/vector-operation
   '((t
       :inherit 'font-lock-keyword-face))
   "Font for vection operations.")
 
-(defface ll/font/visibility-style
+(defface llvm/font/visibility-style
   '((t
       :inherit 'font-lock-preprocessor-face))
   "Font for visibility styles.")
 
-(defface ll/font/void-type
+(defface llvm/font/void-type
   '((t
       :inherit 'font-lock-type-face))
   "Font for the void type.")
 
-(defconst ll/font-lock-defaults
+(defconst llvm/font-lock-defaults
   (eval-when-compile
     (require 're)
 
@@ -213,7 +213,7 @@
                 "weak"
                 "weak_odr"
              )
-           . 'll/font/linkage-type)
+           . 'llvm/font/linkage-type)
 
         `(,(re/keyword
                 "ccc"
@@ -227,36 +227,36 @@
                 "preserve_allcc"
                 ; cc <n>
              )
-           . 'll/font/calling-convention)
+           . 'llvm/font/calling-convention)
 
         `(,(re/keyword
                 "default"
                 "hidden"
                 "protected"
              )
-           . 'll/font/visibility-style)
+           . 'llvm/font/visibility-style)
 
         `(,(re/keyword
                 "dllimport"
                 "dllexport"
              )
-           . 'll/font/dll-storage-class)
+           . 'llvm/font/dll-storage-class)
 
         `(,(re/keyword
                 "localdynamic"
                 "initialexec"
                 "localexec"
              )
-           . 'll/font/thread-local-storage-model)
+           . 'llvm/font/thread-local-storage-model)
 
         `(,(re/keyword "type")
-           . 'll/font/structure-type)
+           . 'llvm/font/structure-type)
 
         '("\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
-           . 'll/font/global-variable)
+           . 'llvm/font/global-variable)
 
         '("\\<%[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
-           . 'll/font/local-variable)
+           . 'llvm/font/local-variable)
 
         ; define [linkage] [visibility] [DLLStorageClass]
         ;        [cconv] [ret attrs]
@@ -265,7 +265,7 @@
         ;        [align N] [gc] [prefix Constant] [prologue Constant] { ... }
 
         `(,(re/keyword "define")
-           . 'll/font/function-define)
+           . 'llvm/font/function-define)
 
         ; Aliases
         ; Comdats
@@ -306,7 +306,7 @@
                 "sspstrong"
                 "uwtable"
              )
-           . 'll/font/function-attribute)
+           . 'llvm/font/function-attribute)
 
         ; Module-Level Inline Assembly
         ; Data Layout
@@ -315,12 +315,12 @@
         ;; ------------------- Type System -------------------- ;;
 
         `(,(re/keyword "void")
-           . 'll/font/void-type)
+           . 'llvm/font/void-type)
 
         ; Function Type
 
         '("\\<i[0-9]+\\>"
-           . 'll/font/integer-type)
+           . 'llvm/font/integer-type)
 
         `(,(re/keyword
                 "half"
@@ -330,7 +330,7 @@
                 "x86_fp80"
                 "ppc_fp128"
              )
-           . 'll/font/floating-point-type)
+           . 'llvm/font/floating-point-type)
 
         ;; ------------------- Constants -------------------- ;;
 
@@ -347,19 +347,19 @@
         `(,(re/keyword
              "true"
              "false")
-           . 'll/font/boolean-constant)
+           . 'llvm/font/boolean-constant)
 
         '("\\<[-]?[0-9]+\\>"
-           . 'll/font/integer-constant)
+           . 'llvm/font/integer-constant)
 
         '("\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
-           . 'll/font/floating-point-constant)
+           . 'llvm/font/floating-point-constant)
 
         `(,(re/keyword "null")
-           . 'll/font/null-pointer-constant)
+           . 'llvm/font/null-pointer-constant)
 
         `(,(re/keyword "constant")
-           . 'll/font/structure-constant)
+           . 'llvm/font/structure-constant)
 
         ; Array constants
         ; Vector constants
@@ -368,7 +368,7 @@
         ; Global Variable and Function Addresses
 
         `(,(re/keyword "undef")
-           . 'll/font/undefined-value)
+           . 'llvm/font/undefined-value)
 
         ; Inline Assembler Expressions
         ; Metadata
@@ -381,7 +381,7 @@
              "invoke"
              "resume"
              "unreachable")
-           . 'll/font/terminator-instruction)
+           . 'llvm/font/terminator-instruction)
 
         `(,(re/keyword
              "add"
@@ -396,7 +396,7 @@
              "urem"
              "srem"
              "frem")
-           . 'll/font/binary-operation)
+           . 'llvm/font/binary-operation)
 
         `(,(re/keyword
              "shl"
@@ -405,18 +405,18 @@
              "and"
              "or"
              "xor")
-           . 'll/font/bitwise-binary-operation)
+           . 'llvm/font/bitwise-binary-operation)
 
         `(,(re/keyword
              "extractelement"
              "insertelement"
              "shufflevector")
-           . 'll/font/vector-operation)
+           . 'llvm/font/vector-operation)
 
         `(,(re/keyword
              "extractvalue"
              "insertvalue")
-           . 'll/font/aggregate-operation)
+           . 'llvm/font/aggregate-operation)
 
         `(,(re/keyword
              "alloca"
@@ -426,7 +426,7 @@
              "cmpxchg"
              "atomicrmw"
              "getelementptr")
-           . 'll/font/memory-access-and-addressing-operation)
+           . 'llvm/font/memory-access-and-addressing-operation)
 
         `(,(re/keyword
              "trunc"         ; .. to
@@ -442,7 +442,7 @@
              "inttoptr"      ; .. to
              "bitcast"       ; .. to
              "addrspacecast"); .. to
-           . 'll/font/conversion-operation)
+           . 'llvm/font/conversion-operation)
 
         `(,(re/keyword
              "icmp"
@@ -452,19 +452,19 @@
              "call"
              "va_arg"
              "landingpad")
-           . 'll/font/other-operation)
+           . 'llvm/font/other-operation)
 
         `(,(re/keyword
              "llvm.va_start"
              "llvm.va_end"
              "llvm.va_copy")
-           . 'll/font/variable-argument-handling-intrinsic)
+           . 'llvm/font/variable-argument-handling-intrinsic)
 
         `(,(re/keyword
              "llvm.gcroot"
              "llvm.gcread"
              "llvm.gcwrite")
-           . 'll/font/accurate-garbage-collection-intrinsic)
+           . 'llvm/font/accurate-garbage-collection-intrinsic)
 
         `(,(re/keyword
              "llvm.returnaddress"
@@ -478,7 +478,7 @@
              "llvm.readcyclecounter"
              "llvm.clear_cache"
              "llvm.instrprof_increment")
-           . 'll/font/code-generator-intrinsic)
+           . 'llvm/font/code-generator-intrinsic)
 
         `(,(re/keyword
              "llvm.memcpy"
@@ -505,14 +505,14 @@
              "llvm.rint."
              "llvm.nearbyint."
              "llvm.round.")
-           . 'll/font/standard-c-library-intrinsic)
+           . 'llvm/font/standard-c-library-intrinsic)
 
         `(,(re/keyword
              "llvm.bswap."
              "llvm.ctpop."
              "llvm.ctlz."
              "llvm.cttz.")
-           . 'll/font/bit-manipulation-intrinsic)
+           . 'llvm/font/bit-manipulation-intrinsic)
 
         `(,(re/keyword
              "llvm.sadd.with.overflow."
@@ -520,16 +520,16 @@
              "llvm.usub.with.overflow."
              "llvm.smul.with.overflow."
              "llvm.umul.with.overflow.")
-           . 'll/font/arithmetic-with-overflow-intrinsic)
+           . 'llvm/font/arithmetic-with-overflow-intrinsic)
 
         `(,(re/keyword
              "llvm.fmuladd.")
-           . 'll/font/specialized-arithmetic-intrinsic)
+           . 'llvm/font/specialized-arithmetic-intrinsic)
 
         `(,(re/keyword
              "llvm.convert.to.fp16"
              "llvm.convert.from.fp16")
-           . 'll/font/half-precision-floating-point-intrinsic)
+           . 'llvm/font/half-precision-floating-point-intrinsic)
 
         ; Debugger Intrinsics
         ; Exception Handling Intrinsics
@@ -537,14 +537,14 @@
         `(,(re/keyword
              "llvm.init.trampoline"
              "llvm.adjust.trampoline")
-           . 'll/font/trampoline-intrinsic)
+           . 'llvm/font/trampoline-intrinsic)
 
         `(,(re/keyword
              "llvm.lifetime.start"
              "llvm.lifetime.end"
              "llvm.invariant.start"
              "llvm.invariant.end")
-           . 'll/font/memory-use-marker-intrinsic)
+           . 'llvm/font/memory-use-marker-intrinsic)
 
         `(,(re/keyword
              "llvm.var.annotation"
@@ -558,10 +558,10 @@
              "llvm.expect"
              "llvm.assume"
              "llvm.donothing")
-           . 'll/font/general-intrinsic)
+           . 'llvm/font/general-intrinsic)
 
         ; Stack Map Intrinsics
         )))
-  "`font-lock-defaults' for LL mode.")
+  "`font-lock-defaults' for `llvm-mode'.")
 
-(provide 'll/font-lock-defaults)
+(provide 'llvm/font-lock-defaults)
