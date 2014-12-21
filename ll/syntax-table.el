@@ -5,6 +5,7 @@
     (modify-syntax-entry ?\n "> b" result)
 
     ; Words
+    (modify-syntax-entry ?@ "w" result)
     (modify-syntax-entry ?% "w" result)
     (modify-syntax-entry ?. "w" result)
 

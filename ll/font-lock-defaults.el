@@ -260,7 +260,6 @@
         '("\\<type\\>"
            . 'll/font/structure-type)
 
-        ; FIXME: does not work... syntax table I think?
         '("\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
            . 'll/font/global-variable)
 
