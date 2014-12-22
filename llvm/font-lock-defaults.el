@@ -356,6 +356,10 @@
       ; Pointer Type
       ; Vector Type
       ; Label Type
+
+      (types
+        "label")
+
       ; Metadata Type
       ; Aggregate Types
       ; Array Type
