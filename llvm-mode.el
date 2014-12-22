@@ -15,7 +15,9 @@
   (setq major-mode 'llvm-mode)
   (setq mode-name "LLVM mode")
 
-  (run-hooks 'llvm-mode-hook))
+  (run-hooks 'llvm-mode-hook)
+
+  (font-lock-fontify-buffer))
 
 (defvar llvm-mode-hook
   nil
