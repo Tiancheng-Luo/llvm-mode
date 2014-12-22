@@ -2829,7 +2829,7 @@
 ;; A metadata string is a string surrounded by double quotes. It can
 ;; contain any character by escaping non-printable characters with
 ;; "``\xx``" where "``xx``" is the two digit hex code. For example:
-      !"test\00"``".
+;;    !"test\00"``".
 ;;
 ;; Metadata nodes are represented with notation similar to structure
 ;; constants (a comma separated list of elements, surrounded by braces and
