@@ -325,6 +325,11 @@
         'llvm/font/fast-math-flag)
 
       ; Use-list Order Directives
+
+      (keywords
+        "uselistorder"
+        "uselistorder_bb")
+
       ; Void Type
 
       (types
