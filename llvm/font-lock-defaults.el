@@ -239,7 +239,7 @@
       ; Attribute Groups
 
       (style
-        (concat "\\<#" NAME "\\>") ; FIXME: doesn't work
+        (concat "\\<#" NAME "\\>")
         'llvm/font/attribute-group-id)
 
       ; Function Attributes
