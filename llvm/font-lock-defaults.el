@@ -483,7 +483,7 @@
         "fence"
         "cmpxchg"
         "atomicrmw"
-        "getelementptr")
+        "getelementptr" "inbounds")
 
       ; Conversion Operations
 
