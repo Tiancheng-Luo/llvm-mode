@@ -418,11 +418,18 @@
       ; Zero initialization
       ; Metadata node
       ; Global Variable and Function Addresses
+      ; Undefined Values
 
       (constants
         "undef")
 
       ; Inline Assembler Expressions
+
+      (attributes
+        "sideeffect"
+        ; "alignstack" exists
+        "inteldialect")
+
       ; Metadata
       ; Terminator Instructions
 
