@@ -1,6 +1,6 @@
 (defcustom llvm/indent/offset 4
   "Default indentation offset for `llvm-mode'."
-  :group 'll
+  :group 'llvm
   :safe 'integerp
   :type 'integer)
 

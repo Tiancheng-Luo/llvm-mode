@@ -1,3 +1,10 @@
+(defcustom llvm/assume-capitalized-types t
+  "Whether to assume capitalized identifiers are types."
+  :group 'llvm'
+  :type 'boolean)
+
+;;;;;;;;;;;
+
 (defface llvm/font/atomic-ordering
   '((t
       :foreground "#D65C04"
@@ -81,13 +88,14 @@
 
 (defconst llvm/font-lock-defaults
   (eval-when-compile
-    (let ( (NAME "\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
+    (let* ( (NAME "\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
+            (TYPE "\\(?:[_]*[A-Z][a-z][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
 
-           (__attributes (list))
-           (__constants  (list))
-           (__keywords   (list))
-           (__types      (list))
-           (__result     (list)))
+            (__attributes (list))
+            (__constants  (list))
+            (__keywords   (list))
+            (__types      (list))
+            (__result     (list)))
 
       (defun style (pattern font)
         (setq __result
@@ -112,6 +120,11 @@
       (style
         (concat "\\<%" NAME "\\>")
         'llvm/font/local)
+
+      (if llvm/assume-capitalized-types
+        (style
+          (concat "\\<\\(?:[@%]" TYPE "\\)\\>")
+          'llvm/font/type))
 
       ; Module Structure
 
