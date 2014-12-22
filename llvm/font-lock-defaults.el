@@ -26,6 +26,12 @@
       :inherit 'font-lock-constant-face))
   "Font for constants.")
 
+(defface llvm/font/fast-math-flag
+  '((t
+      :foreground "#D1C62E"
+      :inherit 'font-lock-preprocessor-face))
+  "Font for fast math flags.")
+
 (defface llvm/font/global
   '((t
       :underline t
@@ -59,6 +65,7 @@
 (defconst llvm/font/attribute-group-id 'llvm/font/attribute-group-id)
 (defconst llvm/font/comdat             'llvm/font/comdat)
 (defconst llvm/font/constant           'llvm/font/constant)
+(defconst llvm/font/fast-math-flag     'llvm/font/fast-math-flag)
 (defconst llvm/font/global             'llvm/font/global)
 (defconst llvm/font/keyword            'llvm/font/keyword)
 (defconst llvm/font/local              'llvm/font/local)
@@ -304,6 +311,19 @@
         'llvm/font/atomic-ordering)
 
       ; Fast-Math Flags
+
+      (style
+        (concat
+          "\\<"
+          (regexp-opt
+            '( "nnan"
+               "ninf"
+               "nsz"
+               "arcp"
+               "fast"))
+          "\\>")
+        'llvm/font/fast-math-flag)
+
       ; Use-list Order Directives
       ; Void Type
 
