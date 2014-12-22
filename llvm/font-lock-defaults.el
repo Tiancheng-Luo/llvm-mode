@@ -202,6 +202,10 @@
         "dereferenceable") ; (<n>)
 
       ; Garbage Collector Names
+
+      (keywords
+        "gc")
+
       ; Prefix Data
       ; Prologue Data
       ; Function Attributes
