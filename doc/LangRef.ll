@@ -1952,11 +1952,11 @@
 ;; *********
 ;;
 ;; +----------------+------------------------------------------------+
-;; | ``i1``         | a single-bit integer.                          |
+       i1           ; a single-bit integer.                          |
 ;; +----------------+------------------------------------------------+
-;; | ``i32``        | a 32-bit integer.                              |
+       i32          ; a 32-bit integer.                              |
 ;; +----------------+------------------------------------------------+
-;; | ``i1942652``   | a really big integer of over 1 million bits.   |
+       i1942652     ; a really big integer of over 1 million bits.   |
 ;; +----------------+------------------------------------------------+
 ;;
 ;; .. _t_floating:
@@ -1970,22 +1970,22 @@
 ;;    * - Type
 ;;      - Description
 ;;
-;;    * - ``half``
+            half
 ;;      - 16-bit floating point value
 ;;
-;;    * - ``float``
+            float
 ;;      - 32-bit floating point value
 ;;
-;;    * - ``double``
+            double
 ;;      - 64-bit floating point value
 ;;
-;;    * - ``fp128``
+            fp128
 ;;      - 128-bit floating point value (112-bit mantissa)
 ;;
-;;    * - ``x86_fp80``
+            x86_fp80
 ;;      -  80-bit floating point value (X87)
 ;;
-;;    * - ``ppc_fp128``
+            ppc_fp128
 ;;      - 128-bit floating point value (two 64-bits)
 ;;
 ;; X86_mmx Type
@@ -2034,11 +2034,11 @@
 ;; :Examples:
 ;;
 ;; +-------------------------+--------------------------------------------------------------------------------------------------------------+
-;; | ``[4 x i32]*``          | A :ref:`pointer <t_pointer>` to :ref:`array <t_array>` of four ``i32`` values.                               |
+       [4 x i32]*            ; A :ref:`pointer <t_pointer>` to :ref:`array <t_array>` of four ``i32`` values.                               |
 ;; +-------------------------+--------------------------------------------------------------------------------------------------------------+
-;; | ``i32 (i32*) *``        | A :ref:`pointer <t_pointer>` to a :ref:`function <t_function>` that takes an ``i32*``, returning an ``i32``. |
+       i32 (i32*)            ; A :ref:`pointer <t_pointer>` to a :ref:`function <t_function>` that takes an ``i32*``, returning an ``i32``. |
 ;; +-------------------------+--------------------------------------------------------------------------------------------------------------+
-;; | ``i32 addrspace(5)*``   | A :ref:`pointer <t_pointer>` to an ``i32`` value that resides in address space #5.                           |
+       i32 addrspace(5)*     ; A :ref:`pointer <t_pointer>` to an ``i32`` value that resides in address space #5.                           |
 ;; +-------------------------+--------------------------------------------------------------------------------------------------------------+
 ;;
 ;; .. _t_vector:
@@ -2067,13 +2067,13 @@
 ;; :Examples:
 ;;
 ;; +-------------------+--------------------------------------------------+
-;; | ``<4 x i32>``     | Vector of 4 32-bit integer values.               |
+       <4 x i32>       ; Vector of 4 32-bit integer values.               |
 ;; +-------------------+--------------------------------------------------+
-;; | ``<8 x float>``   | Vector of 8 32-bit floating-point values.        |
+       <8 x float>     ; Vector of 8 32-bit floating-point values.        |
 ;; +-------------------+--------------------------------------------------+
-;; | ``<2 x i64>``     | Vector of 2 64-bit integer values.               |
+       <2 x i64>       ; Vector of 2 64-bit integer values.               |
 ;; +-------------------+--------------------------------------------------+
-;; | ``<4 x i64*>``    | Vector of 4 pointers to 64-bit integer values.   |
+       <4 x i64*>      ; Vector of 4 pointers to 64-bit integer values.   |
 ;; +-------------------+--------------------------------------------------+
 ;;
 ;; .. _t_label:
@@ -2140,21 +2140,21 @@
 ;; :Examples:
 ;;
 ;; +------------------+--------------------------------------+
-;; | ``[40 x i32]``   | Array of 40 32-bit integer values.   |
+       [40 x i32]     ; Array of 40 32-bit integer values.   |
 ;; +------------------+--------------------------------------+
-;; | ``[41 x i32]``   | Array of 41 32-bit integer values.   |
+       [41 x i32]     ; Array of 41 32-bit integer values.   |
 ;; +------------------+--------------------------------------+
-;; | ``[4 x i8]``     | Array of 4 8-bit integer values.     |
+       [4 x i8]       ; Array of 4 8-bit integer values.     |
 ;; +------------------+--------------------------------------+
 ;;
 ;; Here are some examples of multidimensional arrays:
 ;;
 ;; +-----------------------------+----------------------------------------------------------+
-;; | ``[3 x [4 x i32]]``         | 3x4 array of 32-bit integer values.                      |
+       [3 x [4 x i32]]           ; 3x4 array of 32-bit integer values.                      |
 ;; +-----------------------------+----------------------------------------------------------+
-;; | ``[12 x [10 x float]]``     | 12x10 array of single precision floating point values.   |
+       [12 x [10 x float]]       ; 12x10 array of single precision floating point values.   |
 ;; +-----------------------------+----------------------------------------------------------+
-;; | ``[2 x [3 x [4 x i16]]]``   | 2x3x4 array of 16-bit integer values.                    |
+       [2 x [3 x [4 x i16]]]     ; 2x3x4 array of 16-bit integer values.                    |
 ;; +-----------------------------+----------------------------------------------------------+
 ;;
 ;; There is no restriction on indexing beyond the end of the array implied
@@ -2204,11 +2204,11 @@
 ;; :Examples:
 ;;
 ;; +------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-;; | ``{ i32, i32, i32 }``        | A triple of three ``i32`` values                                                                                                                                                      |
+       { i32, i32, i32 }          ; A triple of three ``i32`` values                                                                                                                                                      |
 ;; +------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-;; | ``{ float, i32 (i32) * }``   | A pair, where the first element is a ``float`` and the second element is a :ref:`pointer <t_pointer>` to a :ref:`function <t_function>` that takes an ``i32``, returning an ``i32``.  |
+       { float, i32 (i32) * }     ; A pair, where the first element is a ``float`` and the second element is a :ref:`pointer <t_pointer>` to a :ref:`function <t_function>` that takes an ``i32``, returning an ``i32``.  |
 ;; +------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-;; | ``<{ i8, i32 }>``            | A packed struct known to be 5 bytes in size.                                                                                                                                          |
+       <{ i8, i32 }>              ; A packed struct known to be 5 bytes in size.                                                                                                                                          |
 ;; +------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ;;
 ;; .. _t_opaque:
@@ -2232,7 +2232,7 @@
 ;; :Examples:
 ;;
 ;; +--------------+-------------------+
-;; | ``opaque``   | An opaque type.   |
+       opaque     ; An opaque type.   |
 ;; +--------------+-------------------+
 ;;
 ;; .. _constants:
@@ -2629,96 +2629,96 @@
 ;; that does not have side effects (e.g. load and call are not supported).
 ;; The following is the syntax for constant expressions:
 ;;
-;; ``trunc (CST to TYPE)``
+     trunc (CST to TYPE)
 ;;     Truncate a constant to another type. The bit size of CST must be
 ;;     larger than the bit size of TYPE. Both types must be integers.
-;; ``zext (CST to TYPE)``
+     zext (CST to TYPE)
 ;;     Zero extend a constant to another type. The bit size of CST must be
 ;;     smaller than the bit size of TYPE. Both types must be integers.
-;; ``sext (CST to TYPE)``
+     sext (CST to TYPE)
 ;;     Sign extend a constant to another type. The bit size of CST must be
 ;;     smaller than the bit size of TYPE. Both types must be integers.
-;; ``fptrunc (CST to TYPE)``
+     fptrunc (CST to TYPE)
 ;;     Truncate a floating point constant to another floating point type.
 ;;     The size of CST must be larger than the size of TYPE. Both types
 ;;     must be floating point.
-;; ``fpext (CST to TYPE)``
+     fpext (CST to TYPE)
 ;;     Floating point extend a constant to another type. The size of CST
 ;;     must be smaller or equal to the size of TYPE. Both types must be
 ;;     floating point.
-;; ``fptoui (CST to TYPE)``
+     fptoui (CST to TYPE)
 ;;     Convert a floating point constant to the corresponding unsigned
 ;;     integer constant. TYPE must be a scalar or vector integer type. CST
 ;;     must be of scalar or vector floating point type. Both CST and TYPE
 ;;     must be scalars, or vectors of the same number of elements. If the
 ;;     value won't fit in the integer type, the results are undefined.
-;; ``fptosi (CST to TYPE)``
+     fptosi (CST to TYPE)
 ;;     Convert a floating point constant to the corresponding signed
 ;;     integer constant. TYPE must be a scalar or vector integer type. CST
 ;;     must be of scalar or vector floating point type. Both CST and TYPE
 ;;     must be scalars, or vectors of the same number of elements. If the
 ;;     value won't fit in the integer type, the results are undefined.
-;; ``uitofp (CST to TYPE)``
+     uitofp (CST to TYPE)
 ;;     Convert an unsigned integer constant to the corresponding floating
 ;;     point constant. TYPE must be a scalar or vector floating point type.
 ;;     CST must be of scalar or vector integer type. Both CST and TYPE must
 ;;     be scalars, or vectors of the same number of elements. If the value
 ;;     won't fit in the floating point type, the results are undefined.
-;; ``sitofp (CST to TYPE)``
+     sitofp (CST to TYPE)
 ;;     Convert a signed integer constant to the corresponding floating
 ;;     point constant. TYPE must be a scalar or vector floating point type.
 ;;     CST must be of scalar or vector integer type. Both CST and TYPE must
 ;;     be scalars, or vectors of the same number of elements. If the value
 ;;     won't fit in the floating point type, the results are undefined.
-;; ``ptrtoint (CST to TYPE)``
+     ptrtoint (CST to TYPE)
 ;;     Convert a pointer typed constant to the corresponding integer
 ;;     constant. ``TYPE`` must be an integer type. ``CST`` must be of
 ;;     pointer type. The ``CST`` value is zero extended, truncated, or
 ;;     unchanged to make it fit in ``TYPE``.
-;; ``inttoptr (CST to TYPE)``
+     inttoptr (CST to TYPE)
 ;;     Convert an integer constant to a pointer constant. TYPE must be a
 ;;     pointer type. CST must be of integer type. The CST value is zero
 ;;     extended, truncated, or unchanged to make it fit in a pointer size.
 ;;     This one is *really* dangerous!
-;; ``bitcast (CST to TYPE)``
+     bitcast (CST to TYPE)
 ;;     Convert a constant, CST, to another TYPE. The constraints of the
 ;;     operands are the same as those for the :ref:`bitcast
 ;;     instruction <i_bitcast>`.
-;; ``addrspacecast (CST to TYPE)``
+     addrspacecast (CST to TYPE)
 ;;     Convert a constant pointer or constant vector of pointer, CST, to another
 ;;     TYPE in a different address space. The constraints of the operands are the
 ;;     same as those for the :ref:`addrspacecast instruction <i_addrspacecast>`.
-;; ``getelementptr (CSTPTR, IDX0, IDX1, ...)``, ``getelementptr inbounds (CSTPTR, IDX0, IDX1, ...)``
+     getelementptr (CSTPTR, IDX0, IDX1, ...)  ,   getelementptr inbounds (CSTPTR, IDX0, IDX1, ...)
 ;;     Perform the :ref:`getelementptr operation <i_getelementptr>` on
 ;;     constants. As with the :ref:`getelementptr <i_getelementptr>`
 ;;     instruction, the index list may have zero or more indexes, which are
 ;;     required to make sense for the type of "CSTPTR".
-;; ``select (COND, VAL1, VAL2)``
+     select (COND, VAL1, VAL2)
 ;;     Perform the :ref:`select operation <i_select>` on constants.
-;; ``icmp COND (VAL1, VAL2)``
+     icmp COND (VAL1, VAL2)
 ;;     Performs the :ref:`icmp operation <i_icmp>` on constants.
-;; ``fcmp COND (VAL1, VAL2)``
+     fcmp COND (VAL1, VAL2)
 ;;     Performs the :ref:`fcmp operation <i_fcmp>` on constants.
-;; ``extractelement (VAL, IDX)``
+     extractelement (VAL, IDX)
 ;;     Perform the :ref:`extractelement operation <i_extractelement>` on
 ;;     constants.
-;; ``insertelement (VAL, ELT, IDX)``
+     insertelement (VAL, ELT, IDX)
 ;;     Perform the :ref:`insertelement operation <i_insertelement>` on
 ;;     constants.
-;; ``shufflevector (VEC1, VEC2, IDXMASK)``
+     shufflevector (VEC1, VEC2, IDXMASK)
 ;;     Perform the :ref:`shufflevector operation <i_shufflevector>` on
 ;;     constants.
-;; ``extractvalue (VAL, IDX0, IDX1, ...)``
+     extractvalue (VAL, IDX0, IDX1, ...)
 ;;     Perform the :ref:`extractvalue operation <i_extractvalue>` on
 ;;     constants. The index list is interpreted in a similar manner as
 ;;     indices in a ':ref:`getelementptr <i_getelementptr>`' operation. At
 ;;     least one index value must be specified.
-;; ``insertvalue (VAL, ELT, IDX0, IDX1, ...)``
+     insertvalue (VAL, ELT, IDX0, IDX1, ...)
 ;;     Perform the :ref:`insertvalue operation <i_insertvalue>` on constants.
 ;;     The index list is interpreted in a similar manner as indices in a
 ;;     ':ref:`getelementptr <i_getelementptr>`' operation. At least one index
 ;;     value must be specified.
-;; ``OPCODE (LHS, RHS)``
+     OPCODE (LHS, RHS)
 ;;     Perform the specified operation of the LHS and RHS constants. OPCODE
 ;;     may be any of the :ref:`binary <binaryops>` or :ref:`bitwise
 ;;     binary <bitwiseops>` operations. The constraints on operands are
