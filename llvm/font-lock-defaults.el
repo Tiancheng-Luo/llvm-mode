@@ -270,6 +270,11 @@
         "asm")
 
       ; Data Layout
+
+      (keywords
+        "target"
+        "datalayout")
+
       ; Target Triple
       ; Atomic Memory Ordering Constraints
       ; Fast-Math Flags
