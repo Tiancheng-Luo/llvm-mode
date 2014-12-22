@@ -52,9 +52,9 @@
 ;; instruction is syntactically okay, but not well formed:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %x = add i32 1, %x
-;;
+
+       %x = add i32 1, %x
+
 ;; because the definition of ``%x`` does not dominate all of its uses. The
 ;; LLVM infrastructure provides a verification pass that may be used to
 ;; verify that an LLVM module is well formed. This pass is automatically
@@ -106,23 +106,23 @@
 ;; The easy way:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %result = mul i32 %X, 8
-;;
+
+       %result = mul i32 %X, 8
+
 ;; After strength reduction:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %result = shl i32 %X, 3
-;;
+
+       %result = shl i32 %X, 3
+
 ;; And the hard way:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %0 = add i32 %X, %X           ; yields i32:%0
-;;     %1 = add i32 %0, %0           ; yields i32:%1
-;;     %result = add i32 %1, %1
-;;
+
+       %0 = add i32 %X, %X           ; yields i32:%0
+       %1 = add i32 %0, %0           ; yields i32:%1
+       %result = add i32 %1, %1
+
 ;; This last way of multiplying ``%X`` by 8 illustrates several important
 ;; lexical features of LLVM:
 ;;
@@ -153,27 +153,27 @@
 ;; symbol table entries. Here is an example of the "hello world" module:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     ; Declare the string constant as a global constant.
-;;     @.str = private unnamed_addr constant [13 x i8] c"hello world\0A\00"
-;;
-;;     ; External declaration of the puts function
-;;     declare i32 @puts(i8* nocapture) nounwind
-;;
-;;     ; Definition of main function
-;;     define i32 @main() {   ; i32()*
-;;       ; Convert [13 x i8]* to i8  *...
-;;       %cast210 = getelementptr [13 x i8]* @.str, i64 0, i64 0
-;;
-;;       ; Call puts function to write out the string to stdout.
-;;       call i32 @puts(i8* %cast210)
-;;       ret i32 0
-;;     }
-;;
-;;     ; Named metadata
-;;     !0 = !{i32 42, null, !"string"}
-;;     !foo = !{!0}
-;;
+
+       ; Declare the string constant as a global constant.
+       @.str = private unnamed_addr constant [13 x i8] c"hello world\0A\00"
+
+       ; External declaration of the puts function
+       declare i32 @puts(i8* nocapture) nounwind
+
+       ; Definition of main function
+       define i32 @main() {   ; i32()*
+         ; Convert [13 x i8]* to i8  *...
+         %cast210 = getelementptr [13 x i8]* @.str, i64 0, i64 0
+
+         ; Call puts function to write out the string to stdout.
+         call i32 @puts(i8* %cast210)
+         ret i32 0
+       }
+
+       ; Named metadata
+       !0 = !{i32 42, null, !"string"}
+       !foo = !{!0}
+
 ;; This example is made up of a :ref:`global variable <globalvars>` named
 ;; "``.str``", an external declaration of the "``puts``" function, a
 ;; :ref:`function definition <functionstructure>` for "``main``" and
@@ -193,18 +193,18 @@
 ;; All Global Variables and Functions have one of the following types of
 ;; linkage:
 ;;
-;; ``private``
+     private
 ;;     Global values with "``private``" linkage are only directly
 ;;     accessible by objects in the current module. In particular, linking
 ;;     code into a module with an private global value may cause the
 ;;     private to be renamed as necessary to avoid collisions. Because the
 ;;     symbol is private to the module, all references can be updated. This
 ;;     doesn't show up in any symbol table in the object file.
-;; ``internal``
+     internal
 ;;     Similar to private, but the value shows as a local symbol
 ;;     (``STB_LOCAL`` in the case of ELF) in the object file. This
 ;;     corresponds to the notion of the '``static``' keyword in C.
-;; ``available_externally``
+     available_externally
 ;;     Globals with "``available_externally``" linkage are never emitted
 ;;     into the object file corresponding to the LLVM module. They exist to
 ;;     allow inlining and other optimizations to take place given knowledge
@@ -213,7 +213,7 @@
 ;;     are allowed to be discarded at will, and are otherwise the same as
 ;;     ``linkonce_odr``. This linkage type is only allowed on definitions,
 ;;     not declarations.
-;; ``linkonce``
+     linkonce
 ;;     Globals with "``linkonce``" linkage are merged with other globals of
 ;;     the same name when linkage occurs. This can be used to implement
 ;;     some forms of inline functions, templates, or other code which must
@@ -226,12 +226,12 @@
 ;;     within the program or whether it will be overridden by a stronger
 ;;     definition. To enable inlining and other optimizations, use
 ;;     "``linkonce_odr``" linkage.
-;; ``weak``
+     weak
 ;;     "``weak``" linkage has the same merging semantics as ``linkonce``
 ;;     linkage, except that unreferenced globals with ``weak`` linkage may
 ;;     not be discarded. This is used for globals that are declared "weak"
 ;;     in C source code.
-;; ``common``
+     common
 ;;     "``common``" linkage is most similar to "``weak``" linkage, but they
 ;;     are used for tentative definitions in C, such as "``int X;``" at
 ;;     global scope. Symbols with "``common``" linkage are merged in the
@@ -243,18 +243,19 @@
 ;;
 ;; .. _linkage_appending:
 ;;
-;; ``appending``
+     appending
 ;;     "``appending``" linkage may only be applied to global variables of
 ;;     pointer to array type. When two global variables with appending
 ;;     linkage are linked together, the two global arrays are appended
 ;;     together. This is the LLVM, typesafe, equivalent of having the
 ;;     system linker append together "sections" with identical names when
 ;;     .o files are linked.
-;; ``extern_weak``
+     extern_weak
 ;;     The semantics of this linkage follow the ELF object file model: the
 ;;     symbol is weak until linked, if not linked, the symbol becomes null
 ;;     instead of being an undefined reference.
-;; ``linkonce_odr``, ``weak_odr``
+     linkonce_odr
+     weak_odr
 ;;     Some languages allow differing globals to be merged, such as two
 ;;     functions with different semantics. Other languages, such as
 ;;     ``C++``, ensure that only equivalent globals are ever merged (the
@@ -262,7 +263,7 @@
 ;;     ``linkonce_odr`` and ``weak_odr`` linkage types to indicate that the
 ;;     global will only be merged with equivalent globals. These linkage
 ;;     types are otherwise the same as their non-``odr`` versions.
-;; ``external``
+     external
 ;;     If none of the above identifiers are used, the global is externally
 ;;     visible, meaning that it participates in linkage and can be used to
 ;;     resolve external symbol references.
@@ -282,13 +283,13 @@
 ;; The following calling conventions are supported by LLVM, and more may be
 ;; added in the future:
 ;;
-;; "``ccc``" - The C calling convention
+      ccc ; The C calling convention
 ;;     This calling convention (the default if no other calling convention
 ;;     is specified) matches the target C calling conventions. This calling
 ;;     convention supports varargs function calls and tolerates some
 ;;     mismatch in the declared prototype and implemented declaration of
 ;;     the function (as does normal C).
-;; "``fastcc``" - The fast calling convention
+      fastcc ; The fast calling convention
 ;;     This calling convention attempts to make calls as fast as possible
 ;;     (e.g. by passing things in registers). This calling convention
 ;;     allows the target to use whatever tricks it wants to produce fast
@@ -298,7 +299,7 @@
 ;;     used. <CodeGenerator.html#id80>`_ This calling convention does not
 ;;     support varargs and requires the prototype of all callees to exactly
 ;;     match the prototype of the function definition.
-;; "``coldcc``" - The cold calling convention
+      coldcc ; The cold calling convention
 ;;     This calling convention attempts to make code in the caller as
 ;;     efficient as possible under the assumption that the call is not
 ;;     commonly executed. As such, these calls often preserve all registers
@@ -307,7 +308,7 @@
 ;;     prototype of all callees to exactly match the prototype of the
 ;;     function definition. Furthermore the inliner doesn't consider such function
 ;;     calls for inlining.
-;; "``cc 10``" - GHC convention
+      cc 10 ; GHC convention
 ;;     This calling convention has been implemented specifically for use by
 ;;     the `Glasgow Haskell Compiler (GHC) <http://www.haskell.org/ghc>`_.
 ;;     It passes everything in registers, going to extremes to achieve this
@@ -326,7 +327,7 @@
 ;;     This calling convention supports `tail call
 ;;     optimization <CodeGenerator.html#id80>`_ but requires both the
 ;;     caller and callee are using it.
-;; "``cc 11``" - The HiPE calling convention
+      cc 11 ; The HiPE calling convention
 ;;     This calling convention has been implemented specifically for use by
 ;;     the `High-Performance Erlang
 ;;     (HiPE) <http://www.it.uu.se/research/group/hipe/>`_ compiler, *the*
@@ -341,19 +342,19 @@
 ;;     accessed runtime components pinned to specific hardware registers.
 ;;     At the moment only X86 supports this convention (both 32 and 64
 ;;     bit).
-;; "``webkit_jscc``" - WebKit's JavaScript calling convention
+      webkit_jscc ; WebKit's JavaScript calling convention
 ;;     This calling convention has been implemented for `WebKit FTL JIT
 ;;     <https://trac.webkit.org/wiki/FTLJIT>`_. It passes arguments on the
 ;;     stack right to left (as cdecl does), and returns a value in the
 ;;     platform's customary return register.
-;; "``anyregcc``" - Dynamic calling convention for code patching
+      anyregcc ; Dynamic calling convention for code patching
 ;;     This is a special convention that supports patching an arbitrary code
 ;;     sequence in place of a call site. This convention forces the call
 ;;     arguments into registers but allows them to be dynamcially
 ;;     allocated. This can currently only be used with calls to
 ;;     llvm.experimental.patchpoint because only this intrinsic records
 ;;     the location of its arguments in a side table. See :doc:`StackMaps`.
-;; "``preserve_mostcc``" - The `PreserveMost` calling convention
+      preserve_mostcc ; The `PreserveMost` calling convention
 ;;     This calling convention attempts to make the code in the caller as little
 ;;     intrusive as possible. This calling convention behaves identical to the `C`
 ;;     calling convention on how arguments and return values are passed, but it
@@ -386,7 +387,7 @@
 ;;     by other runtimes in the future too. The current implementation only
 ;;     supports X86-64, but the intention is to support more architectures in the
 ;;     future.
-;; "``preserve_allcc``" - The `PreserveAll` calling convention
+      preserve_allcc ; The `PreserveAll` calling convention
 ;;     This calling convention attempts to make the code in the caller even less
 ;;     intrusive than the `PreserveMost` calling convention. This calling
 ;;     convention also behaves identical to the `C` calling convention on how
@@ -407,7 +408,7 @@
 ;;     This calling convention, like the `PreserveMost` calling convention, will be
 ;;     used by a future version of the ObjectiveC runtime and should be considered
 ;;     experimental at this time.
-;; "``cc <n>``" - Numbered convention
+      cc <n> ; Numbered convention
 ;;     Any calling convention may be specified by number, allowing
 ;;     target-specific calling conventions to be used. Target specific
 ;;     calling conventions start at 64.
@@ -424,20 +425,20 @@
 ;; All Global Variables and Functions have one of the following visibility
 ;; styles:
 ;;
-;; "``default``" - Default style
+      default ; Default style
 ;;     On targets that use the ELF object file format, default visibility
 ;;     means that the declaration is visible to other modules and, in
 ;;     shared libraries, means that the declared entity may be overridden.
 ;;     On Darwin, default visibility means that the declaration is visible
 ;;     to other modules. Default visibility corresponds to "external
 ;;     linkage" in the language.
-;; "``hidden``" - Hidden style
+      hidden ; Hidden style
 ;;     Two declarations of an object with hidden visibility refer to the
 ;;     same object if they are in the same shared object. Usually, hidden
 ;;     visibility indicates that the symbol will not be placed into the
 ;;     dynamic symbol table, so no other module (executable or shared
 ;;     library) can reference it directly.
-;; "``protected``" - Protected style
+      protected ; Protected style
 ;;     On ELF, protected visibility indicates that the symbol will be
 ;;     placed in the dynamic symbol table, but that references within the
 ;;     defining module will bind to the local symbol. That is, the symbol
@@ -454,12 +455,12 @@
 ;; All Global Variables, Functions and Aliases can have one of the following
 ;; DLL storage class:
 ;;
-;; ``dllimport``
+     dllimport
 ;;     "``dllimport``" causes the compiler to reference a function or variable via
 ;;     a global pointer to a pointer that is set up by the DLL exporting the
 ;;     symbol. On Microsoft Windows targets, the pointer name is formed by
 ;;     combining ``__imp_`` and the function or variable name.
-;; ``dllexport``
+     dllexport
 ;;     "``dllexport``" causes the compiler to provide a global pointer to a pointer
 ;;     in a DLL, so that it can be referenced with the ``dllimport`` attribute. On
 ;;     Microsoft Windows targets, the pointer name is formed by combining
@@ -477,11 +478,11 @@
 ;; variable). Not all targets support thread-local variables. Optionally, a
 ;; TLS model may be specified:
 ;;
-;; ``localdynamic``
+     localdynamic
 ;;     For variables that are only used within the current shared library.
-;; ``initialexec``
+     initialexec
 ;;     For variables in modules that will not be loaded dynamically.
-;; ``localexec``
+     localexec
 ;;     For variables defined in the executable and only used within it.
 ;;
 ;; If no explicit model is given, the "general dynamic" model is used.
@@ -508,9 +509,9 @@
 ;; An example of a identified structure specification is:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %mytype = type { %mytype*, i32 }
-;;
+
+       %mytype = type { %mytype*, i32 }
+
 ;; Prior to the LLVM 3.0 release, identified types were structurally uniqued.  Only
 ;; literal types are uniqued in recent versions of LLVM.
 ;;
@@ -603,22 +604,22 @@
 ;; with an initializer, section, and alignment:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     @G = addrspace(5) constant float 1.0, section "foo", align 4
-;;
+
+       @G = addrspace(5) constant float 1.0, section "foo", align 4
+
 ;; The following example just declares a global variable
 ;;
 ;; .. code-block:: llvm
-;;
-;;    @G = external global i32
-;;
+
+      @G = external global i32
+
 ;; The following example defines a thread-local global with the
 ;; ``initialexec`` TLS model:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     @G = thread_local(initialexec) global i32 0, align 4
-;;
+
+       @G = thread_local(initialexec) global i32 0, align 4
+
 ;; .. _functionstructure:
 ;;
 ;; Functions
@@ -749,21 +750,21 @@
 ;; choose between keys in two different object files.
 ;;
 ;; Syntax::
-;;
-;;     $<Name> = comdat SelectionKind
-;;
+
+       $<Name> = comdat SelectionKind
+
 ;; The selection kind must be one of the following:
 ;;
-;; ``any``
+     any
 ;;     The linker may choose any COMDAT key, the choice is arbitrary.
-;; ``exactmatch``
+     exactmatch
 ;;     The linker may choose any COMDAT key but the sections must contain the
 ;;     same data.
-;; ``largest``
+     largest
 ;;     The linker will choose the section containing the largest COMDAT key.
-;; ``noduplicates``
+     noduplicates
 ;;     The linker requires that only section with this COMDAT key exist.
-;; ``samesize``
+     samesize
 ;;     The linker may choose any COMDAT key but the sections must contain the
 ;;     same amount of data.
 ;;
@@ -774,14 +775,14 @@
 ;; the COMDAT key's section is the largest:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    $foo = comdat largest
-;;    @foo = global i32 2, comdat $foo
-;;
-;;    define void @bar() comdat $foo {
-;;      ret void
-;;    }
-;;
+
+      $foo = comdat largest
+      @foo = global i32 2, comdat $foo
+
+      define void @bar() comdat $foo {
+        ret void
+      }
+
 ;; In a COFF object file, this will create a COMDAT section with selection kind
 ;; ``IMAGE_COMDAT_SELECT_LARGEST`` containing the contents of the ``@foo`` symbol
 ;; and another COMDAT section with selection kind
@@ -801,12 +802,12 @@
 ;; For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    $foo = comdat any
-;;    $bar = comdat any
-;;    @g1 = global i32 42, section "sec", comdat $foo
-;;    @g2 = global i32 42, section "sec", comdat $bar
-;;
+
+      $foo = comdat any
+      $bar = comdat any
+      @g1 = global i32 42, section "sec", comdat $foo
+      @g2 = global i32 42, section "sec", comdat $bar
+
 ;; From the object file perspective, this requires the creation of two sections
 ;; with the same name.  This is necessary because both globals belong to different
 ;; COMDAT groups and COMDATs, at the object file level, are represented by
@@ -826,14 +827,14 @@
 ;; operands for a named metadata.
 ;;
 ;; Syntax::
-;;
-;;     ; Some unnamed metadata nodes, which are referenced by the named metadata.
-;;     !0 = !{!"zero"}
-;;     !1 = !{!"one"}
-;;     !2 = !{!"two"}
-;;     ; A named metadata.
-;;     !name = !{!0, !1, !2}
-;;
+
+       ; Some unnamed metadata nodes, which are referenced by the named metadata.
+       !0 = !{!"zero"}
+       !1 = !{!"one"}
+       !2 = !{!"two"}
+       ; A named metadata.
+       !name = !{!0, !1, !2}
+
 ;; .. _paramattrs:
 ;;
 ;; Parameter Attributes
@@ -851,34 +852,34 @@
 ;; For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     declare i32 @printf(i8* noalias nocapture, ...)
-;;     declare i32 @atoi(i8 zeroext)
-;;     declare signext i8 @returns_signed_char()
-;;
+
+       declare i32 @printf(i8* noalias nocapture, ...)
+       declare i32 @atoi(i8 zeroext)
+       declare signext i8 @returns_signed_char()
+
 ;; Note that any attributes for the function result (``nounwind``,
 ;; ``readonly``) come immediately after the argument list.
 ;;
 ;; Currently, only the following parameter attributes are defined:
 ;;
-;; ``zeroext``
+     zeroext
 ;;     This indicates to the code generator that the parameter or return
 ;;     value should be zero-extended to the extent required by the target's
 ;;     ABI (which is usually 32-bits, but is 8-bits for a i1 on x86-64) by
 ;;     the caller (for a parameter) or the callee (for a return value).
-;; ``signext``
+     signext
 ;;     This indicates to the code generator that the parameter or return
 ;;     value should be sign-extended to the extent required by the target's
 ;;     ABI (which is usually 32-bits) by the caller (for a parameter) or
 ;;     the callee (for a return value).
-;; ``inreg``
+     inreg
 ;;     This indicates that this parameter or return value should be treated
 ;;     in a special target-dependent fashion during while emitting code for
 ;;     a function call or return (usually, by putting it in a register as
 ;;     opposed to memory, though some targets use it to distinguish between
 ;;     two different kinds of registers). Use of this attribute is
 ;;     target-specific.
-;; ``byval``
+     byval
 ;;     This indicates that the pointer parameter should really be passed by
 ;;     value to the function. The attribute implies that a hidden copy of
 ;;     the pointee is made between the caller and the callee, so the callee
@@ -898,7 +899,7 @@
 ;;
 ;; .. _attr_inalloca:
 ;;
-;; ``inalloca``
+     inalloca
 ;;
 ;;     The ``inalloca`` argument attribute allows the caller to take the
 ;;     address of outgoing stack arguments.  An ``inalloca`` argument must
@@ -925,7 +926,7 @@
 ;;     See :doc:`InAlloca` for more information on how to use this
 ;;     attribute.
 ;;
-;; ``sret``
+     sret
 ;;     This indicates that the pointer parameter specifies the address of a
 ;;     structure that is the return value of the function in the source
 ;;     program. This pointer must be guaranteed by the caller to be valid:
@@ -934,7 +935,7 @@
 ;;     the first parameter. This is not a valid attribute for return
 ;;     values.
 ;;
-;; ``align <n>``
+     align <n>
 ;;     This indicates that the pointer value may be assumed by the optimizer to
 ;;     have the specified alignment.
 ;;
@@ -943,7 +944,7 @@
 ;;
 ;; .. _noalias:
 ;;
-;; ``noalias``
+     noalias
 ;;     This indicates that objects accessed via pointer values
 ;;     :ref:`based <pointeraliasing>` on the argument or return value are not also
 ;;     accessed, during the execution of the function, via pointer values not
@@ -964,19 +965,19 @@
 ;;     function, returning a pointer to allocated storage disjoint from the
 ;;     storage for any other object accessible to the caller.
 ;;
-;; ``nocapture``
+     nocapture
 ;;     This indicates that the callee does not make any copies of the
 ;;     pointer that outlive the callee itself. This is not a valid
 ;;     attribute for return values.
 ;;
 ;; .. _nest:
 ;;
-;; ``nest``
+     nest
 ;;     This indicates that the pointer parameter can be excised using the
 ;;     :ref:`trampoline intrinsics <int_trampoline>`. This is not a valid
 ;;     attribute for return values and can only be applied to one parameter.
 ;;
-;; ``returned``
+     returned
 ;;     This indicates that the function always returns the argument as its return
 ;;     value. This is an optimization hint to the code generator when generating
 ;;     the caller, allowing tail call optimization and omission of register saves
@@ -985,14 +986,14 @@
 ;;     operands for the :ref:`bitcast instruction <i_bitcast>`. This is not a
 ;;     valid attribute for return values and can only be applied to one parameter.
 ;;
-;; ``nonnull``
+     nonnull
 ;;     This indicates that the parameter or return pointer is not null. This
 ;;     attribute may only be applied to pointer typed parameters. This is not
 ;;     checked or enforced by LLVM, the caller must ensure that the pointer
 ;;     passed in is non-null, or the callee must ensure that the returned pointer
 ;;     is non-null.
 ;;
-;; ``dereferenceable(<n>)``
+     dereferenceable(<n>)
 ;;     This indicates that the parameter or return pointer is dereferenceable. This
 ;;     attribute may only be applied to pointer typed parameters. A pointer that
 ;;     is dereferenceable can be loaded from speculatively without a risk of
@@ -1012,9 +1013,9 @@
 ;; string:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     define void @f() gc "name" { ... }
-;;
+
+       define void @f() gc "name" { ... }
+
 ;; The compiler declares the supported values of *name*. Specifying a
 ;; collector will cause the compiler to alter its output in order to
 ;; support the named garbage collection algorithm.
@@ -1038,17 +1039,17 @@
 ;; with a single ``i32``,
 ;;
 ;; .. code-block:: llvm
-;;
-;;     define void @f() prefix i32 123 { ... }
-;;
+
+       define void @f() prefix i32 123 { ... }
+
 ;; The prefix data can be referenced as,
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %0 = bitcast *void () @f to *i32
-;;     %a = getelementptr inbounds *i32 %0, i32 -1
-;;     %b = load i32* %a
-;;
+
+       %0 = bitcast *void () @f to *i32
+       %a = getelementptr inbounds *i32 %0, i32 -1
+       %b = load i32* %a
+
 ;; Prefix data is laid out as if it were an initializer for a global variable
 ;; of the prefix data's type.  The function will be placed such that the
 ;; beginning of the prefix data is aligned. This means that if the size
@@ -1083,19 +1084,19 @@
 ;; which encodes the ``nop`` instruction:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     define void @f() prologue i8 144 { ... }
-;;
+
+       define void @f() prologue i8 144 { ... }
+
 ;; Generally prologue data can be formed by encoding a relative branch instruction
 ;; which skips the metadata, as in this example of valid prologue data for the
 ;; x86_64 architecture, where the first two bytes encode ``jmp .+10``:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %0 = type <{ i8, i8, i8* }>
-;;
-;;     define void @f() prologue %0 <{ i8 235, i8 8, i8* @md}> { ... }
-;;
+
+       %0 = type <{ i8, i8, i8* }>
+
+       define void @f() prologue %0 <{ i8 235, i8 8, i8* @md}> { ... }
+
 ;; A function may have prologue data but no body.  This has similar semantics
 ;; to the ``available_externally`` linkage in that the data may be used by the
 ;; optimizers but will not be emitted in the object file.
@@ -1120,16 +1121,16 @@
 ;; inlined, has a stack alignment of 4, and which shouldn't use SSE instructions:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    ; Target-independent attributes:
-;;    attributes #0 = { alwaysinline alignstack=4 }
-;;
-;;    ; Target-dependent attributes:
-;;    attributes #1 = { "no-sse" }
-;;
-;;    ; Function @f has attributes: alwaysinline, alignstack=4, and "no-sse".
-;;    define void @f() #0 #1 { ... }
-;;
+
+      ; Target-independent attributes:
+      attributes #0 = { alwaysinline alignstack=4 }
+
+      ; Target-dependent attributes:
+      attributes #1 = { "no-sse" }
+
+      ; Function @f has attributes: alwaysinline, alignstack=4, and "no-sse".
+      define void @f() #0 #1 { ... }
+
 ;; .. _fnattrs:
 ;;
 ;; Function Attributes
@@ -1145,38 +1146,38 @@
 ;; example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     define void @f() noinline { ... }
-;;     define void @f() alwaysinline { ... }
-;;     define void @f() alwaysinline optsize { ... }
-;;     define void @f() optsize { ... }
-;;
-;; ``alignstack(<n>)``
+
+       define void @f() noinline { ... }
+       define void @f() alwaysinline { ... }
+       define void @f() alwaysinline optsize { ... }
+       define void @f() optsize { ... }
+
+     alignstack(<n>)
 ;;     This attribute indicates that, when emitting the prologue and
 ;;     epilogue, the backend should forcibly align the stack pointer.
 ;;     Specify the desired alignment, which must be a power of two, in
 ;;     parentheses.
-;; ``alwaysinline``
+     alwaysinline
 ;;     This attribute indicates that the inliner should attempt to inline
 ;;     this function into callers whenever possible, ignoring any active
 ;;     inlining size threshold for this caller.
-;; ``builtin``
+     builtin
 ;;     This indicates that the callee function at a call site should be
 ;;     recognized as a built-in function, even though the function's declaration
 ;;     uses the ``nobuiltin`` attribute. This is only valid at call sites for
-;;     direct calls to functions that are declared with the ``nobuiltin``
+;;     direct calls to functions that are declared with the ``nobuiltin
 ;;     attribute.
-;; ``cold``
+     cold
 ;;     This attribute indicates that this function is rarely called. When
 ;;     computing edge weights, basic blocks post-dominated by a cold
 ;;     function call are also considered to be cold; and, thus, given low
 ;;     weight.
-;; ``inlinehint``
+     inlinehint
 ;;     This attribute indicates that the source code contained a hint that
 ;;     inlining this function is desirable (such as the "inline" keyword in
 ;;     C/C++). It is just a hint; it imposes no requirements on the
 ;;     inliner.
-;; ``jumptable``
+     jumptable
 ;;     This attribute indicates that the function should be added to a
 ;;     jump-instruction table at code-generation time, and that all address-taken
 ;;     references to this function should be replaced with a reference to the
@@ -1184,21 +1185,21 @@
 ;;     a new pointer for the original function, which means that code that depends
 ;;     on function-pointer identity can break. So, any function annotated with
 ;;     ``jumptable`` must also be ``unnamed_addr``.
-;; ``minsize``
+     minsize
 ;;     This attribute suggests that optimization passes and code generator
 ;;     passes make choices that keep the code size of this function as small
 ;;     as possible and perform optimizations that may sacrifice runtime
 ;;     performance in order to minimize the size of the generated code.
-;; ``naked``
+     naked
 ;;     This attribute disables prologue / epilogue emission for the
 ;;     function. This can have very system-specific consequences.
-;; ``nobuiltin``
+     nobuiltin
 ;;     This indicates that the callee function at a call site is not recognized as
 ;;     a built-in function. LLVM will retain the original call and not replace it
 ;;     with equivalent code based on the semantics of the built-in function, unless
 ;;     the call site uses the ``builtin`` attribute. This is valid at call sites
 ;;     and on function declarations and definitions.
-;; ``noduplicate``
+     noduplicate
 ;;     This attribute indicates that calls to the function cannot be
 ;;     duplicated. A call to a ``noduplicate`` function may be moved
 ;;     within its parent function, but may not be duplicated within
@@ -1209,28 +1210,28 @@
 ;;     duplicated by inlining. That implies that the function has
 ;;     internal linkage and only has one call site, so the original
 ;;     call is dead after inlining.
-;; ``noimplicitfloat``
+     noimplicitfloat
 ;;     This attributes disables implicit floating point instructions.
-;; ``noinline``
+     noinline
 ;;     This attribute indicates that the inliner should never inline this
 ;;     function in any situation. This attribute may not be used together
 ;;     with the ``alwaysinline`` attribute.
-;; ``nonlazybind``
+     nonlazybind
 ;;     This attribute suppresses lazy symbol binding for the function. This
 ;;     may make calls to the function faster, at the cost of extra program
 ;;     startup time if the function is not called during program startup.
-;; ``noredzone``
+     noredzone
 ;;     This attribute indicates that the code generator should not use a
 ;;     red zone, even if the target-specific ABI normally permits it.
-;; ``noreturn``
+     noreturn
 ;;     This function attribute indicates that the function never returns
 ;;     normally. This produces undefined behavior at runtime if the
 ;;     function ever does dynamically return.
-;; ``nounwind``
+     nounwind
 ;;     This function attribute indicates that the function never returns
 ;;     with an unwind or exceptional control flow. If the function does
 ;;     unwind, its runtime behavior is undefined.
-;; ``optnone``
+     optnone
 ;;     This function attribute indicates that the function is not optimized
 ;;     by any optimization or code generator passes with the
 ;;     exception of interprocedural optimization passes.
@@ -1242,12 +1243,12 @@
 ;;     the function as well, so the function is never inlined into any caller.
 ;;     Only functions with the ``alwaysinline`` attribute are valid
 ;;     candidates for inlining into the body of this function.
-;; ``optsize``
+     optsize
 ;;     This attribute suggests that optimization passes and code generator
 ;;     passes make choices that keep the code size of this function low,
 ;;     and otherwise do optimizations specifically to reduce code size as
 ;;     long as they do not significantly impact runtime performance.
-;; ``readnone``
+     readnone
 ;;     On a function, this attribute indicates that the function computes its
 ;;     result (or decides to unwind an exception) based strictly on its arguments,
 ;;     without dereferencing any pointer arguments or otherwise accessing
@@ -1260,7 +1261,7 @@
 ;;     On an argument, this attribute indicates that the function does not
 ;;     dereference that pointer argument, even though it may read or write the
 ;;     memory that the pointer points to if accessed through other pointers.
-;; ``readonly``
+     readonly
 ;;     On a function, this attribute indicates that the function does not write
 ;;     through any pointer arguments (including ``byval`` arguments) or otherwise
 ;;     modify any state (e.g. memory, control registers, etc) visible to
@@ -1274,21 +1275,21 @@
 ;;     On an argument, this attribute indicates that the function does not write
 ;;     through this pointer argument, even though it may write to the memory that
 ;;     the pointer points to.
-;; ``returns_twice``
+     returns_twice
 ;;     This attribute indicates that this function can return twice. The C
 ;;     ``setjmp`` is an example of such a function. The compiler disables
 ;;     some optimizations (like tail calls) in the caller of these
 ;;     functions.
-;; ``sanitize_address``
+     sanitize_address
 ;;     This attribute indicates that AddressSanitizer checks
 ;;     (dynamic address safety analysis) are enabled for this function.
-;; ``sanitize_memory``
+     sanitize_memory
 ;;     This attribute indicates that MemorySanitizer checks (dynamic detection
 ;;     of accesses to uninitialized memory) are enabled for this function.
-;; ``sanitize_thread``
+     sanitize_thread
 ;;     This attribute indicates that ThreadSanitizer checks
 ;;     (dynamic thread safety analysis) are enabled for this function.
-;; ``ssp``
+     ssp
 ;;     This attribute indicates that the function should emit a stack
 ;;     smashing protector. It is in the form of a "canary" --- a random value
 ;;     placed on the stack before the local variables that's checked upon
@@ -1307,7 +1308,7 @@
 ;;     If a function that has an ``ssp`` attribute is inlined into a
 ;;     function that doesn't have an ``ssp`` attribute, then the resulting
 ;;     function will have an ``ssp`` attribute.
-;; ``sspreq``
+     sspreq
 ;;     This attribute indicates that the function should *always* emit a
 ;;     stack smashing protector. This overrides the ``ssp`` function
 ;;     attribute.
@@ -1327,7 +1328,7 @@
 ;;     function that doesn't have an ``sspreq`` attribute or which has an
 ;;     ``ssp`` or ``sspstrong`` attribute, then the resulting function will have
 ;;     an ``sspreq`` attribute.
-;; ``sspstrong``
+     sspstrong
 ;;     This attribute indicates that the function should emit a stack smashing
 ;;     protector. This attribute causes a strong heuristic to be used when
 ;;     determining if a function needs stack protectors.  The strong heuristic
@@ -1354,7 +1355,7 @@
 ;;     If a function that has an ``sspstrong`` attribute is inlined into a
 ;;     function that doesn't have an ``sspstrong`` attribute, then the
 ;;     resulting function will have an ``sspstrong`` attribute.
-;; ``uwtable``
+     uwtable
 ;;     This attribute indicates that the ABI being targeted requires that
 ;;     an unwind table entry be produce for this function even if we can
 ;;     show that no exceptions passes by it. This is normally the case for
@@ -1372,10 +1373,10 @@
 ;; in the ``.ll`` file if desired. The syntax is very simple:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     module asm "inline asm code goes here"
-;;     module asm "more can go here"
-;;
+
+       module asm "inline asm code goes here"
+       module asm "more can go here"
+
 ;; The strings can contain any character by escaping non-printable
 ;; characters. The escape sequence used is simply "\\xx" where "xx" is the
 ;; two digit hex code for the number.
@@ -1393,9 +1394,9 @@
 ;; simply:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     target datalayout = "layout specification"
-;;
+
+       target datalayout = "layout specification"
+
 ;; The *layout specification* consists of a list of specifications
 ;; separated by the minus sign character ('-'). Each specification starts
 ;; with a letter and may include other information after the letter to
@@ -1521,9 +1522,9 @@
 ;; host. The syntax for the target triple is simply:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     target triple = "x86_64-apple-macosx10.7.0"
-;;
+
+       target triple = "x86_64-apple-macosx10.7.0"
+
 ;; The *target triple* string consists of a series of identifiers delimited
 ;; by the minus sign character ('-'). The canonical forms are:
 ;;
@@ -1706,14 +1707,14 @@
 ;; For a simpler introduction to the ordering constraints, see the
 ;; :doc:`Atomics`.
 ;;
-;; ``unordered``
+     unordered
 ;;     The set of values that can be read is governed by the happens-before
 ;;     partial order. A value cannot be read unless some operation wrote
 ;;     it. This is intended to provide a guarantee strong enough to model
 ;;     Java's non-volatile shared variables. This ordering cannot be
 ;;     specified for read-modify-write operations; it is not strong enough
 ;;     to make them atomic in any interesting way.
-;; ``monotonic``
+     monotonic
 ;;     In addition to the guarantees of ``unordered``, there is a single
 ;;     total order for modifications by ``monotonic`` operations on each
 ;;     address. All modification orders must be compatible with the
@@ -1731,21 +1732,21 @@
 ;;     read that address repeatedly, the other threads must eventually see
 ;;     the write. This corresponds to the C++0x/C1x
 ;;     ``memory_order_relaxed``.
-;; ``acquire``
+     acquire
 ;;     In addition to the guarantees of ``monotonic``, a
 ;;     *synchronizes-with* edge may be formed with a ``release`` operation.
 ;;     This is intended to model C++'s ``memory_order_acquire``.
-;; ``release``
+     release
 ;;     In addition to the guarantees of ``monotonic``, if this operation
 ;;     writes a value which is subsequently read by an ``acquire``
 ;;     operation, it *synchronizes-with* that operation. (This isn't a
 ;;     complete description; see the C++0x definition of a release
 ;;     sequence.) This corresponds to the C++0x/C1x
 ;;     ``memory_order_release``.
-;; ``acq_rel`` (acquire+release)
+     acq_rel`` (acquire+release)
 ;;     Acts as both an ``acquire`` and ``release`` operation on its
 ;;     address. This corresponds to the C++0x/C1x ``memory_order_acq_rel``.
-;; ``seq_cst`` (sequentially consistent)
+     seq_cst`` (sequentially consistent)
 ;;     In addition to the guarantees of ``acq_rel`` (``acquire`` for an
 ;;     operation that only reads, ``release`` for an operation that only
 ;;     writes), there is a global total order on all
@@ -1773,25 +1774,25 @@
 ;; :ref:`frem <i_frem>`) have the following flags that can set to enable
 ;; otherwise unsafe floating point operations
 ;;
-;; ``nnan``
+     nnan
 ;;    No NaNs - Allow optimizations to assume the arguments and result are not
 ;;    NaN. Such optimizations are required to retain defined behavior over
 ;;    NaNs, but the value of the result is undefined.
 ;;
-;; ``ninf``
+     ninf
 ;;    No Infs - Allow optimizations to assume the arguments and result are not
 ;;    +/-Inf. Such optimizations are required to retain defined behavior over
 ;;    +/-Inf, but the value of the result is undefined.
 ;;
-;; ``nsz``
+     nsz
 ;;    No Signed Zeros - Allow optimizations to treat the sign of a zero
 ;;    argument or result as insignificant.
 ;;
-;; ``arcp``
+     arcp
 ;;    Allow Reciprocal - Allow optimizations to use the reciprocal of an
 ;;    argument rather than perform division.
 ;;
-;; ``fast``
+     fast
 ;;    Fast - Allow algebraically equivalent transformations that may
 ;;    dramatically change results in floating point (e.g. reassociate). This
 ;;    flag implies all the others.
@@ -1817,31 +1818,31 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;     uselistorder <ty> <value>, { <order-indexes> }
-;;     uselistorder_bb @function, %block { <order-indexes> }
-;;
+
+       uselistorder <ty> <value>, { <order-indexes> }
+       uselistorder_bb @function, %block { <order-indexes> }
+
 ;; :Examples:
 ;;
 ;; ::
-;;
-;;     define void @foo(i32 %arg1, i32 %arg2) {
-;;     entry:
-;;       ; ... instructions ...
-;;     bb:
-;;       ; ... instructions ...
-;;
-;;       ; At function scope.
-;;       uselistorder i32 %arg1, { 1, 0, 2 }
-;;       uselistorder label %bb, { 1, 0 }
-;;     }
-;;
-;;     ; At global scope.
-;;     uselistorder i32* @global, { 1, 2, 0 }
-;;     uselistorder i32 7, { 1, 0 }
-;;     uselistorder i32 (i32) @bar, { 1, 0 }
-;;     uselistorder_bb @foo, %bb, { 5, 1, 3, 2, 0, 4 }
-;;
+
+       define void @foo(i32 %arg1, i32 %arg2) {
+       entry:
+         ; ... instructions ...
+       bb:
+         ; ... instructions ...
+
+         ; At function scope.
+         uselistorder i32 %arg1, { 1, 0, 2 }
+         uselistorder label %bb, { 1, 0 }
+       }
+
+       ; At global scope.
+       uselistorder i32* @global, { 1, 2, 0 }
+       uselistorder i32 7, { 1, 0 }
+       uselistorder i32 (i32) @bar, { 1, 0 }
+       uselistorder_bb @foo, %bb, { 5, 1, 3, 2, 0, 4 }
+
 ;; .. _typesystem:
 ;;
 ;; Type System
@@ -1869,9 +1870,9 @@
 ;;
 ;;
 ;; ::
-;;
-;;       void
-;;
+
+         void
+
 ;;
 ;; .. _t_function:
 ;;
@@ -1889,9 +1890,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       <returntype> (<parameter list>)
-;;
+
+         <returntype> (<parameter list>)
+
 ;; ...where '``<parameter list>``' is a comma-separated list of type
 ;; specifiers. Optionally, the parameter list may include a type ``...``, which
 ;; indicates that the function takes a variable number of arguments.  Variable
@@ -1941,9 +1942,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       iN
-;;
+
+         iN
+
 ;; The number of bits the integer will occupy is specified by the ``N``
 ;; value.
 ;;
@@ -2002,10 +2003,10 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       x86_mmx
-;;
-;;
+
+         x86_mmx
+
+
 ;; .. _t_pointer:
 ;;
 ;; Pointer Type
@@ -2027,9 +2028,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       <type> *
-;;
+
+         <type> *
+
 ;; :Examples:
 ;;
 ;; +-------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -2056,9 +2057,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       < <# elements> x <elementtype> >
-;;
+
+         < <# elements> x <elementtype> >
+
 ;; The number of elements is a constant integer value larger than 0;
 ;; elementtype may be any integer, floating point or pointer type. Vectors
 ;; of size zero are not allowed.
@@ -2087,9 +2088,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       label
-;;
+
+         label
+
 ;; .. _t_metadata:
 ;;
 ;; Metadata Type
@@ -2103,9 +2104,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       metadata
-;;
+
+         metadata
+
 ;; .. _t_aggregate:
 ;;
 ;; Aggregate Types
@@ -2130,9 +2131,9 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       [<# elements> x <elementtype>]
-;;
+
+         [<# elements> x <elementtype>]
+
 ;; The number of elements is a constant integer value; ``elementtype`` may
 ;; be any type with a size.
 ;;
@@ -2196,10 +2197,10 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       %T1 = type { <type list> }     ; Identified normal struct type
-;;       %T2 = type <{ <type list> }>   ; Identified packed struct type
-;;
+
+         %T1 = type { <type list> }     ; Identified normal struct type
+         %T2 = type <{ <type list> }>   ; Identified packed struct type
+
 ;; :Examples:
 ;;
 ;; +------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -2224,10 +2225,10 @@
 ;; :Syntax:
 ;;
 ;; ::
-;;
-;;       %X = type opaque
-;;       %52 = type opaque
-;;
+
+         %X = type opaque
+         %52 = type opaque
+
 ;; :Examples:
 ;;
 ;; +--------------+-------------------+
@@ -2349,11 +2350,11 @@
 ;; file:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     @X = global i32 17
-;;     @Y = global i32 42
-;;     @Z = global [2 x i32*] [ i32* @X, i32* @Y ]
-;;
+
+       @X = global i32 17
+       @Y = global i32 42
+       @Z = global [2 x i32*] [ i32* @X, i32* @Y ]
+
 ;; .. _undefvalues:
 ;;
 ;; Undefined Values
@@ -2370,29 +2371,29 @@
 ;; (potentially surprising) transformations that are valid (in pseudo IR):
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %A = add %X, undef
-;;       %B = sub %X, undef
-;;       %C = xor %X, undef
-;;     Safe:
-;;       %A = undef
-;;       %B = undef
-;;       %C = undef
-;;
+
+         %A = add %X, undef
+         %B = sub %X, undef
+         %C = xor %X, undef
+       Safe:
+         %A = undef
+         %B = undef
+         %C = undef
+
 ;; This is safe because all of the output bits are affected by the undef
 ;; bits. Any output bit can have a zero or one depending on the input bits.
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %A = or %X, undef
-;;       %B = and %X, undef
-;;     Safe:
-;;       %A = -1
-;;       %B = 0
-;;     Unsafe:
-;;       %A = undef
-;;       %B = undef
-;;
+
+         %A = or %X, undef
+         %B = and %X, undef
+       Safe:
+         %A = -1
+         %B = 0
+       Unsafe:
+         %A = undef
+         %B = undef
+
 ;; These logical operations have bits that are not always affected by the
 ;; input. For example, if ``%X`` has a zero bit, then the output of the
 ;; '``and``' operation will always be a zero for that bit, no matter what
@@ -2404,19 +2405,19 @@
 ;; allowing the '``or``' to be folded to -1.
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %A = select undef, %X, %Y
-;;       %B = select undef, 42, %Y
-;;       %C = select %X, %Y, undef
-;;     Safe:
-;;       %A = %X     (or %Y)
-;;       %B = 42     (or %Y)
-;;       %C = %Y
-;;     Unsafe:
-;;       %A = undef
-;;       %B = undef
-;;       %C = undef
-;;
+
+         %A = select undef, %X, %Y
+         %B = select undef, 42, %Y
+         %C = select %X, %Y, undef
+       Safe:
+         %A = %X     (or %Y)
+         %B = 42     (or %Y)
+         %C = %Y
+       Unsafe:
+         %A = undef
+         %B = undef
+         %C = undef
+
 ;; This set of examples shows that undefined '``select``' (and conditional
 ;; branch) conditions can go *either way*, but they have to come from one
 ;; of the two operands. In the ``%A`` example, if ``%X`` and ``%Y`` were
@@ -2426,24 +2427,24 @@
 ;; ``%Y``, allowing the whole '``select``' to be eliminated.
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %A = xor undef, undef
-;;
-;;       %B = undef
-;;       %C = xor %B, %B
-;;
-;;       %D = undef
-;;       %E = icmp slt %D, 4
-;;       %F = icmp gte %D, 4
-;;
-;;     Safe:
-;;       %A = undef
-;;       %B = undef
-;;       %C = undef
-;;       %D = undef
-;;       %E = undef
-;;       %F = undef
-;;
+
+         %A = xor undef, undef
+
+         %B = undef
+         %C = xor %B, %B
+
+         %D = undef
+         %E = icmp slt %D, 4
+         %F = icmp gte %D, 4
+
+       Safe:
+         %A = undef
+         %B = undef
+         %C = undef
+         %D = undef
+         %E = undef
+         %F = undef
+
 ;; This example points out that two '``undef``' operands are not
 ;; necessarily the same. This can be surprising to people (and also matches
 ;; C semantics) where they assume that "``X^X``" is always zero, even if
@@ -2457,13 +2458,13 @@
 ;; uses with" concept would not hold.
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %A = fdiv undef, %X
-;;       %B = fdiv %X, undef
-;;     Safe:
-;;       %A = undef
-;;     b: unreachable
-;;
+
+         %A = fdiv undef, %X
+         %B = fdiv %X, undef
+       Safe:
+         %A = undef
+       b: unreachable
+
 ;; These examples show the crucial difference between an *undefined value*
 ;; and *undefined behavior*. An undefined value (like '``undef``') is
 ;; allowed to have an arbitrary bit-pattern. This means that the ``%A``
@@ -2478,13 +2479,13 @@
 ;; optimizer can assume that it occurs in dead code.
 ;;
 ;; .. code-block:: llvm
-;;
-;;     a:  store undef -> %X
-;;     b:  store %X -> undef
-;;     Safe:
-;;     a: <deleted>
-;;     b: unreachable
-;;
+
+       a:  store undef -> %X
+       b:  store %X -> undef
+       Safe:
+       a: <deleted>
+       b: unreachable
+
 ;; These examples reiterate the ``fdiv`` example: a store *of* an undefined
 ;; value can be assumed to not have any effect; we can assume that the
 ;; value is overwritten with bits that happen to match what was already
@@ -2543,63 +2544,63 @@
 ;; Here are some examples:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     entry:
-;;       %poison = sub nuw i32 0, 1           ; Results in a poison value.
-;;       %still_poison = and i32 %poison, 0   ; 0, but also poison.
-;;       %poison_yet_again = getelementptr i32* @h, i32 %still_poison
-;;       store i32 0, i32* %poison_yet_again  ; memory at @h[0] is poisoned
-;;
-;;       store i32 %poison, i32* @g           ; Poison value stored to memory.
-;;       %poison2 = load i32* @g              ; Poison value loaded back from memory.
-;;
-;;       store volatile i32 %poison, i32* @g  ; External observation; undefined behavior.
-;;
-;;       %narrowaddr = bitcast i32* @g to i16*
-;;       %wideaddr = bitcast i32* @g to i64*
-;;       %poison3 = load i16* %narrowaddr     ; Returns a poison value.
-;;       %poison4 = load i64* %wideaddr       ; Returns a poison value.
-;;
-;;       %cmp = icmp slt i32 %poison, 0       ; Returns a poison value.
-;;       br i1 %cmp, label %true, label %end  ; Branch to either destination.
-;;
-;;     true:
-;;       store volatile i32 0, i32* @g        ; This is control-dependent on %cmp, so
-;;                                            ; it has undefined behavior.
-;;       br label %end
-;;
-;;     end:
-;;       %p = phi i32 [ 0, %entry ], [ 1, %true ]
-;;                                            ; Both edges into this PHI are
-;;                                            ; control-dependent on %cmp, so this
-;;                                            ; always results in a poison value.
-;;
-;;       store volatile i32 0, i32* @g        ; This would depend on the store in %true
-;;                                            ; if %cmp is true, or the store in %entry
-;;                                            ; otherwise, so this is undefined behavior.
-;;
-;;       br i1 %cmp, label %second_true, label %second_end
-;;                                            ; The same branch again, but this time the
-;;                                            ; true block doesn't have side effects.
-;;
-;;     second_true:
-;;       ; No side effects!
-;;       ret void
-;;
-;;     second_end:
-;;       store volatile i32 0, i32* @g        ; This time, the instruction always depends
-;;                                            ; on the store in %end. Also, it is
-;;                                            ; control-equivalent to %end, so this is
-;;                                            ; well-defined (ignoring earlier undefined
-;;                                            ; behavior in this example).
-;;
+
+       entry:
+         %poison = sub nuw i32 0, 1           ; Results in a poison value.
+         %still_poison = and i32 %poison, 0   ; 0, but also poison.
+         %poison_yet_again = getelementptr i32* @h, i32 %still_poison
+         store i32 0, i32* %poison_yet_again  ; memory at @h[0] is poisoned
+
+         store i32 %poison, i32* @g           ; Poison value stored to memory.
+         %poison2 = load i32* @g              ; Poison value loaded back from memory.
+
+         store volatile i32 %poison, i32* @g  ; External observation; undefined behavior.
+
+         %narrowaddr = bitcast i32* @g to i16*
+         %wideaddr = bitcast i32* @g to i64*
+         %poison3 = load i16* %narrowaddr     ; Returns a poison value.
+         %poison4 = load i64* %wideaddr       ; Returns a poison value.
+
+         %cmp = icmp slt i32 %poison, 0       ; Returns a poison value.
+         br i1 %cmp, label %true, label %end  ; Branch to either destination.
+
+       true:
+         store volatile i32 0, i32* @g        ; This is control-dependent on %cmp, so
+                                              ; it has undefined behavior.
+         br label %end
+
+       end:
+         %p = phi i32 [ 0, %entry ], [ 1, %true ]
+                                              ; Both edges into this PHI are
+                                              ; control-dependent on %cmp, so this
+                                              ; always results in a poison value.
+
+         store volatile i32 0, i32* @g        ; This would depend on the store in %true
+                                              ; if %cmp is true, or the store in %entry
+                                              ; otherwise, so this is undefined behavior.
+
+         br i1 %cmp, label %second_true, label %second_end
+                                              ; The same branch again, but this time the
+                                              ; true block doesn't have side effects.
+
+       second_true:
+         ; No side effects!
+         ret void
+
+       second_end:
+         store volatile i32 0, i32* @g        ; This time, the instruction always depends
+                                              ; on the store in %end. Also, it is
+                                              ; control-equivalent to %end, so this is
+                                              ; well-defined (ignoring earlier undefined
+                                              ; behavior in this example).
+
 ;; .. _blockaddress:
 ;;
 ;; Addresses of Basic Blocks
 ;; -------------------------
-;;
-;; ``blockaddress(@function, %block)``
-;;
+
+     blockaddress(@function, %block)
+
 ;; The '``blockaddress``' constant computes the address of the specified
 ;; basic block in the specified function, and always has an ``i8*`` type.
 ;; Taking the address of the entry block is illegal.
@@ -2742,25 +2743,25 @@
 ;; assembler expression is:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     i32 (i32) asm "bswap $0", "=r,r"
-;;
+
+       i32 (i32) asm "bswap $0", "=r,r"
+
 ;; Inline assembler expressions may **only** be used as the callee operand
 ;; of a :ref:`call <i_call>` or an :ref:`invoke <i_invoke>` instruction.
 ;; Thus, typically we have:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %X = call i32 asm "bswap $0", "=r,r"(i32 %Y)
-;;
+
+       %X = call i32 asm "bswap $0", "=r,r"(i32 %Y)
+
 ;; Inline asms with side effects not visible in the constraint list must be
 ;; marked as having side effects. This is done through the use of the
 ;; '``sideeffect``' keyword, like so:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     call void asm sideeffect "eieio", ""()
-;;
+
+       call void asm sideeffect "eieio", ""()
+
 ;; In some cases inline asms will contain code that will not work unless
 ;; the stack is aligned in some way, such as calls or SSE instructions on
 ;; x86, yet will not contain code that does that alignment within the asm.
@@ -2769,18 +2770,18 @@
 ;; prologue if the '``alignstack``' keyword is present:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     call void asm alignstack "eieio", ""()
-;;
+
+       call void asm alignstack "eieio", ""()
+
 ;; Inline asms also support using non-standard assembly dialects. The
 ;; assumed dialect is ATT. When the '``inteldialect``' keyword is present,
 ;; the inline asm is using the Intel dialect. Currently, ATT and Intel are
 ;; the only supported dialects. An example is:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     call void asm inteldialect "eieio", ""()
-;;
+
+       call void asm inteldialect "eieio", ""()
+
 ;; If multiple keywords appear the '``sideeffect``' keyword must come
 ;; first, the '``alignstack``' keyword second and the '``inteldialect``'
 ;; keyword last.
@@ -2797,11 +2798,11 @@
 ;; it. For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     call void asm sideeffect "something bad", ""(), !srcloc !42
-;;     ...
-;;     !42 = !{ i32 1234567 }
-;;
+
+       call void asm sideeffect "something bad", ""(), !srcloc !42
+       ...
+       !42 = !{ i32 1234567 }
+
 ;; It is up to the front-end to make sense of the magic numbers it places
 ;; in the IR. If the MDNode contains multiple constants, the code generator
 ;; will use the one that corresponds to the line of the asm that the error
@@ -2828,7 +2829,7 @@
 ;; A metadata string is a string surrounded by double quotes. It can
 ;; contain any character by escaping non-printable characters with
 ;; "``\xx``" where "``xx``" is the two digit hex code. For example:
-;; "``!"test\00"``".
+      !"test\00"``".
 ;;
 ;; Metadata nodes are represented with notation similar to structure
 ;; constants (a comma separated list of elements, surrounded by braces and
@@ -2836,31 +2837,31 @@
 ;; their operand. For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !{ !"test\00", i32 10}
-;;
+
+       !{ !"test\00", i32 10}
+
 ;; A :ref:`named metadata <namedmetadatastructure>` is a collection of
 ;; metadata nodes, which can be looked up in the module symbol table. For
 ;; example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !foo = !{!4, !3}
-;;
+
+       !foo = !{!4, !3}
+
 ;; Metadata can be used as function arguments. Here ``llvm.dbg.value``
 ;; function is using two metadata arguments:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     call void @llvm.dbg.value(metadata !24, i64 0, metadata !25)
-;;
+
+       call void @llvm.dbg.value(metadata !24, i64 0, metadata !25)
+
 ;; Metadata can be attached with an instruction. Here metadata ``!21`` is
 ;; attached to the ``add`` instruction using the ``!dbg`` identifier:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %indvar.next = add i64 %indvar, 1, !dbg !21
-;;
+
+       %indvar.next = add i64 %indvar, 1, !dbg !21
+
 ;; More information about specific metadata nodes recognized by the
 ;; optimizers and code generator is found below.
 ;;
@@ -2877,12 +2878,12 @@
 ;; to three fields, e.g.:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !0 = !{ !"an example type tree" }
-;;     !1 = !{ !"int", !0 }
-;;     !2 = !{ !"float", !0 }
-;;     !3 = !{ !"const float", !2, i64 1 }
-;;
+
+       !0 = !{ !"an example type tree" }
+       !1 = !{ !"int", !0 }
+       !2 = !{ !"float", !0 }
+       !3 = !{ !"const float", !2, i64 1 }
+
 ;; The first field is an identity field. It can be any value, usually a
 ;; metadata string, which uniquely identifies the type. The most important
 ;; name in the tree is the name of the root node. Two trees with different
@@ -2920,9 +2921,9 @@
 ;; its tbaa tag. e.g.:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !4 = !{ i64 0, i64 4, !1, i64 8, i64 4, !2 }
-;;
+
+       !4 = !{ i64 0, i64 4, !1, i64 8, i64 4, !2 }
+
 ;; This describes a struct with two fields. The first is at offset 0 bytes
 ;; with size 4 bytes, and has tbaa tag !1. The second is at offset 8 bytes
 ;; and has size 4 bytes and has tbaa tag !2.
@@ -2962,36 +2963,36 @@
 ;; For example,
 ;;
 ;; .. code-block:: llvm
-;;
-;;     ; Two scope domains:
-;;     !0 = !{!0}
-;;     !1 = !{!1}
-;;
-;;     ; Some scopes in these domains:
-;;     !2 = !{!2, !0}
-;;     !3 = !{!3, !0}
-;;     !4 = !{!4, !1}
-;;
-;;     ; Some scope lists:
-;;     !5 = !{!4} ; A list containing only scope !4
-;;     !6 = !{!4, !3, !2}
-;;     !7 = !{!3}
-;;
-;;     ; These two instructions don't alias:
-;;     %0 = load float* %c, align 4, !alias.scope !5
-;;     store float %0, float* %arrayidx.i, align 4, !noalias !5
-;;
-;;     ; These two instructions also don't alias (for domain !1, the set of scopes
-;;     ; in the !alias.scope equals that in the !noalias list):
-;;     %2 = load float* %c, align 4, !alias.scope !5
-;;     store float %2, float* %arrayidx.i2, align 4, !noalias !6
-;;
-;;     ; These two instructions don't alias (for domain !0, the set of scopes in
-;;     ; the !noalias list is not a superset of, or equal to, the scopes in the
-;;     ; !alias.scope list):
-;;     %2 = load float* %c, align 4, !alias.scope !6
-;;     store float %0, float* %arrayidx.i, align 4, !noalias !7
-;;
+
+       ; Two scope domains:
+       !0 = !{!0}
+       !1 = !{!1}
+
+       ; Some scopes in these domains:
+       !2 = !{!2, !0}
+       !3 = !{!3, !0}
+       !4 = !{!4, !1}
+
+       ; Some scope lists:
+       !5 = !{!4} ; A list containing only scope !4
+       !6 = !{!4, !3, !2}
+       !7 = !{!3}
+
+       ; These two instructions don't alias:
+       %0 = load float* %c, align 4, !alias.scope !5
+       store float %0, float* %arrayidx.i, align 4, !noalias !5
+
+       ; These two instructions also don't alias (for domain !1, the set of scopes
+       ; in the !alias.scope equals that in the !noalias list):
+       %2 = load float* %c, align 4, !alias.scope !5
+       store float %2, float* %arrayidx.i2, align 4, !noalias !6
+
+       ; These two instructions don't alias (for domain !0, the set of scopes in
+       ; the !noalias list is not a superset of, or equal to, the scopes in the
+       ; !alias.scope list):
+       %2 = load float* %c, align 4, !alias.scope !6
+       store float %0, float* %arrayidx.i, align 4, !noalias !7
+
 ;; '``fpmath``' Metadata
 ;; ^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -3011,9 +3012,9 @@
 ;; number representing the maximum relative error, for example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !0 = !{ float 2.5 } ; maximum acceptable inaccuracy is 2.5 ULPs
-;;
+
+       !0 = !{ float 2.5 } ; maximum acceptable inaccuracy is 2.5 ULPs
+
 ;; '``range``' Metadata
 ;; ^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -3037,18 +3038,18 @@
 ;; Examples:
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %a = load i8* %x, align 1, !range !0 ; Can only be 0 or 1
-;;       %b = load i8* %y, align 1, !range !1 ; Can only be 255 (-1), 0 or 1
-;;       %c = call i8 @foo(),       !range !2 ; Can only be 0, 1, 3, 4 or 5
-;;       %d = invoke i8 @bar() to label %cont
-;;              unwind label %lpad, !range !3 ; Can only be -2, -1, 3, 4 or 5
-;;     ...
-;;     !0 = !{ i8 0, i8 2 }
-;;     !1 = !{ i8 255, i8 2 }
-;;     !2 = !{ i8 0, i8 2, i8 3, i8 6 }
-;;     !3 = !{ i8 -2, i8 0, i8 3, i8 6 }
-;;
+
+         %a = load i8* %x, align 1, !range !0 ; Can only be 0 or 1
+         %b = load i8* %y, align 1, !range !1 ; Can only be 255 (-1), 0 or 1
+         %c = call i8 @foo(),       !range !2 ; Can only be 0, 1, 3, 4 or 5
+         %d = invoke i8 @bar() to label %cont
+                unwind label %lpad, !range !3 ; Can only be -2, -1, 3, 4 or 5
+       ...
+       !0 = !{ i8 0, i8 2 }
+       !1 = !{ i8 255, i8 2 }
+       !2 = !{ i8 0, i8 2, i8 3, i8 6 }
+       !3 = !{ i8 -2, i8 0, i8 3, i8 6 }
+
 ;; '``llvm.loop``'
 ;; ^^^^^^^^^^^^^^^
 ;;
@@ -3066,9 +3067,9 @@
 ;; constructs:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !0 = !{!0}
-;;     !1 = !{!1}
+
+       !0 = !{!0}
+       !1 = !{!1}
 ;;
 ;; The loop identifier metadata can be used to specify additional
 ;; per-loop metadata. Any operands after the first operand can be treated
@@ -3076,12 +3077,12 @@
 ;; suggests an unroll factor to the loop unroller:
 ;;
 ;; .. code-block:: llvm
-;;
-;;       br i1 %exitcond, label %._crit_edge, label %.lr.ph, !llvm.loop !0
-;;     ...
-;;     !0 = !{!0, !1}
-;;     !1 = !{!"llvm.loop.unroll.count", i32 4}
-;;
+
+         br i1 %exitcond, label %._crit_edge, label %.lr.ph, !llvm.loop !0
+       ...
+       !0 = !{!0, !1}
+       !1 = !{!"llvm.loop.unroll.count", i32 4}
+
 ;; '``llvm.loop.vectorize``' and '``llvm.loop.interleave``'
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -3104,9 +3105,9 @@
 ;; example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.interleave.count", i32 4}
-;;
+
+      !0 = !{!"llvm.loop.interleave.count", i32 4}
+
 ;; Note that setting ``llvm.loop.interleave.count`` to 1 disables interleaving
 ;; multiple iterations of the loop.  If ``llvm.loop.interleave.count`` is set to 0
 ;; then the interleave count will be determined automatically.
@@ -3120,10 +3121,10 @@
 ;; 0 disables vectorization:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.vectorize.enable", i1 0}
-;;    !1 = !{!"llvm.loop.vectorize.enable", i1 1}
-;;
+
+      !0 = !{!"llvm.loop.vectorize.enable", i1 0}
+      !1 = !{!"llvm.loop.vectorize.enable", i1 1}
+
 ;; '``llvm.loop.vectorize.width``' Metadata
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -3132,9 +3133,9 @@
 ;; operand is an integer specifying the width. For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.vectorize.width", i32 4}
-;;
+
+      !0 = !{!"llvm.loop.vectorize.width", i32 4}
+
 ;; Note that setting ``llvm.loop.vectorize.width`` to 1 disables
 ;; vectorization of the loop.  If ``llvm.loop.vectorize.width`` is set to
 ;; 0 or if the loop does not have this metadata the width will be
@@ -3159,9 +3160,9 @@
 ;; example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.unroll.count", i32 4}
-;;
+
+      !0 = !{!"llvm.loop.unroll.count", i32 4}
+
 ;; If the trip count of the loop is less than the unroll count the loop
 ;; will be partially unrolled.
 ;;
@@ -3172,9 +3173,9 @@
 ;; which is the string ``llvm.loop.unroll.disable``.  For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.unroll.disable"}
-;;
+
+      !0 = !{!"llvm.loop.unroll.disable"}
+
 ;; '``llvm.loop.unroll.full``' Metadata
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -3183,9 +3184,9 @@
 ;; For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    !0 = !{!"llvm.loop.unroll.full"}
-;;
+
+      !0 = !{!"llvm.loop.unroll.full"}
+
 ;; '``llvm.mem``'
 ;; ^^^^^^^^^^^^^^^
 ;;
@@ -3224,51 +3225,51 @@
 ;; metadata types that refer to the same loop identifier metadata.
 ;;
 ;; .. code-block:: llvm
-;;
-;;    for.body:
-;;      ...
-;;      %val0 = load i32* %arrayidx, !llvm.mem.parallel_loop_access !0
-;;      ...
-;;      store i32 %val0, i32* %arrayidx1, !llvm.mem.parallel_loop_access !0
-;;      ...
-;;      br i1 %exitcond, label %for.end, label %for.body, !llvm.loop !0
-;;
-;;    for.end:
-;;    ...
-;;    !0 = !{!0}
-;;
+
+      for.body:
+        ...
+        %val0 = load i32* %arrayidx, !llvm.mem.parallel_loop_access !0
+        ...
+        store i32 %val0, i32* %arrayidx1, !llvm.mem.parallel_loop_access !0
+        ...
+        br i1 %exitcond, label %for.end, label %for.body, !llvm.loop !0
+
+      for.end:
+      ...
+      !0 = !{!0}
+
 ;; It is also possible to have nested parallel loops. In that case the
 ;; memory accesses refer to a list of loop identifier metadata nodes instead of
 ;; the loop identifier metadata node directly:
 ;;
 ;; .. code-block:: llvm
-;;
-;;    outer.for.body:
-;;      ...
-;;      %val1 = load i32* %arrayidx3, !llvm.mem.parallel_loop_access !2
-;;      ...
-;;      br label %inner.for.body
-;;
-;;    inner.for.body:
-;;      ...
-;;      %val0 = load i32* %arrayidx1, !llvm.mem.parallel_loop_access !0
-;;      ...
-;;      store i32 %val0, i32* %arrayidx2, !llvm.mem.parallel_loop_access !0
-;;      ...
-;;      br i1 %exitcond, label %inner.for.end, label %inner.for.body, !llvm.loop !1
-;;
-;;    inner.for.end:
-;;      ...
-;;      store i32 %val1, i32* %arrayidx4, !llvm.mem.parallel_loop_access !2
-;;      ...
-;;      br i1 %exitcond, label %outer.for.end, label %outer.for.body, !llvm.loop !2
-;;
-;;    outer.for.end:                                          ; preds = %for.body
-;;    ...
-;;    !0 = !{!1, !2} ; a list of loop identifiers
-;;    !1 = !{!1} ; an identifier for the inner loop
-;;    !2 = !{!2} ; an identifier for the outer loop
-;;
+
+      outer.for.body:
+        ...
+        %val1 = load i32* %arrayidx3, !llvm.mem.parallel_loop_access !2
+        ...
+        br label %inner.for.body
+
+      inner.for.body:
+        ...
+        %val0 = load i32* %arrayidx1, !llvm.mem.parallel_loop_access !0
+        ...
+        store i32 %val0, i32* %arrayidx2, !llvm.mem.parallel_loop_access !0
+        ...
+        br i1 %exitcond, label %inner.for.end, label %inner.for.body, !llvm.loop !1
+
+      inner.for.end:
+        ...
+        store i32 %val1, i32* %arrayidx4, !llvm.mem.parallel_loop_access !2
+        ...
+        br i1 %exitcond, label %outer.for.end, label %outer.for.body, !llvm.loop !2
+
+      outer.for.end:                                          ; preds = %for.body
+      ...
+      !0 = !{!1, !2} ; a list of loop identifiers
+      !1 = !{!1} ; an identifier for the inner loop
+      !2 = !{!2} ; an identifier for the outer loop
+
 ;; Module Flags Metadata
 ;; =====================
 ;;
@@ -3350,17 +3351,17 @@
 ;; An example of module flags:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     !0 = !{ i32 1, !"foo", i32 1 }
-;;     !1 = !{ i32 4, !"bar", i32 37 }
-;;     !2 = !{ i32 2, !"qux", i32 42 }
-;;     !3 = !{ i32 3, !"qux",
-;;       !{
-;;         !"foo", i32 1
-;;       }
-;;     }
-;;     !llvm.module.flags = !{ !0, !1, !2, !3 }
-;;
+
+       !0 = !{ i32 1, !"foo", i32 1 }
+       !1 = !{ i32 4, !"bar", i32 37 }
+       !2 = !{ i32 2, !"qux", i32 42 }
+       !3 = !{ i32 3, !"qux",
+         !{
+           !"foo", i32 1
+         }
+       }
+       !llvm.module.flags = !{ !0, !1, !2, !3 }
+
 ;; -  Metadata ``!0`` has the ID ``!"foo"`` and the value '1'. The behavior
 ;;    if two or more ``!"foo"`` flags are seen is to emit an error if their
 ;;    values are not equal.
@@ -3376,9 +3377,9 @@
 ;; -  Metadata ``!3`` has the ID ``!"qux"`` and the value:
 ;;
 ;;    ::
-;;
-;;        !{ !"foo", i32 1 }
-;;
+
+          !{ !"foo", i32 1 }
+
 ;;    The behavior is to emit an error if the ``llvm.module.flags`` does not
 ;;    contain a flag with the ID ``!"foo"`` that has the value '1' after linking is
 ;;    performed.
@@ -3452,13 +3453,13 @@
 ;; For example, the following metadata section specifies two separate sets of
 ;; linker options, presumably to link against ``libz`` and the ``Cocoa``
 ;; framework::
-;;
-;;     !0 = !{ i32 6, !"Linker Options",
-;;        !{
-;;           !{ !"-lz" },
-;;           !{ !"-framework", !"Cocoa" } } }
-;;     !llvm.module.flags = !{ !0 }
-;;
+
+       !0 = !{ i32 6, !"Linker Options",
+          !{
+             !{ !"-lz" },
+             !{ !"-framework", !"Cocoa" } } }
+       !llvm.module.flags = !{ !0 }
+
 ;; The metadata encoding as lists of lists of options, as opposed to a collapsed
 ;; list of options, is chosen so that the IR encoding can use multiple option
 ;; strings to specify e.g., a single library, while still having that specifier be
@@ -3500,11 +3501,11 @@
 ;; For example, the following metadata section specifies that the module was
 ;; compiled with a ``wchar_t`` width of 4 bytes, and the underlying type of an
 ;; enum is the smallest type which can represent all of its values::
-;;
-;;     !llvm.module.flags = !{!0, !1}
-;;     !0 = !{i32 1, !"short_wchar", i32 1}
-;;     !1 = !{i32 1, !"short_enum", i32 0}
-;;
+
+       !llvm.module.flags = !{!0, !1}
+       !0 = !{i32 1, !"short_wchar", i32 1}
+       !1 = !{i32 1, !"short_enum", i32 0}
+
 ;; .. _intrinsicglobalvariables:
 ;;
 ;; Intrinsic Global Variables
@@ -3528,15 +3529,15 @@
 ;; use of it is:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     @X = global i8 4
-;;     @Y = global i32 123
-;;
-;;     @llvm.used = appending global [2 x i8*] [
-;;        i8* @X,
-;;        i8* bitcast (i32* @Y to i8*)
-;;     ], section "llvm.metadata"
-;;
+
+       @X = global i8 4
+       @Y = global i32 123
+
+       @llvm.used = appending global [2 x i8*] [
+          i8* @X,
+          i8* bitcast (i32* @Y to i8*)
+       ], section "llvm.metadata"
+
 ;; If a symbol appears in the ``@llvm.used`` list, then the compiler, assembler,
 ;; and linker are required to treat the symbol as if there is a reference to the
 ;; symbol that it cannot see (which is why they have to be named). For example, if
@@ -3569,10 +3570,10 @@
 ;; -------------------------------------------
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %0 = type { i32, void ()*, i8* }
-;;     @llvm.global_ctors = appending global [1 x %0] [%0 { i32 65535, void ()* @ctor, i8* @data }]
-;;
+
+       %0 = type { i32, void ()*, i8* }
+       @llvm.global_ctors = appending global [1 x %0] [%0 { i32 65535, void ()* @ctor, i8* @data }]
+
 ;; The ``@llvm.global_ctors`` array contains a list of constructor
 ;; functions, priorities, and an optional associated global or function.
 ;; The functions referenced by this array will be called in ascending order
@@ -3589,10 +3590,10 @@
 ;; -------------------------------------------
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %0 = type { i32, void ()*, i8* }
-;;     @llvm.global_dtors = appending global [1 x %0] [%0 { i32 65535, void ()* @dtor, i8* @data }]
-;;
+
+       %0 = type { i32, void ()*, i8* }
+       @llvm.global_dtors = appending global [1 x %0] [%0 { i32 65535, void ()* @dtor, i8* @data }]
+
 ;; The ``@llvm.global_dtors`` array contains a list of destructor
 ;; functions, priorities, and an optional associated global or function.
 ;; The functions referenced by this array will be called in descending
@@ -3638,10 +3639,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       ret <type> <value>       ; Return a value from a non-void function
-;;       ret void                 ; Return from void function
-;;
+
+         ret <type> <value>       ; Return a value from a non-void function
+         ret void                 ; Return from void function
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3681,11 +3682,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       ret i32 5                       ; Return an integer value of 5
-;;       ret void                        ; Return from a void function
-;;       ret { i32, i8 } { i32 4, i8 2 } ; Return a struct of values 4 and 2
-;;
+
+         ret i32 5                       ; Return an integer value of 5
+         ret void                        ; Return from a void function
+         ret { i32, i8 } { i32 4, i8 2 } ; Return a struct of values 4 and 2
+
 ;; .. _i_br:
 ;;
 ;; '``br``' Instruction
@@ -3695,10 +3696,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       br i1 <cond>, label <iftrue>, label <iffalse>
-;;       br label <dest>          ; Unconditional branch
-;;
+
+         br i1 <cond>, label <iftrue>, label <iffalse>
+         br label <dest>          ; Unconditional branch
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3726,15 +3727,15 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;     Test:
-;;       %cond = icmp eq i32 %a, %b
-;;       br i1 %cond, label %IfEqual, label %IfUnequal
-;;     IfEqual:
-;;       ret i32 1
-;;     IfUnequal:
-;;       ret i32 0
-;;
+
+       Test:
+         %cond = icmp eq i32 %a, %b
+         br i1 %cond, label %IfEqual, label %IfUnequal
+       IfEqual:
+         ret i32 1
+       IfUnequal:
+         ret i32 0
+
 ;; .. _i_switch:
 ;;
 ;; '``switch``' Instruction
@@ -3744,9 +3745,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       switch <intty> <value>, label <defaultdest> [ <intty> <val>, label <dest> ... ]
-;;
+
+         switch <intty> <value>, label <defaultdest> [ <intty> <val>, label <dest> ... ]
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3784,19 +3785,19 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;      ; Emulate a conditional br instruction
-;;      %Val = zext i1 %value to i32
-;;      switch i32 %Val, label %truedest [ i32 0, label %falsedest ]
-;;
-;;      ; Emulate an unconditional br instruction
-;;      switch i32 0, label %dest [ ]
-;;
-;;      ; Implement a jump table:
-;;      switch i32 %val, label %otherwise [ i32 0, label %onzero
-;;                                          i32 1, label %onone
-;;                                          i32 2, label %ontwo ]
-;;
+
+        ; Emulate a conditional br instruction
+        %Val = zext i1 %value to i32
+        switch i32 %Val, label %truedest [ i32 0, label %falsedest ]
+
+        ; Emulate an unconditional br instruction
+        switch i32 0, label %dest [ ]
+
+        ; Implement a jump table:
+        switch i32 %val, label %otherwise [ i32 0, label %onzero
+                                            i32 1, label %onone
+                                            i32 2, label %ontwo ]
+
 ;; .. _i_indirectbr:
 ;;
 ;; '``indirectbr``' Instruction
@@ -3806,9 +3807,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       indirectbr <somety>* <address>, [ label <dest1>, label <dest2>, ... ]
-;;
+
+         indirectbr <somety>* <address>, [ label <dest1>, label <dest2>, ... ]
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3845,9 +3846,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;      indirectbr i8* %Addr, [ label %bb1, label %bb2, label %bb3 ]
-;;
+
+        indirectbr i8* %Addr, [ label %bb1, label %bb2, label %bb3 ]
+
 ;; .. _i_invoke:
 ;;
 ;; '``invoke``' Instruction
@@ -3857,10 +3858,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = invoke [cconv] [ret attrs] <ptr to function ty> <function ptr val>(<function args>) [fn attrs]
-;;                     to label <normal label> unwind label <exception label>
-;;
+
+         <result> = invoke [cconv] [ret attrs] <ptr to function ty> <function ptr val>(<function args>) [fn attrs]
+                       to label <normal label> unwind label <exception label>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3936,12 +3937,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %retval = invoke i32 @Test(i32 15) to label %Continue
-;;                   unwind label %TestCleanup              ; i32:retval set
-;;       %retval = invoke coldcc i32 %Testfnptr(i32 15) to label %Continue
-;;                   unwind label %TestCleanup              ; i32:retval set
-;;
+
+         %retval = invoke i32 @Test(i32 15) to label %Continue
+                     unwind label %TestCleanup              ; i32:retval set
+         %retval = invoke coldcc i32 %Testfnptr(i32 15) to label %Continue
+                     unwind label %TestCleanup              ; i32:retval set
+
 ;; .. _i_resume:
 ;;
 ;; '``resume``' Instruction
@@ -3951,9 +3952,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       resume <type> <value>
-;;
+
+         resume <type> <value>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -3978,9 +3979,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       resume { i8*, i32 } %exn
-;;
+
+         resume { i8*, i32 } %exn
+
 ;; .. _i_unreachable:
 ;;
 ;; '``unreachable``' Instruction
@@ -3990,9 +3991,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       unreachable
-;;
+
+         unreachable
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4028,12 +4029,12 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = add <ty> <op1>, <op2>          ; yields ty:result
-;;       <result> = add nuw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = add nsw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = add nuw nsw <ty> <op1>, <op2>  ; yields ty:result
-;;
+
+         <result> = add <ty> <op1>, <op2>          ; yields ty:result
+         <result> = add nuw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = add nsw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = add nuw nsw <ty> <op1>, <op2>  ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4067,9 +4068,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = add i32 4, %var          ; yields i32:result = 4 + %var
-;;
+
+         <result> = add i32 4, %var          ; yields i32:result = 4 + %var
+
 ;; .. _i_fadd:
 ;;
 ;; '``fadd``' Instruction
@@ -4079,9 +4080,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fadd [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = fadd [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4106,9 +4107,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = fadd float 4.0, %var          ; yields float:result = 4.0 + %var
-;;
+
+         <result> = fadd float 4.0, %var          ; yields float:result = 4.0 + %var
+
 ;; '``sub``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4116,12 +4117,12 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = sub <ty> <op1>, <op2>          ; yields ty:result
-;;       <result> = sub nuw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = sub nsw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = sub nuw nsw <ty> <op1>, <op2>  ; yields ty:result
-;;
+
+         <result> = sub <ty> <op1>, <op2>          ; yields ty:result
+         <result> = sub nuw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = sub nsw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = sub nuw nsw <ty> <op1>, <op2>  ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4158,10 +4159,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = sub i32 4, %var          ; yields i32:result = 4 - %var
-;;       <result> = sub i32 0, %val          ; yields i32:result = -%var
-;;
+
+         <result> = sub i32 4, %var          ; yields i32:result = 4 - %var
+         <result> = sub i32 0, %val          ; yields i32:result = -%var
+
 ;; .. _i_fsub:
 ;;
 ;; '``fsub``' Instruction
@@ -4171,9 +4172,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fsub [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = fsub [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4201,10 +4202,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = fsub float 4.0, %var           ; yields float:result = 4.0 - %var
-;;       <result> = fsub float -0.0, %val          ; yields float:result = -%var
-;;
+
+         <result> = fsub float 4.0, %var           ; yields float:result = 4.0 - %var
+         <result> = fsub float -0.0, %val          ; yields float:result = -%var
+
 ;; '``mul``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4212,12 +4213,12 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = mul <ty> <op1>, <op2>          ; yields ty:result
-;;       <result> = mul nuw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = mul nsw <ty> <op1>, <op2>      ; yields ty:result
-;;       <result> = mul nuw nsw <ty> <op1>, <op2>  ; yields ty:result
-;;
+
+         <result> = mul <ty> <op1>, <op2>          ; yields ty:result
+         <result> = mul nuw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = mul nsw <ty> <op1>, <op2>      ; yields ty:result
+         <result> = mul nuw nsw <ty> <op1>, <op2>  ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4255,9 +4256,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = mul i32 4, %var          ; yields i32:result = 4 * %var
-;;
+
+         <result> = mul i32 4, %var          ; yields i32:result = 4 * %var
+
 ;; .. _i_fmul:
 ;;
 ;; '``fmul``' Instruction
@@ -4267,9 +4268,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fmul [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = fmul [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4294,9 +4295,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = fmul float 4.0, %var          ; yields float:result = 4.0 * %var
-;;
+
+         <result> = fmul float 4.0, %var          ; yields float:result = 4.0 * %var
+
 ;; '``udiv``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4304,10 +4305,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = udiv <ty> <op1>, <op2>         ; yields ty:result
-;;       <result> = udiv exact <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = udiv <ty> <op1>, <op2>         ; yields ty:result
+         <result> = udiv exact <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4338,9 +4339,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = udiv i32 4, %var          ; yields i32:result = 4 / %var
-;;
+
+         <result> = udiv i32 4, %var          ; yields i32:result = 4 / %var
+
 ;; '``sdiv``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4348,10 +4349,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = sdiv <ty> <op1>, <op2>         ; yields ty:result
-;;       <result> = sdiv exact <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = sdiv <ty> <op1>, <op2>         ; yields ty:result
+         <result> = sdiv exact <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4384,9 +4385,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = sdiv i32 4, %var          ; yields i32:result = 4 / %var
-;;
+
+         <result> = sdiv i32 4, %var          ; yields i32:result = 4 / %var
+
 ;; .. _i_fdiv:
 ;;
 ;; '``fdiv``' Instruction
@@ -4396,9 +4397,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fdiv [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = fdiv [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4423,9 +4424,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = fdiv float 4.0, %var          ; yields float:result = 4.0 / %var
-;;
+
+         <result> = fdiv float 4.0, %var          ; yields float:result = 4.0 / %var
+
 ;; '``urem``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4433,9 +4434,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = urem <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = urem <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4465,9 +4466,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = urem i32 4, %var          ; yields i32:result = 4 % %var
-;;
+
+         <result> = urem i32 4, %var          ; yields i32:result = 4 % %var
+
 ;; '``srem``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4475,9 +4476,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = srem <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = srem <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4520,9 +4521,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = srem i32 4, %var          ; yields i32:result = 4 % %var
-;;
+
+         <result> = srem i32 4, %var          ; yields i32:result = 4 % %var
+
 ;; .. _i_frem:
 ;;
 ;; '``frem``' Instruction
@@ -4532,9 +4533,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = frem [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = frem [fast-math flags]* <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4560,9 +4561,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = frem float 4.0, %var          ; yields float:result = 4.0 % %var
-;;
+
+         <result> = frem float 4.0, %var          ; yields float:result = 4.0 % %var
+
 ;; .. _bitwiseops:
 ;;
 ;; Bitwise Binary Operations
@@ -4581,12 +4582,12 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = shl <ty> <op1>, <op2>           ; yields ty:result
-;;       <result> = shl nuw <ty> <op1>, <op2>       ; yields ty:result
-;;       <result> = shl nsw <ty> <op1>, <op2>       ; yields ty:result
-;;       <result> = shl nuw nsw <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = shl <ty> <op1>, <op2>           ; yields ty:result
+         <result> = shl nuw <ty> <op1>, <op2>       ; yields ty:result
+         <result> = shl nsw <ty> <op1>, <op2>       ; yields ty:result
+         <result> = shl nuw nsw <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4622,13 +4623,13 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = shl i32 4, %var   ; yields i32: 4 << %var
-;;       <result> = shl i32 4, 2      ; yields i32: 16
-;;       <result> = shl i32 1, 10     ; yields i32: 1024
-;;       <result> = shl i32 1, 32     ; undefined
-;;       <result> = shl <2 x i32> < i32 1, i32 1>, < i32 1, i32 2>   ; yields: result=<2 x i32> < i32 2, i32 4>
-;;
+
+         <result> = shl i32 4, %var   ; yields i32: 4 << %var
+         <result> = shl i32 4, 2      ; yields i32: 16
+         <result> = shl i32 1, 10     ; yields i32: 1024
+         <result> = shl i32 1, 32     ; undefined
+         <result> = shl <2 x i32> < i32 1, i32 1>, < i32 1, i32 2>   ; yields: result=<2 x i32> < i32 2, i32 4>
+
 ;; '``lshr``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4636,10 +4637,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = lshr <ty> <op1>, <op2>         ; yields ty:result
-;;       <result> = lshr exact <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = lshr <ty> <op1>, <op2>         ; yields ty:result
+         <result> = lshr exact <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4671,14 +4672,14 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = lshr i32 4, 1   ; yields i32:result = 2
-;;       <result> = lshr i32 4, 2   ; yields i32:result = 1
-;;       <result> = lshr i8  4, 3   ; yields i8:result = 0
-;;       <result> = lshr i8 -2, 1   ; yields i8:result = 0x7F
-;;       <result> = lshr i32 1, 32  ; undefined
-;;       <result> = lshr <2 x i32> < i32 -2, i32 4>, < i32 1, i32 2>   ; yields: result=<2 x i32> < i32 0x7FFFFFFF, i32 1>
-;;
+
+         <result> = lshr i32 4, 1   ; yields i32:result = 2
+         <result> = lshr i32 4, 2   ; yields i32:result = 1
+         <result> = lshr i8  4, 3   ; yields i8:result = 0
+         <result> = lshr i8 -2, 1   ; yields i8:result = 0x7F
+         <result> = lshr i32 1, 32  ; undefined
+         <result> = lshr <2 x i32> < i32 -2, i32 4>, < i32 1, i32 2>   ; yields: result=<2 x i32> < i32 0x7FFFFFFF, i32 1>
+
 ;; '``ashr``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4686,10 +4687,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = ashr <ty> <op1>, <op2>         ; yields ty:result
-;;       <result> = ashr exact <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = ashr <ty> <op1>, <op2>         ; yields ty:result
+         <result> = ashr exact <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4722,14 +4723,14 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = ashr i32 4, 1   ; yields i32:result = 2
-;;       <result> = ashr i32 4, 2   ; yields i32:result = 1
-;;       <result> = ashr i8  4, 3   ; yields i8:result = 0
-;;       <result> = ashr i8 -2, 1   ; yields i8:result = -1
-;;       <result> = ashr i32 1, 32  ; undefined
-;;       <result> = ashr <2 x i32> < i32 -2, i32 4>, < i32 1, i32 3>   ; yields: result=<2 x i32> < i32 -1, i32 0>
-;;
+
+         <result> = ashr i32 4, 1   ; yields i32:result = 2
+         <result> = ashr i32 4, 2   ; yields i32:result = 1
+         <result> = ashr i8  4, 3   ; yields i8:result = 0
+         <result> = ashr i8 -2, 1   ; yields i8:result = -1
+         <result> = ashr i32 1, 32  ; undefined
+         <result> = ashr <2 x i32> < i32 -2, i32 4>, < i32 1, i32 3>   ; yields: result=<2 x i32> < i32 -1, i32 0>
+
 ;; '``and``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4737,9 +4738,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = and <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = and <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4774,11 +4775,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = and i32 4, %var         ; yields i32:result = 4 & %var
-;;       <result> = and i32 15, 40          ; yields i32:result = 8
-;;       <result> = and i32 4, 8            ; yields i32:result = 0
-;;
+
+         <result> = and i32 4, %var         ; yields i32:result = 4 & %var
+         <result> = and i32 15, 40          ; yields i32:result = 8
+         <result> = and i32 4, 8            ; yields i32:result = 0
+
 ;; '``or``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4786,9 +4787,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = or <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = or <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4823,11 +4824,11 @@
 ;; """"""""
 ;;
 ;; ::
-;;
-;;       <result> = or i32 4, %var         ; yields i32:result = 4 | %var
-;;       <result> = or i32 15, 40          ; yields i32:result = 47
-;;       <result> = or i32 4, 8            ; yields i32:result = 12
-;;
+
+         <result> = or i32 4, %var         ; yields i32:result = 4 | %var
+         <result> = or i32 15, 40          ; yields i32:result = 47
+         <result> = or i32 4, 8            ; yields i32:result = 12
+
 ;; '``xor``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -4835,9 +4836,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = xor <ty> <op1>, <op2>   ; yields ty:result
-;;
+
+         <result> = xor <ty> <op1>, <op2>   ; yields ty:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4873,12 +4874,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = xor i32 4, %var         ; yields i32:result = 4 ^ %var
-;;       <result> = xor i32 15, 40          ; yields i32:result = 39
-;;       <result> = xor i32 4, 8            ; yields i32:result = 12
-;;       <result> = xor i32 %V, -1          ; yields i32:result = ~%V
-;;
+
+         <result> = xor i32 4, %var         ; yields i32:result = 4 ^ %var
+         <result> = xor i32 15, 40          ; yields i32:result = 39
+         <result> = xor i32 4, 8            ; yields i32:result = 12
+         <result> = xor i32 %V, -1          ; yields i32:result = ~%V
+
 ;; Vector Operations
 ;; -----------------
 ;;
@@ -4898,9 +4899,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = extractelement <n x <ty>> <val>, <ty2> <idx>  ; yields <ty>
-;;
+
+         <result> = extractelement <n x <ty>> <val>, <ty2> <idx>  ; yields <ty>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4926,9 +4927,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = extractelement <4 x i32> %vec, i32 0    ; yields i32
-;;
+
+         <result> = extractelement <4 x i32> %vec, i32 0    ; yields i32
+
 ;; .. _i_insertelement:
 ;;
 ;; '``insertelement``' Instruction
@@ -4938,9 +4939,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = insertelement <n x <ty>> <val>, <ty> <elt>, <ty2> <idx>    ; yields <n x <ty>>
-;;
+
+         <result> = insertelement <n x <ty>> <val>, <ty> <elt>, <ty2> <idx>    ; yields <n x <ty>>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -4968,9 +4969,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = insertelement <4 x i32> %vec, i32 1, i32 0    ; yields <4 x i32>
-;;
+
+         <result> = insertelement <4 x i32> %vec, i32 1, i32 0    ; yields <4 x i32>
+
 ;; .. _i_shufflevector:
 ;;
 ;; '``shufflevector``' Instruction
@@ -4980,9 +4981,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = shufflevector <n x <ty>> <v1>, <n x <ty>> <v2>, <m x i32> <mask>    ; yields <m x <ty>>
-;;
+
+         <result> = shufflevector <n x <ty>> <v1>, <n x <ty>> <v2>, <m x i32> <mask>    ; yields <m x <ty>>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5016,16 +5017,16 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = shufflevector <4 x i32> %v1, <4 x i32> %v2,
-;;                               <4 x i32> <i32 0, i32 4, i32 1, i32 5>  ; yields <4 x i32>
-;;       <result> = shufflevector <4 x i32> %v1, <4 x i32> undef,
-;;                               <4 x i32> <i32 0, i32 1, i32 2, i32 3>  ; yields <4 x i32> - Identity shuffle.
-;;       <result> = shufflevector <8 x i32> %v1, <8 x i32> undef,
-;;                               <4 x i32> <i32 0, i32 1, i32 2, i32 3>  ; yields <4 x i32>
-;;       <result> = shufflevector <4 x i32> %v1, <4 x i32> %v2,
-;;                               <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7 >  ; yields <8 x i32>
-;;
+
+         <result> = shufflevector <4 x i32> %v1, <4 x i32> %v2,
+                                 <4 x i32> <i32 0, i32 4, i32 1, i32 5>  ; yields <4 x i32>
+         <result> = shufflevector <4 x i32> %v1, <4 x i32> undef,
+                                 <4 x i32> <i32 0, i32 1, i32 2, i32 3>  ; yields <4 x i32> - Identity shuffle.
+         <result> = shufflevector <8 x i32> %v1, <8 x i32> undef,
+                                 <4 x i32> <i32 0, i32 1, i32 2, i32 3>  ; yields <4 x i32>
+         <result> = shufflevector <4 x i32> %v1, <4 x i32> %v2,
+                                 <8 x i32> <i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7 >  ; yields <8 x i32>
+
 ;; Aggregate Operations
 ;; --------------------
 ;;
@@ -5041,9 +5042,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = extractvalue <aggregate type> <val>, <idx>{, <idx>}*
-;;
+
+         <result> = extractvalue <aggregate type> <val>, <idx>{, <idx>}*
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5075,9 +5076,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = extractvalue {i32, float} %agg, 0    ; yields i32
-;;
+
+         <result> = extractvalue {i32, float} %agg, 0    ; yields i32
+
 ;; .. _i_insertvalue:
 ;;
 ;; '``insertvalue``' Instruction
@@ -5087,9 +5088,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = insertvalue <aggregate type> <val>, <ty> <elt>, <idx>{, <idx>}*    ; yields <aggregate type>
-;;
+
+         <result> = insertvalue <aggregate type> <val>, <ty> <elt>, <idx>{, <idx>}*    ; yields <aggregate type>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5118,11 +5119,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %agg1 = insertvalue {i32, float} undef, i32 1, 0              ; yields {i32 1, float undef}
-;;       %agg2 = insertvalue {i32, float} %agg1, float %val, 1         ; yields {i32 1, float %val}
-;;       %agg3 = insertvalue {i32, {float}} undef, float %val, 1, 0    ; yields {i32 undef, {float %val}}
-;;
+
+         %agg1 = insertvalue {i32, float} undef, i32 1, 0              ; yields {i32 1, float undef}
+         %agg2 = insertvalue {i32, float} %agg1, float %val, 1         ; yields {i32 1, float %val}
+         %agg3 = insertvalue {i32, {float}} undef, float %val, 1, 0    ; yields {i32 undef, {float %val}}
+
 ;; .. _memoryops:
 ;;
 ;; Memory Access and Addressing Operations
@@ -5142,9 +5143,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = alloca [inalloca] <type> [, <ty> <NumElements>] [, align <alignment>]     ; yields type*:result
-;;
+
+         <result> = alloca [inalloca] <type> [, <ty> <NumElements>] [, align <alignment>]     ; yields type*:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5185,12 +5186,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %ptr = alloca i32                             ; yields i32*:ptr
-;;       %ptr = alloca i32, i32 4                      ; yields i32*:ptr
-;;       %ptr = alloca i32, i32 4, align 1024          ; yields i32*:ptr
-;;       %ptr = alloca i32, align 1024                 ; yields i32*:ptr
-;;
+
+         %ptr = alloca i32                             ; yields i32*:ptr
+         %ptr = alloca i32, i32 4                      ; yields i32*:ptr
+         %ptr = alloca i32, i32 4, align 1024          ; yields i32*:ptr
+         %ptr = alloca i32, align 1024                 ; yields i32*:ptr
+
 ;; .. _i_load:
 ;;
 ;; '``load``' Instruction
@@ -5200,11 +5201,11 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = load [volatile] <ty>* <pointer>[, align <alignment>][, !nontemporal !<index>][, !invariant.load !<index>][, !nonnull !<index>]
-;;       <result> = load atomic [volatile] <ty>* <pointer> [singlethread] <ordering>, align <alignment>
-;;       !<index> = !{ i32 1 }
-;;
+
+         <result> = load [volatile] <ty>* <pointer>[, align <alignment>][, !nontemporal !<index>][, !invariant.load !<index>][, !nonnull !<index>]
+         <result> = load atomic [volatile] <ty>* <pointer> [singlethread] <ordering>, align <alignment>
+         !<index> = !{ i32 1 }
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5281,11 +5282,11 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %ptr = alloca i32                               ; yields i32*:ptr
-;;       store i32 3, i32* %ptr                          ; yields void
-;;       %val = load i32* %ptr                           ; yields i32:val = i32 3
-;;
+
+         %ptr = alloca i32                               ; yields i32*:ptr
+         store i32 3, i32* %ptr                          ; yields void
+         %val = load i32* %ptr                           ; yields i32:val = i32 3
+
 ;; .. _i_store:
 ;;
 ;; '``store``' Instruction
@@ -5295,10 +5296,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       store [volatile] <ty> <value>, <ty>* <pointer>[, align <alignment>][, !nontemporal !<index>]        ; yields void
-;;       store atomic [volatile] <ty> <value>, <ty>* <pointer> [singlethread] <ordering>, align <alignment>  ; yields void
-;;
+
+         store [volatile] <ty> <value>, <ty>* <pointer>[, align <alignment>][, !nontemporal !<index>]        ; yields void
+         store atomic [volatile] <ty> <value>, <ty>* <pointer> [singlethread] <ordering>, align <alignment>  ; yields void
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5360,11 +5361,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %ptr = alloca i32                               ; yields i32*:ptr
-;;       store i32 3, i32* %ptr                          ; yields void
-;;       %val = load i32* %ptr                           ; yields i32:val = i32 3
-;;
+
+         %ptr = alloca i32                               ; yields i32*:ptr
+         store i32 3, i32* %ptr                          ; yields void
+         %val = load i32* %ptr                           ; yields i32:val = i32 3
+
 ;; .. _i_fence:
 ;;
 ;; '``fence``' Instruction
@@ -5374,9 +5375,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       fence [singlethread] <ordering>                   ; yields void
-;;
+
+         fence [singlethread] <ordering>                   ; yields void
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5417,10 +5418,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       fence acquire                          ; yields void
-;;       fence singlethread seq_cst             ; yields void
-;;
+
+         fence acquire                          ; yields void
+         fence singlethread seq_cst             ; yields void
+
 ;; .. _i_cmpxchg:
 ;;
 ;; '``cmpxchg``' Instruction
@@ -5430,9 +5431,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       cmpxchg [weak] [volatile] <ty>* <pointer>, <ty> <cmp>, <ty> <new> [singlethread] <success ordering> <failure ordering> ; yields  { ty, i1 }
-;;
+
+         cmpxchg [weak] [volatile] <ty>* <pointer>, <ty> <cmp>, <ty> <new> [singlethread] <success ordering> <failure ordering> ; yields  { ty, i1 }
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5491,22 +5492,22 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;     entry:
-;;       %orig = atomic load i32* %ptr unordered                   ; yields i32
-;;       br label %loop
-;;
-;;     loop:
-;;       %cmp = phi i32 [ %orig, %entry ], [%old, %loop]
-;;       %squared = mul i32 %cmp, %cmp
-;;       %val_success = cmpxchg i32* %ptr, i32 %cmp, i32 %squared acq_rel monotonic ; yields  { i32, i1 }
-;;       %value_loaded = extractvalue { i32, i1 } %val_success, 0
-;;       %success = extractvalue { i32, i1 } %val_success, 1
-;;       br i1 %success, label %done, label %loop
-;;
-;;     done:
-;;       ...
-;;
+
+       entry:
+         %orig = atomic load i32* %ptr unordered                   ; yields i32
+         br label %loop
+
+       loop:
+         %cmp = phi i32 [ %orig, %entry ], [%old, %loop]
+         %squared = mul i32 %cmp, %cmp
+         %val_success = cmpxchg i32* %ptr, i32 %cmp, i32 %squared acq_rel monotonic ; yields  { i32, i1 }
+         %value_loaded = extractvalue { i32, i1 } %val_success, 0
+         %success = extractvalue { i32, i1 } %val_success, 1
+         br i1 %success, label %done, label %loop
+
+       done:
+         ...
+
 ;; .. _i_atomicrmw:
 ;;
 ;; '``atomicrmw``' Instruction
@@ -5516,9 +5517,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       atomicrmw [volatile] <operation> <ty>* <pointer>, <ty> <value> [singlethread] <ordering>                   ; yields ty
-;;
+
+         atomicrmw [volatile] <operation> <ty>* <pointer>, <ty> <value> [singlethread] <ordering>                   ; yields ty
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5577,9 +5578,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %old = atomicrmw add i32* %ptr, i32 1 acquire                        ; yields i32
-;;
+
+         %old = atomicrmw add i32* %ptr, i32 1 acquire                        ; yields i32
+
 ;; .. _i_getelementptr:
 ;;
 ;; '``getelementptr``' Instruction
@@ -5589,11 +5590,11 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = getelementptr <pty>* <ptrval>{, <ty> <idx>}*
-;;       <result> = getelementptr inbounds <pty>* <ptrval>{, <ty> <idx>}*
-;;       <result> = getelementptr <ptr vector> ptrval, <vector index type> idx
-;;
+
+         <result> = getelementptr <pty>* <ptrval>{, <ty> <idx>}*
+         <result> = getelementptr inbounds <pty>* <ptrval>{, <ty> <idx>}*
+         <result> = getelementptr <ptr vector> ptrval, <vector index type> idx
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5628,35 +5629,35 @@
 ;; to LLVM:
 ;;
 ;; .. code-block:: c
-;;
-;;     struct RT {
-;;       char A;
-;;       int B[10][20];
-;;       char C;
-;;     };
-;;     struct ST {
-;;       int X;
-;;       double Y;
-;;       struct RT Z;
-;;     };
-;;
-;;     int *foo(struct ST *s) {
-;;       return &s[1].Z.B[5][13];
-;;     }
-;;
+
+       struct RT {
+         char A;
+         int B[10][20];
+         char C;
+       };
+       struct ST {
+         int X;
+         double Y;
+         struct RT Z;
+       };
+
+       int *foo(struct ST *s) {
+         return &s[1].Z.B[5][13];
+       }
+
 ;; The LLVM code generated by Clang is:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     %struct.RT = type { i8, [10 x [20 x i32]], i8 }
-;;     %struct.ST = type { i32, double, %struct.RT }
-;;
-;;     define i32* @foo(%struct.ST* %s) nounwind uwtable readnone optsize ssp {
-;;     entry:
-;;       %arrayidx = getelementptr inbounds %struct.ST* %s, i64 1, i32 2, i32 1, i64 5, i64 13
-;;       ret i32* %arrayidx
-;;     }
-;;
+
+       %struct.RT = type { i8, [10 x [20 x i32]], i8 }
+       %struct.ST = type { i32, double, %struct.RT }
+
+       define i32* @foo(%struct.ST* %s) nounwind uwtable readnone optsize ssp {
+       entry:
+         %arrayidx = getelementptr inbounds %struct.ST* %s, i64 1, i32 2, i32 1, i64 5, i64 13
+         ret i32* %arrayidx
+       }
+
 ;; Semantics:
 ;; """"""""""
 ;;
@@ -5676,15 +5677,15 @@
 ;; for the given testcase is equivalent to:
 ;;
 ;; .. code-block:: llvm
-;;
-;;     define i32* @foo(%struct.ST* %s) {
-;;       %t1 = getelementptr %struct.ST* %s, i32 1                 ; yields %struct.ST*:%t1
-;;       %t2 = getelementptr %struct.ST* %t1, i32 0, i32 2         ; yields %struct.RT*:%t2
-;;       %t3 = getelementptr %struct.RT* %t2, i32 0, i32 1         ; yields [10 x [20 x i32]]*:%t3
-;;       %t4 = getelementptr [10 x [20 x i32]]* %t3, i32 0, i32 5  ; yields [20 x i32]*:%t4
-;;       %t5 = getelementptr [20 x i32]* %t4, i32 0, i32 13        ; yields i32*:%t5
-;;       ret i32* %t5
-;;     }
+
+       define i32* @foo(%struct.ST* %s) {
+         %t1 = getelementptr %struct.ST* %s, i32 1                 ; yields %struct.ST*:%t1
+         %t2 = getelementptr %struct.ST* %t1, i32 0, i32 2         ; yields %struct.RT*:%t2
+         %t3 = getelementptr %struct.RT* %t2, i32 0, i32 1         ; yields [10 x [20 x i32]]*:%t3
+         %t4 = getelementptr [10 x [20 x i32]]* %t3, i32 0, i32 5  ; yields [20 x i32]*:%t4
+         %t5 = getelementptr [20 x i32]* %t4, i32 0, i32 13        ; yields i32*:%t5
+         ret i32* %t5
+       }
 ;;
 ;; If the ``inbounds`` keyword is present, the result value of the
 ;; ``getelementptr`` is a :ref:`poison value <poisonvalues>` if the base
@@ -5714,23 +5715,23 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;         ; yields [12 x i8]*:aptr
-;;         %aptr = getelementptr {i32, [12 x i8]}* %saptr, i64 0, i32 1
-;;         ; yields i8*:vptr
-;;         %vptr = getelementptr {i32, <2 x i8>}* %svptr, i64 0, i32 1, i32 1
-;;         ; yields i8*:eptr
-;;         %eptr = getelementptr [12 x i8]* %aptr, i64 0, i32 1
-;;         ; yields i32*:iptr
-;;         %iptr = getelementptr [10 x i32]* @arr, i16 0, i16 0
-;;
+
+           ; yields [12 x i8]*:aptr
+           %aptr = getelementptr {i32, [12 x i8]}* %saptr, i64 0, i32 1
+           ; yields i8*:vptr
+           %vptr = getelementptr {i32, <2 x i8>}* %svptr, i64 0, i32 1, i32 1
+           ; yields i8*:eptr
+           %eptr = getelementptr [12 x i8]* %aptr, i64 0, i32 1
+           ; yields i32*:iptr
+           %iptr = getelementptr [10 x i32]* @arr, i16 0, i16 0
+
 ;; In cases where the pointer argument is a vector of pointers, each index
 ;; must be a vector with the same number of elements. For example:
 ;;
 ;; .. code-block:: llvm
-;;
-;;      %A = getelementptr <4 x i8*> %ptrs, <4 x i64> %offsets,
-;;
+
+        %A = getelementptr <4 x i8*> %ptrs, <4 x i64> %offsets,
+
 ;; Conversion Operations
 ;; ---------------------
 ;;
@@ -5745,9 +5746,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = trunc <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = trunc <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5774,12 +5775,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = trunc i32 257 to i8                        ; yields i8:1
-;;       %Y = trunc i32 123 to i1                        ; yields i1:true
-;;       %Z = trunc i32 122 to i1                        ; yields i1:false
-;;       %W = trunc <2 x i16> <i16 8, i16 7> to <2 x i8> ; yields <i8 8, i8 7>
-;;
+
+         %X = trunc i32 257 to i8                        ; yields i8:1
+         %Y = trunc i32 123 to i1                        ; yields i1:true
+         %Z = trunc i32 122 to i1                        ; yields i1:false
+         %W = trunc <2 x i16> <i16 8, i16 7> to <2 x i8> ; yields <i8 8, i8 7>
+
 ;; '``zext .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5787,9 +5788,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = zext <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = zext <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5815,11 +5816,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = zext i32 257 to i64              ; yields i64:257
-;;       %Y = zext i1 true to i32              ; yields i32:1
-;;       %Z = zext <2 x i16> <i16 8, i16 7> to <2 x i32> ; yields <i32 8, i32 7>
-;;
+
+         %X = zext i32 257 to i64              ; yields i64:257
+         %Y = zext i1 true to i32              ; yields i32:1
+         %Z = zext <2 x i16> <i16 8, i16 7> to <2 x i32> ; yields <i32 8, i32 7>
+
 ;; '``sext .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5827,9 +5828,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = sext <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = sext <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5856,11 +5857,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = sext i8  -1 to i16              ; yields i16   :65535
-;;       %Y = sext i1 true to i32             ; yields i32:-1
-;;       %Z = sext <2 x i16> <i16 8, i16 7> to <2 x i32> ; yields <i32 8, i32 7>
-;;
+
+         %X = sext i8  -1 to i16              ; yields i16   :65535
+         %Y = sext i1 true to i32             ; yields i32:-1
+         %Z = sext <2 x i16> <i16 8, i16 7> to <2 x i32> ; yields <i32 8, i32 7>
+
 ;; '``fptrunc .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5868,9 +5869,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fptrunc <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = fptrunc <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5896,10 +5897,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = fptrunc double 123.0 to float         ; yields float:123.0
-;;       %Y = fptrunc double 1.0E+300 to float      ; yields undefined
-;;
+
+         %X = fptrunc double 123.0 to float         ; yields float:123.0
+         %Y = fptrunc double 1.0E+300 to float      ; yields undefined
+
 ;; '``fpext .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5907,9 +5908,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fpext <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = fpext <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5936,10 +5937,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = fpext float 3.125 to double         ; yields double:3.125000e+00
-;;       %Y = fpext double %X to fp128            ; yields fp128:0xL00000000000000004000900000000000
-;;
+
+         %X = fpext float 3.125 to double         ; yields double:3.125000e+00
+         %Y = fpext double %X to fp128            ; yields fp128:0xL00000000000000004000900000000000
+
 ;; '``fptoui .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5947,9 +5948,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fptoui <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = fptoui <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -5977,11 +5978,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = fptoui double 123.0 to i32      ; yields i32:123
-;;       %Y = fptoui float 1.0E+300 to i1     ; yields undefined:1
-;;       %Z = fptoui float 1.04E+17 to i8     ; yields undefined:1
-;;
+
+         %X = fptoui double 123.0 to i32      ; yields i32:123
+         %Y = fptoui float 1.0E+300 to i1     ; yields undefined:1
+         %Z = fptoui float 1.04E+17 to i8     ; yields undefined:1
+
 ;; '``fptosi .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -5989,9 +5990,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fptosi <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = fptosi <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6019,11 +6020,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = fptosi double -123.0 to i32      ; yields i32:-123
-;;       %Y = fptosi float 1.0E-247 to i1      ; yields undefined:1
-;;       %Z = fptosi float 1.04E+17 to i8      ; yields undefined:1
-;;
+
+         %X = fptosi double -123.0 to i32      ; yields i32:-123
+         %Y = fptosi float 1.0E-247 to i1      ; yields undefined:1
+         %Z = fptosi float 1.04E+17 to i8      ; yields undefined:1
+
 ;; '``uitofp .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -6031,9 +6032,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = uitofp <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = uitofp <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6061,10 +6062,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = uitofp i32 257 to float         ; yields float:257.0
-;;       %Y = uitofp i8 -1 to double          ; yields double:255.0
-;;
+
+         %X = uitofp i32 257 to float         ; yields float:257.0
+         %Y = uitofp i8 -1 to double          ; yields double:255.0
+
 ;; '``sitofp .. to``' Instruction
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -6072,9 +6073,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = sitofp <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = sitofp <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6102,10 +6103,10 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = sitofp i32 257 to float         ; yields float:257.0
-;;       %Y = sitofp i8 -1 to double          ; yields double:-1.0
-;;
+
+         %X = sitofp i32 257 to float         ; yields float:257.0
+         %Y = sitofp i8 -1 to double          ; yields double:-1.0
+
 ;; .. _i_ptrtoint:
 ;;
 ;; '``ptrtoint .. to``' Instruction
@@ -6115,9 +6116,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = ptrtoint <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = ptrtoint <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6147,11 +6148,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = ptrtoint i32* %P to i8                         ; yields truncation on 32-bit architecture
-;;       %Y = ptrtoint i32* %P to i64                        ; yields zero extension on 32-bit architecture
-;;       %Z = ptrtoint <4 x i32*> %P to <4 x i64>; yields vector zero extension for a vector of addresses on 32-bit architecture
-;;
+
+         %X = ptrtoint i32* %P to i8                         ; yields truncation on 32-bit architecture
+         %Y = ptrtoint i32* %P to i64                        ; yields zero extension on 32-bit architecture
+         %Z = ptrtoint <4 x i32*> %P to <4 x i64>; yields vector zero extension for a vector of addresses on 32-bit architecture
+
 ;; .. _i_inttoptr:
 ;;
 ;; '``inttoptr .. to``' Instruction
@@ -6161,9 +6162,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = inttoptr <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = inttoptr <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6191,12 +6192,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = inttoptr i32 255 to i32*          ; yields zero extension on 64-bit architecture
-;;       %Y = inttoptr i32 255 to i32*          ; yields no-op on 32-bit architecture
-;;       %Z = inttoptr i64 0 to i32*            ; yields truncation on 32-bit architecture
-;;       %Z = inttoptr <4 x i32> %G to <4 x i8*>; yields truncation of vector G to four pointers
-;;
+
+         %X = inttoptr i32 255 to i32*          ; yields zero extension on 64-bit architecture
+         %Y = inttoptr i32 255 to i32*          ; yields no-op on 32-bit architecture
+         %Z = inttoptr i64 0 to i32*            ; yields truncation on 32-bit architecture
+         %Z = inttoptr <4 x i32> %G to <4 x i8*>; yields truncation of vector G to four pointers
+
 ;; .. _i_bitcast:
 ;;
 ;; '``bitcast .. to``' Instruction
@@ -6206,9 +6207,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = bitcast <ty> <value> to <ty2>             ; yields ty2
-;;
+
+         <result> = bitcast <ty> <value> to <ty2>             ; yields ty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6243,12 +6244,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = bitcast i8 255 to i8              ; yields i8 :-1
-;;       %Y = bitcast i32* %x to sint*          ; yields sint*:%x
-;;       %Z = bitcast <2 x int> %V to i64;        ; yields i64: %V
-;;       %Z = bitcast <2 x i32*> %V to <2 x i64*> ; yields <2 x i64*>
-;;
+
+         %X = bitcast i8 255 to i8              ; yields i8 :-1
+         %Y = bitcast i32* %x to sint*          ; yields sint*:%x
+         %Z = bitcast <2 x int> %V to i64;        ; yields i64: %V
+         %Z = bitcast <2 x i32*> %V to <2 x i64*> ; yields <2 x i64*>
+
 ;; .. _i_addrspacecast:
 ;;
 ;; '``addrspacecast .. to``' Instruction
@@ -6258,9 +6259,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = addrspacecast <pty> <ptrval> to <pty2>       ; yields pty2
-;;
+
+         <result> = addrspacecast <pty> <ptrval> to <pty2>       ; yields pty2
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6289,11 +6290,11 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = addrspacecast i32* %x to i32 addrspace(1)*    ; yields i32 addrspace(1)*:%x
-;;       %Y = addrspacecast i32 addrspace(1)* %y to i64 addrspace(2)*    ; yields i64 addrspace(2)*:%y
-;;       %Z = addrspacecast <4 x i32*> %z to <4 x float addrspace(3)*>   ; yields <4 x float addrspace(3)*>:%z
-;;
+
+         %X = addrspacecast i32* %x to i32 addrspace(1)*    ; yields i32 addrspace(1)*:%x
+         %Y = addrspacecast i32 addrspace(1)* %y to i64 addrspace(2)*    ; yields i64 addrspace(2)*:%y
+         %Z = addrspacecast <4 x i32*> %z to <4 x float addrspace(3)*>   ; yields <4 x float addrspace(3)*>:%z
+
 ;; .. _otherops:
 ;;
 ;; Other Operations
@@ -6311,9 +6312,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = icmp <cond> <ty> <op1>, <op2>   ; yields i1 or <N x i1>:result
-;;
+
+         <result> = icmp <cond> <ty> <op1>, <op2>   ; yields i1 or <N x i1>:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6382,14 +6383,14 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = icmp eq i32 4, 5          ; yields: result=false
-;;       <result> = icmp ne float* %X, %X     ; yields: result=false
-;;       <result> = icmp ult i16  4, 5        ; yields: result=true
-;;       <result> = icmp sgt i16  4, 5        ; yields: result=false
-;;       <result> = icmp ule i16 -4, 5        ; yields: result=false
-;;       <result> = icmp sge i16  4, 5        ; yields: result=false
-;;
+
+         <result> = icmp eq i32 4, 5          ; yields: result=false
+         <result> = icmp ne float* %X, %X     ; yields: result=false
+         <result> = icmp ult i16  4, 5        ; yields: result=true
+         <result> = icmp sgt i16  4, 5        ; yields: result=false
+         <result> = icmp ule i16 -4, 5        ; yields: result=false
+         <result> = icmp sge i16  4, 5        ; yields: result=false
+
 ;; Note that the code generator does not yet support vector types with the
 ;; ``icmp`` instruction.
 ;;
@@ -6402,9 +6403,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = fcmp <cond> <ty> <op1>, <op2>     ; yields i1 or <N x i1>:result
-;;
+
+         <result> = fcmp <cond> <ty> <op1>, <op2>     ; yields i1 or <N x i1>:result
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6490,12 +6491,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       <result> = fcmp oeq float 4.0, 5.0    ; yields: result=false
-;;       <result> = fcmp one float 4.0, 5.0    ; yields: result=true
-;;       <result> = fcmp olt float 4.0, 5.0    ; yields: result=true
-;;       <result> = fcmp ueq double 1.0, 2.0   ; yields: result=false
-;;
+
+         <result> = fcmp oeq float 4.0, 5.0    ; yields: result=false
+         <result> = fcmp one float 4.0, 5.0    ; yields: result=true
+         <result> = fcmp olt float 4.0, 5.0    ; yields: result=true
+         <result> = fcmp ueq double 1.0, 2.0   ; yields: result=false
+
 ;; Note that the code generator does not yet support vector types with the
 ;; ``fcmp`` instruction.
 ;;
@@ -6508,9 +6509,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = phi <ty> [ <val0>, <label0>], ...
-;;
+
+         <result> = phi <ty> [ <val0>, <label0>], ...
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6547,12 +6548,12 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;     Loop:       ; Infinite loop that counts from 0 on up...
-;;       %indvar = phi i32 [ 0, %LoopHeader ], [ %nextindvar, %Loop ]
-;;       %nextindvar = add i32 %indvar, 1
-;;       br label %Loop
-;;
+
+       Loop:       ; Infinite loop that counts from 0 on up...
+         %indvar = phi i32 [ 0, %LoopHeader ], [ %nextindvar, %Loop ]
+         %nextindvar = add i32 %indvar, 1
+         br label %Loop
+
 ;; .. _i_select:
 ;;
 ;; '``select``' Instruction
@@ -6562,9 +6563,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = select selty <cond>, <ty> <val1>, <ty> <val2>             ; yields ty
-;;
+
+         <result> = select selty <cond>, <ty> <val1>, <ty> <val2>             ; yields ty
+
 ;;       selty is either i1 or {<N x i1>}
 ;;
 ;; Overview:
@@ -6596,9 +6597,9 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %X = select i1 true, i8 17, i8 42          ; yields i8:17
-;;
+
+         %X = select i1 true, i8 17, i8 42          ; yields i8:17
+
 ;; .. _i_call:
 ;;
 ;; '``call``' Instruction
@@ -6608,9 +6609,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <result> = [tail | musttail] call [cconv] [ret attrs] <ty> [<fnty>*] <fnptrval>(<function args>) [fn attrs]
-;;
+
+         <result> = [tail | musttail] call [cconv] [ret attrs] <ty> [<fnty>*] <fnptrval>(<function args>) [fn attrs]
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6703,20 +6704,20 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %retval = call i32 @test(i32 %argc)
-;;       call i32 (i8*, ...)* @printf(i8* %msg, i32 12, i8 42)        ; yields i32
-;;       %X = tail call i32 @foo()                                    ; yields i32
-;;       %Y = tail call fastcc i32 @foo()  ; yields i32
-;;       call void %foo(i8 97 signext)
-;;
-;;       %struct.A = type { i32, i8 }
-;;       %r = call %struct.A @foo()                        ; yields { i32, i8 }
-;;       %gr = extractvalue %struct.A %r, 0                ; yields i32
-;;       %gr1 = extractvalue %struct.A %r, 1               ; yields i8
-;;       %Z = call void @foo() noreturn                    ; indicates that %foo never returns normally
-;;       %ZZ = call zeroext i32 @bar()                     ; Return value is %zero extended
-;;
+
+         %retval = call i32 @test(i32 %argc)
+         call i32 (i8*, ...)* @printf(i8* %msg, i32 12, i8 42)        ; yields i32
+         %X = tail call i32 @foo()                                    ; yields i32
+         %Y = tail call fastcc i32 @foo()  ; yields i32
+         call void %foo(i8 97 signext)
+
+         %struct.A = type { i32, i8 }
+         %r = call %struct.A @foo()                        ; yields { i32, i8 }
+         %gr = extractvalue %struct.A %r, 0                ; yields i32
+         %gr1 = extractvalue %struct.A %r, 1               ; yields i8
+         %Z = call void @foo() noreturn                    ; indicates that %foo never returns normally
+         %ZZ = call zeroext i32 @bar()                     ; Return value is %zero extended
+
 ;; llvm treats calls to some functions with names and arguments that match
 ;; the standard C99 library as being the C99 library functions, and may
 ;; perform optimizations or generate code for them under that assumption.
@@ -6732,9 +6733,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <resultval> = va_arg <va_list*> <arglist>, <argty>
-;;
+
+         <resultval> = va_arg <va_list*> <arglist>, <argty>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6783,13 +6784,13 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       <resultval> = landingpad <resultty> personality <type> <pers_fn> <clause>+
-;;       <resultval> = landingpad <resultty> personality <type> <pers_fn> cleanup <clause>*
-;;
-;;       <clause> := catch <type> <value>
-;;       <clause> := filter <array constant type> <array constant>
-;;
+
+         <resultval> = landingpad <resultty> personality <type> <pers_fn> <clause>+
+         <resultval> = landingpad <resultty> personality <type> <pers_fn> cleanup <clause>*
+
+         <clause> := catch <type> <value>
+         <clause> := filter <array constant type> <array constant>
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -6849,18 +6850,18 @@
 ;; """"""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       ;; A landing pad which can catch an integer.
-;;       %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
-;;                catch i8** @_ZTIi
-;;       ;; A landing pad that is a cleanup.
-;;       %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
-;;                cleanup
-;;       ;; A landing pad which can catch an integer and can only throw a double.
-;;       %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
-;;                catch i8** @_ZTIi
-;;                filter [1 x i8**] [@_ZTId]
-;;
+
+         ;; A landing pad which can catch an integer.
+         %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
+                  catch i8** @_ZTIi
+         ;; A landing pad that is a cleanup.
+         %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
+                  cleanup
+         ;; A landing pad which can catch an integer and can only throw a double.
+         %res = landingpad { i8*, i32 } personality i32 (...)* @__gxx_personality_v0
+                  catch i8** @_ZTIi
+                  filter [1 x i8**] [@_ZTId]
+
 ;; .. _intrinsics:
 ;;
 ;; Intrinsic Functions
@@ -6928,38 +6929,38 @@
 ;; variable argument handling intrinsic functions are used.
 ;;
 ;; .. code-block:: llvm
-;;
-;;     ; This struct is different for every platform. For most platforms,
-;;     ; it is merely an i8*.
-;;     %struct.va_list = type { i8* }
-;;
-;;     ; For Unix x86_64 platforms, va_list is the following struct:
-;;     ; %struct.va_list = type { i32, i32, i8*, i8* }
-;;
-;;     define i32 @test(i32 %X, ...) {
-;;       ; Initialize variable argument processing
-;;       %ap = alloca %struct.va_list
-;;       %ap2 = bitcast %struct.va_list* %ap to i8*
-;;       call void @llvm.va_start(i8* %ap2)
-;;
-;;       ; Read a single integer argument
-;;       %tmp = va_arg i8* %ap2, i32
-;;
-;;       ; Demonstrate usage of llvm.va_copy and llvm.va_end
-;;       %aq = alloca i8*
-;;       %aq2 = bitcast i8** %aq to i8*
-;;       call void @llvm.va_copy(i8* %aq2, i8* %ap2)
-;;       call void @llvm.va_end(i8* %aq2)
-;;
-;;       ; Stop processing of arguments.
-;;       call void @llvm.va_end(i8* %ap2)
-;;       ret i32 %tmp
-;;     }
-;;
-;;     declare void @llvm.va_start(i8*)
-;;     declare void @llvm.va_copy(i8*, i8*)
-;;     declare void @llvm.va_end(i8*)
-;;
+
+       ; This struct is different for every platform. For most platforms,
+       ; it is merely an i8*.
+       %struct.va_list = type { i8* }
+
+       ; For Unix x86_64 platforms, va_list is the following struct:
+       ; %struct.va_list = type { i32, i32, i8*, i8* }
+
+       define i32 @test(i32 %X, ...) {
+         ; Initialize variable argument processing
+         %ap = alloca %struct.va_list
+         %ap2 = bitcast %struct.va_list* %ap to i8*
+         call void @llvm.va_start(i8* %ap2)
+
+         ; Read a single integer argument
+         %tmp = va_arg i8* %ap2, i32
+
+         ; Demonstrate usage of llvm.va_copy and llvm.va_end
+         %aq = alloca i8*
+         %aq2 = bitcast i8** %aq to i8*
+         call void @llvm.va_copy(i8* %aq2, i8* %ap2)
+         call void @llvm.va_end(i8* %aq2)
+
+         ; Stop processing of arguments.
+         call void @llvm.va_end(i8* %ap2)
+         ret i32 %tmp
+       }
+
+       declare void @llvm.va_start(i8*)
+       declare void @llvm.va_copy(i8*, i8*)
+       declare void @llvm.va_end(i8*)
+
 ;; .. _int_va_start:
 ;;
 ;; '``llvm.va_start``' Intrinsic
@@ -6969,9 +6970,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.va_start(i8* <arglist>)
-;;
+
+         declare void @llvm.va_start(i8* <arglist>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7001,9 +7002,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.va_end(i8* <arglist>)
-;;
+
+         declare void @llvm.va_end(i8* <arglist>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7034,9 +7035,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.va_copy(i8* <destarglist>, i8* <srcarglist>)
-;;
+
+         declare void @llvm.va_copy(i8* <destarglist>, i8* <srcarglist>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7083,9 +7084,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.gcroot(i8** %ptrloc, i8* %metadata)
-;;
+
+         declare void @llvm.gcroot(i8** %ptrloc, i8* %metadata)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7118,9 +7119,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i8* @llvm.gcread(i8* %ObjPtr, i8** %Ptr)
-;;
+
+         declare i8* @llvm.gcread(i8* %ObjPtr, i8** %Ptr)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7154,9 +7155,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.gcwrite(i8* %P1, i8* %Obj, i8** %P2)
-;;
+
+         declare void @llvm.gcwrite(i8* %P1, i8* %Obj, i8** %P2)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7194,9 +7195,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i8  *@llvm.returnaddress(i32 <level>)
-;;
+
+         declare i8  *@llvm.returnaddress(i32 <level>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7232,9 +7233,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i8* @llvm.frameaddress(i32 <level>)
-;;
+
+         declare i8* @llvm.frameaddress(i32 <level>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7272,13 +7273,13 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i32 @llvm.read_register.i32(metadata)
-;;       declare i64 @llvm.read_register.i64(metadata)
-;;       declare void @llvm.write_register.i32(metadata, i32 @value)
-;;       declare void @llvm.write_register.i64(metadata, i64 @value)
-;;       !0 = !{!"sp\00"}
-;;
+
+         declare i32 @llvm.read_register.i32(metadata)
+         declare i64 @llvm.read_register.i64(metadata)
+         declare void @llvm.write_register.i32(metadata, i32 @value)
+         declare void @llvm.write_register.i64(metadata, i64 @value)
+         !0 = !{!"sp\00"}
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7316,9 +7317,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i8* @llvm.stacksave()
-;;
+
+         declare i8* @llvm.stacksave()
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7348,9 +7349,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.stackrestore(i8* %ptr)
-;;
+
+         declare void @llvm.stackrestore(i8* %ptr)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7372,9 +7373,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.prefetch(i8* <address>, i32 <rw>, i32 <locality>, i32 <cache type>)
-;;
+
+         declare void @llvm.prefetch(i8* <address>, i32 <rw>, i32 <locality>, i32 <cache type>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7409,9 +7410,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.pcmarker(i32 <id>)
-;;
+
+         declare void @llvm.pcmarker(i32 <id>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7442,9 +7443,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i64 @llvm.readcyclecounter()
-;;
+
+         declare i64 @llvm.readcyclecounter()
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7473,9 +7474,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.clear_cache(i8*, i8*)
-;;
+
+         declare void @llvm.clear_cache(i8*, i8*)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7506,10 +7507,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.instrprof_increment(i8* <name>, i64 <hash>,
-;;                                              i32 <num-counters>, i32 <index>)
-;;
+
+         declare void @llvm.instrprof_increment(i8* <name>, i64 <hash>,
+                                                i32 <num-counters>, i32 <index>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7564,12 +7565,12 @@
 ;; support all bit widths however.
 ;;
 ;; ::
-;;
-;;       declare void @llvm.memcpy.p0i8.p0i8.i32(i8* <dest>, i8* <src>,
-;;                                               i32 <len>, i32 <align>, i1 <isvolatile>)
-;;       declare void @llvm.memcpy.p0i8.p0i8.i64(i8* <dest>, i8* <src>,
-;;                                               i64 <len>, i32 <align>, i1 <isvolatile>)
-;;
+
+         declare void @llvm.memcpy.p0i8.p0i8.i32(i8* <dest>, i8* <src>,
+                                                 i32 <len>, i32 <align>, i1 <isvolatile>)
+         declare void @llvm.memcpy.p0i8.p0i8.i64(i8* <dest>, i8* <src>,
+                                                 i64 <len>, i32 <align>, i1 <isvolatile>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7617,12 +7618,12 @@
 ;; bit widths however.
 ;;
 ;; ::
-;;
-;;       declare void @llvm.memmove.p0i8.p0i8.i32(i8* <dest>, i8* <src>,
-;;                                                i32 <len>, i32 <align>, i1 <isvolatile>)
-;;       declare void @llvm.memmove.p0i8.p0i8.i64(i8* <dest>, i8* <src>,
-;;                                                i64 <len>, i32 <align>, i1 <isvolatile>)
-;;
+
+         declare void @llvm.memmove.p0i8.p0i8.i32(i8* <dest>, i8* <src>,
+                                                  i32 <len>, i32 <align>, i1 <isvolatile>)
+         declare void @llvm.memmove.p0i8.p0i8.i64(i8* <dest>, i8* <src>,
+                                                  i64 <len>, i32 <align>, i1 <isvolatile>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7672,12 +7673,12 @@
 ;; support all bit widths.
 ;;
 ;; ::
-;;
-;;       declare void @llvm.memset.p0i8.i32(i8* <dest>, i8 <val>,
-;;                                          i32 <len>, i32 <align>, i1 <isvolatile>)
-;;       declare void @llvm.memset.p0i8.i64(i8* <dest>, i8 <val>,
-;;                                          i64 <len>, i32 <align>, i1 <isvolatile>)
-;;
+
+         declare void @llvm.memset.p0i8.i32(i8* <dest>, i8 <val>,
+                                            i32 <len>, i32 <align>, i1 <isvolatile>)
+         declare void @llvm.memset.p0i8.i64(i8* <dest>, i8 <val>,
+                                            i64 <len>, i32 <align>, i1 <isvolatile>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7723,13 +7724,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.sqrt.f32(float %Val)
-;;       declare double    @llvm.sqrt.f64(double %Val)
-;;       declare x86_fp80  @llvm.sqrt.f80(x86_fp80 %Val)
-;;       declare fp128     @llvm.sqrt.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.sqrt.ppcf128(ppc_fp128 %Val)
-;;
+
+         declare float     @llvm.sqrt.f32(float %Val)
+         declare double    @llvm.sqrt.f64(double %Val)
+         declare x86_fp80  @llvm.sqrt.f80(x86_fp80 %Val)
+         declare fp128     @llvm.sqrt.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.sqrt.ppcf128(ppc_fp128 %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7763,13 +7764,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.powi.f32(float  %Val, i32 %power)
-;;       declare double    @llvm.powi.f64(double %Val, i32 %power)
-;;       declare x86_fp80  @llvm.powi.f80(x86_fp80  %Val, i32 %power)
-;;       declare fp128     @llvm.powi.f128(fp128 %Val, i32 %power)
-;;       declare ppc_fp128 @llvm.powi.ppcf128(ppc_fp128  %Val, i32 %power)
-;;
+
+         declare float     @llvm.powi.f32(float  %Val, i32 %power)
+         declare double    @llvm.powi.f64(double %Val, i32 %power)
+         declare x86_fp80  @llvm.powi.f80(x86_fp80  %Val, i32 %power)
+         declare fp128     @llvm.powi.f128(fp128 %Val, i32 %power)
+         declare ppc_fp128 @llvm.powi.ppcf128(ppc_fp128  %Val, i32 %power)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7801,13 +7802,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.sin.f32(float  %Val)
-;;       declare double    @llvm.sin.f64(double %Val)
-;;       declare x86_fp80  @llvm.sin.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.sin.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.sin.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.sin.f32(float  %Val)
+         declare double    @llvm.sin.f64(double %Val)
+         declare x86_fp80  @llvm.sin.f80(x86_fp80  %Val)
+         declare fp128     @llvm.sin.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.sin.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7837,13 +7838,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.cos.f32(float  %Val)
-;;       declare double    @llvm.cos.f64(double %Val)
-;;       declare x86_fp80  @llvm.cos.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.cos.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.cos.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.cos.f32(float  %Val)
+         declare double    @llvm.cos.f64(double %Val)
+         declare x86_fp80  @llvm.cos.f80(x86_fp80  %Val)
+         declare fp128     @llvm.cos.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.cos.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7873,13 +7874,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.pow.f32(float  %Val, float %Power)
-;;       declare double    @llvm.pow.f64(double %Val, double %Power)
-;;       declare x86_fp80  @llvm.pow.f80(x86_fp80  %Val, x86_fp80 %Power)
-;;       declare fp128     @llvm.pow.f128(fp128 %Val, fp128 %Power)
-;;       declare ppc_fp128 @llvm.pow.ppcf128(ppc_fp128  %Val, ppc_fp128 Power)
-;;
+
+         declare float     @llvm.pow.f32(float  %Val, float %Power)
+         declare double    @llvm.pow.f64(double %Val, double %Power)
+         declare x86_fp80  @llvm.pow.f80(x86_fp80  %Val, x86_fp80 %Power)
+         declare fp128     @llvm.pow.f128(fp128 %Val, fp128 %Power)
+         declare ppc_fp128 @llvm.pow.ppcf128(ppc_fp128  %Val, ppc_fp128 Power)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7910,13 +7911,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.exp.f32(float  %Val)
-;;       declare double    @llvm.exp.f64(double %Val)
-;;       declare x86_fp80  @llvm.exp.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.exp.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.exp.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.exp.f32(float  %Val)
+         declare double    @llvm.exp.f64(double %Val)
+         declare x86_fp80  @llvm.exp.f80(x86_fp80  %Val)
+         declare fp128     @llvm.exp.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.exp.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7945,13 +7946,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.exp2.f32(float  %Val)
-;;       declare double    @llvm.exp2.f64(double %Val)
-;;       declare x86_fp80  @llvm.exp2.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.exp2.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.exp2.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.exp2.f32(float  %Val)
+         declare double    @llvm.exp2.f64(double %Val)
+         declare x86_fp80  @llvm.exp2.f80(x86_fp80  %Val)
+         declare fp128     @llvm.exp2.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.exp2.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -7980,13 +7981,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.log.f32(float  %Val)
-;;       declare double    @llvm.log.f64(double %Val)
-;;       declare x86_fp80  @llvm.log.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.log.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.log.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.log.f32(float  %Val)
+         declare double    @llvm.log.f64(double %Val)
+         declare x86_fp80  @llvm.log.f80(x86_fp80  %Val)
+         declare fp128     @llvm.log.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.log.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8015,13 +8016,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.log10.f32(float  %Val)
-;;       declare double    @llvm.log10.f64(double %Val)
-;;       declare x86_fp80  @llvm.log10.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.log10.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.log10.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.log10.f32(float  %Val)
+         declare double    @llvm.log10.f64(double %Val)
+         declare x86_fp80  @llvm.log10.f80(x86_fp80  %Val)
+         declare fp128     @llvm.log10.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.log10.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8050,13 +8051,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.log2.f32(float  %Val)
-;;       declare double    @llvm.log2.f64(double %Val)
-;;       declare x86_fp80  @llvm.log2.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.log2.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.log2.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.log2.f32(float  %Val)
+         declare double    @llvm.log2.f64(double %Val)
+         declare x86_fp80  @llvm.log2.f80(x86_fp80  %Val)
+         declare fp128     @llvm.log2.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.log2.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8085,13 +8086,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.fma.f32(float  %a, float  %b, float  %c)
-;;       declare double    @llvm.fma.f64(double %a, double %b, double %c)
-;;       declare x86_fp80  @llvm.fma.f80(x86_fp80 %a, x86_fp80 %b, x86_fp80 %c)
-;;       declare fp128     @llvm.fma.f128(fp128 %a, fp128 %b, fp128 %c)
-;;       declare ppc_fp128 @llvm.fma.ppcf128(ppc_fp128 %a, ppc_fp128 %b, ppc_fp128 %c)
-;;
+
+         declare float     @llvm.fma.f32(float  %a, float  %b, float  %c)
+         declare double    @llvm.fma.f64(double %a, double %b, double %c)
+         declare x86_fp80  @llvm.fma.f80(x86_fp80 %a, x86_fp80 %b, x86_fp80 %c)
+         declare fp128     @llvm.fma.f128(fp128 %a, fp128 %b, fp128 %c)
+         declare ppc_fp128 @llvm.fma.ppcf128(ppc_fp128 %a, ppc_fp128 %b, ppc_fp128 %c)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8121,13 +8122,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.fabs.f32(float  %Val)
-;;       declare double    @llvm.fabs.f64(double %Val)
-;;       declare x86_fp80  @llvm.fabs.f80(x86_fp80 %Val)
-;;       declare fp128     @llvm.fabs.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.fabs.ppcf128(ppc_fp128 %Val)
-;;
+
+         declare float     @llvm.fabs.f32(float  %Val)
+         declare double    @llvm.fabs.f64(double %Val)
+         declare x86_fp80  @llvm.fabs.f80(x86_fp80 %Val)
+         declare fp128     @llvm.fabs.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.fabs.ppcf128(ppc_fp128 %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8157,13 +8158,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.minnum.f32(float %Val0, float %Val1)
-;;       declare double    @llvm.minnum.f64(double %Val0, double %Val1)
-;;       declare x86_fp80  @llvm.minnum.f80(x86_fp80 %Val0, x86_fp80 %Val1)
-;;       declare fp128     @llvm.minnum.f128(fp128 %Val0, fp128 %Val1)
-;;       declare ppc_fp128 @llvm.minnum.ppcf128(ppc_fp128 %Val0, ppc_fp128 %Val1)
-;;
+
+         declare float     @llvm.minnum.f32(float %Val0, float %Val1)
+         declare double    @llvm.minnum.f64(double %Val0, double %Val1)
+         declare x86_fp80  @llvm.minnum.f80(x86_fp80 %Val0, x86_fp80 %Val1)
+         declare fp128     @llvm.minnum.f128(fp128 %Val0, fp128 %Val1)
+         declare ppc_fp128 @llvm.minnum.ppcf128(ppc_fp128 %Val0, ppc_fp128 %Val1)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8199,13 +8200,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.maxnum.f32(float  %Val0, float  %Val1l)
-;;       declare double    @llvm.maxnum.f64(double %Val0, double %Val1)
-;;       declare x86_fp80  @llvm.maxnum.f80(x86_fp80  %Val0, x86_fp80  %Val1)
-;;       declare fp128     @llvm.maxnum.f128(fp128 %Val0, fp128 %Val1)
-;;       declare ppc_fp128 @llvm.maxnum.ppcf128(ppc_fp128  %Val0, ppc_fp128  %Val1)
-;;
+
+         declare float     @llvm.maxnum.f32(float  %Val0, float  %Val1l)
+         declare double    @llvm.maxnum.f64(double %Val0, double %Val1)
+         declare x86_fp80  @llvm.maxnum.f80(x86_fp80  %Val0, x86_fp80  %Val1)
+         declare fp128     @llvm.maxnum.f128(fp128 %Val0, fp128 %Val1)
+         declare ppc_fp128 @llvm.maxnum.ppcf128(ppc_fp128  %Val0, ppc_fp128  %Val1)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8240,13 +8241,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.copysign.f32(float  %Mag, float  %Sgn)
-;;       declare double    @llvm.copysign.f64(double %Mag, double %Sgn)
-;;       declare x86_fp80  @llvm.copysign.f80(x86_fp80  %Mag, x86_fp80  %Sgn)
-;;       declare fp128     @llvm.copysign.f128(fp128 %Mag, fp128 %Sgn)
-;;       declare ppc_fp128 @llvm.copysign.ppcf128(ppc_fp128  %Mag, ppc_fp128  %Sgn)
-;;
+
+         declare float     @llvm.copysign.f32(float  %Mag, float  %Sgn)
+         declare double    @llvm.copysign.f64(double %Mag, double %Sgn)
+         declare x86_fp80  @llvm.copysign.f80(x86_fp80  %Mag, x86_fp80  %Sgn)
+         declare fp128     @llvm.copysign.f128(fp128 %Mag, fp128 %Sgn)
+         declare ppc_fp128 @llvm.copysign.ppcf128(ppc_fp128  %Mag, ppc_fp128  %Sgn)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8276,13 +8277,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.floor.f32(float  %Val)
-;;       declare double    @llvm.floor.f64(double %Val)
-;;       declare x86_fp80  @llvm.floor.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.floor.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.floor.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.floor.f32(float  %Val)
+         declare double    @llvm.floor.f64(double %Val)
+         declare x86_fp80  @llvm.floor.f80(x86_fp80  %Val)
+         declare fp128     @llvm.floor.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.floor.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8311,13 +8312,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.ceil.f32(float  %Val)
-;;       declare double    @llvm.ceil.f64(double %Val)
-;;       declare x86_fp80  @llvm.ceil.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.ceil.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.ceil.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.ceil.f32(float  %Val)
+         declare double    @llvm.ceil.f64(double %Val)
+         declare x86_fp80  @llvm.ceil.f80(x86_fp80  %Val)
+         declare fp128     @llvm.ceil.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.ceil.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8346,13 +8347,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.trunc.f32(float  %Val)
-;;       declare double    @llvm.trunc.f64(double %Val)
-;;       declare x86_fp80  @llvm.trunc.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.trunc.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.trunc.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.trunc.f32(float  %Val)
+         declare double    @llvm.trunc.f64(double %Val)
+         declare x86_fp80  @llvm.trunc.f80(x86_fp80  %Val)
+         declare fp128     @llvm.trunc.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.trunc.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8382,13 +8383,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.rint.f32(float  %Val)
-;;       declare double    @llvm.rint.f64(double %Val)
-;;       declare x86_fp80  @llvm.rint.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.rint.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.rint.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.rint.f32(float  %Val)
+         declare double    @llvm.rint.f64(double %Val)
+         declare x86_fp80  @llvm.rint.f80(x86_fp80  %Val)
+         declare fp128     @llvm.rint.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.rint.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8419,13 +8420,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.nearbyint.f32(float  %Val)
-;;       declare double    @llvm.nearbyint.f64(double %Val)
-;;       declare x86_fp80  @llvm.nearbyint.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.nearbyint.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.nearbyint.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.nearbyint.f32(float  %Val)
+         declare double    @llvm.nearbyint.f64(double %Val)
+         declare x86_fp80  @llvm.nearbyint.f80(x86_fp80  %Val)
+         declare fp128     @llvm.nearbyint.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.nearbyint.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8455,13 +8456,13 @@
 ;; all types however.
 ;;
 ;; ::
-;;
-;;       declare float     @llvm.round.f32(float  %Val)
-;;       declare double    @llvm.round.f64(double %Val)
-;;       declare x86_fp80  @llvm.round.f80(x86_fp80  %Val)
-;;       declare fp128     @llvm.round.f128(fp128 %Val)
-;;       declare ppc_fp128 @llvm.round.ppcf128(ppc_fp128  %Val)
-;;
+
+         declare float     @llvm.round.f32(float  %Val)
+         declare double    @llvm.round.f64(double %Val)
+         declare x86_fp80  @llvm.round.f80(x86_fp80  %Val)
+         declare fp128     @llvm.round.f128(fp128 %Val)
+         declare ppc_fp128 @llvm.round.ppcf128(ppc_fp128  %Val)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8496,11 +8497,11 @@
 ;; integer type that is an even number of bytes (i.e. BitWidth % 16 == 0).
 ;;
 ;; ::
-;;
-;;       declare i16 @llvm.bswap.i16(i16 <id>)
-;;       declare i32 @llvm.bswap.i32(i32 <id>)
-;;       declare i64 @llvm.bswap.i64(i64 <id>)
-;;
+
+         declare i16 @llvm.bswap.i16(i16 <id>)
+         declare i32 @llvm.bswap.i32(i32 <id>)
+         declare i64 @llvm.bswap.i64(i64 <id>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8532,13 +8533,13 @@
 ;; support all bit widths or vector types, however.
 ;;
 ;; ::
-;;
-;;       declare i8 @llvm.ctpop.i8(i8  <src>)
-;;       declare i16 @llvm.ctpop.i16(i16 <src>)
-;;       declare i32 @llvm.ctpop.i32(i32 <src>)
-;;       declare i64 @llvm.ctpop.i64(i64 <src>)
-;;       declare i256 @llvm.ctpop.i256(i256 <src>)
-;;       declare <2 x i32> @llvm.ctpop.v2i32(<2 x i32> <src>)
+
+         declare i8 @llvm.ctpop.i8(i8  <src>)
+         declare i16 @llvm.ctpop.i16(i16 <src>)
+         declare i32 @llvm.ctpop.i32(i32 <src>)
+         declare i64 @llvm.ctpop.i64(i64 <src>)
+         declare i256 @llvm.ctpop.i256(i256 <src>)
+         declare <2 x i32> @llvm.ctpop.v2i32(<2 x i32> <src>)
 ;;
 ;; Overview:
 ;; """""""""
@@ -8570,14 +8571,14 @@
 ;; targets support all bit widths or vector types, however.
 ;;
 ;; ::
-;;
-;;       declare i8   @llvm.ctlz.i8  (i8   <src>, i1 <is_zero_undef>)
-;;       declare i16  @llvm.ctlz.i16 (i16  <src>, i1 <is_zero_undef>)
-;;       declare i32  @llvm.ctlz.i32 (i32  <src>, i1 <is_zero_undef>)
-;;       declare i64  @llvm.ctlz.i64 (i64  <src>, i1 <is_zero_undef>)
-;;       declare i256 @llvm.ctlz.i256(i256 <src>, i1 <is_zero_undef>)
-;;       declase <2 x i32> @llvm.ctlz.v2i32(<2 x i32> <src>, i1 <is_zero_undef>)
-;;
+
+         declare i8   @llvm.ctlz.i8  (i8   <src>, i1 <is_zero_undef>)
+         declare i16  @llvm.ctlz.i16 (i16  <src>, i1 <is_zero_undef>)
+         declare i32  @llvm.ctlz.i32 (i32  <src>, i1 <is_zero_undef>)
+         declare i64  @llvm.ctlz.i64 (i64  <src>, i1 <is_zero_undef>)
+         declare i256 @llvm.ctlz.i256(i256 <src>, i1 <is_zero_undef>)
+         declase <2 x i32> @llvm.ctlz.v2i32(<2 x i32> <src>, i1 <is_zero_undef>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8617,14 +8618,14 @@
 ;; support all bit widths or vector types, however.
 ;;
 ;; ::
-;;
-;;       declare i8   @llvm.cttz.i8  (i8   <src>, i1 <is_zero_undef>)
-;;       declare i16  @llvm.cttz.i16 (i16  <src>, i1 <is_zero_undef>)
-;;       declare i32  @llvm.cttz.i32 (i32  <src>, i1 <is_zero_undef>)
-;;       declare i64  @llvm.cttz.i64 (i64  <src>, i1 <is_zero_undef>)
-;;       declare i256 @llvm.cttz.i256(i256 <src>, i1 <is_zero_undef>)
-;;       declase <2 x i32> @llvm.cttz.v2i32(<2 x i32> <src>, i1 <is_zero_undef>)
-;;
+
+         declare i8   @llvm.cttz.i8  (i8   <src>, i1 <is_zero_undef>)
+         declare i16  @llvm.cttz.i16 (i16  <src>, i1 <is_zero_undef>)
+         declare i32  @llvm.cttz.i32 (i32  <src>, i1 <is_zero_undef>)
+         declare i64  @llvm.cttz.i64 (i64  <src>, i1 <is_zero_undef>)
+         declare i256 @llvm.cttz.i256(i256 <src>, i1 <is_zero_undef>)
+         declase <2 x i32> @llvm.cttz.v2i32(<2 x i32> <src>, i1 <is_zero_undef>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8668,11 +8669,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.sadd.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.sadd.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.sadd.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.sadd.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.sadd.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.sadd.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8702,12 +8703,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.sadd.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %overflow, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.sadd.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %overflow, label %normal
+
 ;; '``llvm.uadd.with.overflow.*``' Intrinsics
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -8718,11 +8719,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.uadd.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.uadd.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.uadd.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.uadd.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.uadd.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.uadd.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8751,12 +8752,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.uadd.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %carry, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.uadd.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %carry, label %normal
+
 ;; '``llvm.ssub.with.overflow.*``' Intrinsics
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -8767,11 +8768,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.ssub.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.ssub.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.ssub.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.ssub.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.ssub.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.ssub.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8801,12 +8802,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.ssub.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %overflow, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.ssub.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %overflow, label %normal
+
 ;; '``llvm.usub.with.overflow.*``' Intrinsics
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -8817,11 +8818,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.usub.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.usub.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.usub.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.usub.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.usub.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.usub.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8851,12 +8852,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.usub.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %overflow, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.usub.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %overflow, label %normal
+
 ;; '``llvm.smul.with.overflow.*``' Intrinsics
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -8867,11 +8868,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.smul.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.smul.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.smul.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.smul.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.smul.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.smul.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8901,12 +8902,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.smul.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %overflow, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.smul.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %overflow, label %normal
+
 ;; '``llvm.umul.with.overflow.*``' Intrinsics
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;;
@@ -8917,11 +8918,11 @@
 ;; on any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare {i16, i1} @llvm.umul.with.overflow.i16(i16 %a, i16 %b)
-;;       declare {i32, i1} @llvm.umul.with.overflow.i32(i32 %a, i32 %b)
-;;       declare {i64, i1} @llvm.umul.with.overflow.i64(i64 %a, i64 %b)
-;;
+
+         declare {i16, i1} @llvm.umul.with.overflow.i16(i16 %a, i16 %b)
+         declare {i32, i1} @llvm.umul.with.overflow.i32(i32 %a, i32 %b)
+         declare {i64, i1} @llvm.umul.with.overflow.i64(i64 %a, i64 %b)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8951,12 +8952,12 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call {i32, i1} @llvm.umul.with.overflow.i32(i32 %a, i32 %b)
-;;       %sum = extractvalue {i32, i1} %res, 0
-;;       %obit = extractvalue {i32, i1} %res, 1
-;;       br i1 %obit, label %overflow, label %normal
-;;
+
+         %res = call {i32, i1} @llvm.umul.with.overflow.i32(i32 %a, i32 %b)
+         %sum = extractvalue {i32, i1} %res, 0
+         %obit = extractvalue {i32, i1} %res, 1
+         br i1 %obit, label %overflow, label %normal
+
 ;; Specialised Arithmetic Intrinsics
 ;; ---------------------------------
 ;;
@@ -8967,10 +8968,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare float @llvm.fmuladd.f32(float %a, float %b, float %c)
-;;       declare double @llvm.fmuladd.f64(double %a, double %b, double %c)
-;;
+
+         declare float @llvm.fmuladd.f32(float %a, float %b, float %c)
+         declare double @llvm.fmuladd.f64(double %a, double %b, double %c)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -8992,9 +8993,9 @@
 ;; The expression:
 ;;
 ;; ::
-;;
-;;       %0 = call float @llvm.fmuladd.f32(%a, %b, %c)
-;;
+
+         %0 = call float @llvm.fmuladd.f32(%a, %b, %c)
+
 ;; is equivalent to the expression a \* b + c, except that rounding will
 ;; not be performed between the multiplication and addition steps if the
 ;; code generator fuses the operations. Fusion is not guaranteed, even if
@@ -9006,9 +9007,9 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %r2 = call float @llvm.fmuladd.f32(float %a, float %b, float %c) ; yields float:r2 = (a * b) + c
-;;
+
+         %r2 = call float @llvm.fmuladd.f32(float %a, float %b, float %c) ; yields float:r2 = (a * b) + c
+
 ;; Half Precision Floating Point Intrinsics
 ;; ----------------------------------------
 ;;
@@ -9034,10 +9035,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i16 @llvm.convert.to.fp16.f32(float %a)
-;;       declare i16 @llvm.convert.to.fp16.f64(double %a)
-;;
+
+         declare i16 @llvm.convert.to.fp16.f32(float %a)
+         declare i16 @llvm.convert.to.fp16.f64(double %a)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9061,10 +9062,10 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %res = call i16 @llvm.convert.to.fp16.f32(float %a)
-;;       store i16 %res, i16* @x, align 2
-;;
+
+         %res = call i16 @llvm.convert.to.fp16.f32(float %a)
+         store i16 %res, i16* @x, align 2
+
 ;; .. _int_convert_from_fp16:
 ;;
 ;; '``llvm.convert.from.fp16``' Intrinsic
@@ -9074,10 +9075,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare float @llvm.convert.from.fp16.f32(i16 %a)
-;;       declare double @llvm.convert.from.fp16.f64(i16 %a)
-;;
+
+         declare float @llvm.convert.from.fp16.f32(i16 %a)
+         declare double @llvm.convert.from.fp16.f64(i16 %a)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9103,10 +9104,10 @@
 ;; """""""""
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %a = load i16* @x, align 2
-;;       %res = call float @llvm.convert.from.fp16(i16 %a)
-;;
+
+         %a = load i16* @x, align 2
+         %res = call float @llvm.convert.from.fp16(i16 %a)
+
 ;; Debugger Intrinsics
 ;; -------------------
 ;;
@@ -9141,13 +9142,13 @@
 ;; It can be created as follows:
 ;;
 ;; .. code-block:: llvm
-;;
-;;       %tramp = alloca [10 x i8], align 4 ; size and alignment only correct for X86
-;;       %tramp1 = getelementptr [10 x i8]* %tramp, i32 0, i32 0
-;;       call i8* @llvm.init.trampoline(i8* %tramp1, i8* bitcast (i32 (i8*, i32, i32)* @f to i8*), i8* %nval)
-;;       %p = call i8* @llvm.adjust.trampoline(i8* %tramp1)
-;;       %fp = bitcast i8* %p to i32 (i32, i32)*
-;;
+
+         %tramp = alloca [10 x i8], align 4 ; size and alignment only correct for X86
+         %tramp1 = getelementptr [10 x i8]* %tramp, i32 0, i32 0
+         call i8* @llvm.init.trampoline(i8* %tramp1, i8* bitcast (i32 (i8*, i32, i32)* @f to i8*), i8* %nval)
+         %p = call i8* @llvm.adjust.trampoline(i8* %tramp1)
+         %fp = bitcast i8* %p to i32 (i32, i32)*
+
 ;; The call ``%val = call i32 %fp(i32 %x, i32 %y)`` is then equivalent to
 ;; ``%val = call i32 %f(i8* %nval, i32 %x, i32 %y)``.
 ;;
@@ -9160,9 +9161,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.init.trampoline(i8* <tramp>, i8* <func>, i8* <nval>)
-;;
+
+         declare void @llvm.init.trampoline(i8* <tramp>, i8* <func>, i8* <nval>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9206,9 +9207,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i8* @llvm.adjust.trampoline(i8* <tramp>)
-;;
+
+         declare i8* @llvm.adjust.trampoline(i8* <tramp>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9246,9 +9247,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.lifetime.start(i64 <size>, i8* nocapture <ptr>)
-;;
+
+         declare void @llvm.lifetime.start(i64 <size>, i8* nocapture <ptr>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9279,9 +9280,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.lifetime.end(i64 <size>, i8* nocapture <ptr>)
-;;
+
+         declare void @llvm.lifetime.end(i64 <size>, i8* nocapture <ptr>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9310,9 +9311,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare {}* @llvm.invariant.start(i64 <size>, i8* nocapture <ptr>)
-;;
+
+         declare {}* @llvm.invariant.start(i64 <size>, i8* nocapture <ptr>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9340,9 +9341,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.invariant.end({}* <start>, i64 <size>, i8* nocapture <ptr>)
-;;
+
+         declare void @llvm.invariant.end({}* <start>, i64 <size>, i8* nocapture <ptr>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9375,9 +9376,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.var.annotation(i8* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;
+
+         declare void @llvm.var.annotation(i8* <val>, i8* <str>, i8* <str>, i32  <int>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9410,13 +9411,13 @@
 ;; '``0``'.
 ;;
 ;; ::
-;;
-;;       declare i8*   @llvm.ptr.annotation.p<address space>i8(i8* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i16*  @llvm.ptr.annotation.p<address space>i16(i16* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i32*  @llvm.ptr.annotation.p<address space>i32(i32* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i64*  @llvm.ptr.annotation.p<address space>i64(i64* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i256* @llvm.ptr.annotation.p<address space>i256(i256* <val>, i8* <str>, i8* <str>, i32  <int>)
-;;
+
+         declare i8*   @llvm.ptr.annotation.p<address space>i8(i8* <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i16*  @llvm.ptr.annotation.p<address space>i16(i16* <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i32*  @llvm.ptr.annotation.p<address space>i32(i32* <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i64*  @llvm.ptr.annotation.p<address space>i64(i64* <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i256* @llvm.ptr.annotation.p<address space>i256(i256* <val>, i8* <str>, i8* <str>, i32  <int>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9448,13 +9449,13 @@
 ;; any integer bit width.
 ;;
 ;; ::
-;;
-;;       declare i8 @llvm.annotation.i8(i8 <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i16 @llvm.annotation.i16(i16 <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i32 @llvm.annotation.i32(i32 <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i64 @llvm.annotation.i64(i64 <val>, i8* <str>, i8* <str>, i32  <int>)
-;;       declare i256 @llvm.annotation.i256(i256 <val>, i8* <str>, i8* <str>, i32  <int>)
-;;
+
+         declare i8 @llvm.annotation.i8(i8 <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i16 @llvm.annotation.i16(i16 <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i32 @llvm.annotation.i32(i32 <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i64 @llvm.annotation.i64(i64 <val>, i8* <str>, i8* <str>, i32  <int>)
+         declare i256 @llvm.annotation.i256(i256 <val>, i8* <str>, i8* <str>, i32  <int>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9483,9 +9484,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.trap() noreturn nounwind
-;;
+
+         declare void @llvm.trap() noreturn nounwind
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9510,9 +9511,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.debugtrap() nounwind
-;;
+
+         declare void @llvm.debugtrap() nounwind
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9537,9 +9538,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.stackprotector(i8* <guard>, i8** <slot>)
-;;
+
+         declare void @llvm.stackprotector(i8* <guard>, i8** <slot>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9573,9 +9574,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.stackprotectorcheck(i8** <guard>)
-;;
+
+         declare void @llvm.stackprotectorcheck(i8** <guard>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9611,10 +9612,10 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare i32 @llvm.objectsize.i32(i8* <object>, i1 <min>)
-;;       declare i64 @llvm.objectsize.i64(i8* <object>, i1 <min>)
-;;
+
+         declare i32 @llvm.objectsize.i32(i8* <object>, i1 <min>)
+         declare i64 @llvm.objectsize.i64(i8* <object>, i1 <min>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9652,11 +9653,11 @@
 ;; integer bit width.
 ;;
 ;; ::
-;;
-;;       declare i1 @llvm.expect.i1(i1 <val>, i1 <expected_val>)
-;;       declare i32 @llvm.expect.i32(i32 <val>, i32 <expected_val>)
-;;       declare i64 @llvm.expect.i64(i64 <val>, i64 <expected_val>)
-;;
+
+         declare i1 @llvm.expect.i1(i1 <val>, i1 <expected_val>)
+         declare i32 @llvm.expect.i32(i32 <val>, i32 <expected_val>)
+         declare i64 @llvm.expect.i64(i64 <val>, i64 <expected_val>)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9682,9 +9683,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.assume(i1 %cond)
-;;
+
+         declare void @llvm.assume(i1 %cond)
+
 ;; Overview:
 ;; """""""""
 ;;
@@ -9722,9 +9723,9 @@
 ;; """""""
 ;;
 ;; ::
-;;
-;;       declare void @llvm.donothing() nounwind readnone
-;;
+
+         declare void @llvm.donothing() nounwind readnone
+
 ;; Overview:
 ;; """""""""
 ;;
