@@ -160,6 +160,22 @@
         'llvm/font/metadata)
 
       ; Parameter Attributes
+
+      (attributes
+        "zeroext"
+        "signext"
+        "inreg"
+        "byval"
+        "inalloc"
+        "sret"
+        "align" ; <n>
+        "noalias"
+        "nocapture"
+        "nest"
+        "returned"
+        "nonnull"
+        "dereferenceable") ; (<n>)
+
       ; Garbage Collector Names
       ; Prefix Data
       ; Prologue Data
