@@ -1,3 +1,9 @@
+(defface llvm/font/atomic-ordering
+  '((t
+      :foreground "#D65C04"
+      :inherit 'font-lock-preprocessor-face))
+  "Font for atomic orderings.")
+
 (defface llvm/font/attribute
   '((t
       :inherit 'font-lock-preprocessor-face))
@@ -48,6 +54,7 @@
   "Font for constants.")
 
 ;; @see http://lists.gnu.org/archive/html/help-gnu-emacs/2014-03/msg00130.html
+(defconst llvm/font/atomic-ordering    'llvm/font/atomic-ordering)
 (defconst llvm/font/attribute          'llvm/font/attribute)
 (defconst llvm/font/attribute-group-id 'llvm/font/attribute-group-id)
 (defconst llvm/font/comdat             'llvm/font/comdat)
@@ -282,6 +289,20 @@
         "triple")
 
       ; Atomic Memory Ordering Constraints
+
+      (style
+        (concat
+          "\\<"
+          (regexp-opt
+            '( "unordered"
+               "monotonic"
+               "acquire"
+               "release"
+               "acq_rel"
+               "seq_cst"))
+          "\\>")
+        'llvm/font/atomic-ordering)
+
       ; Fast-Math Flags
       ; Use-list Order Directives
       ; Void Type

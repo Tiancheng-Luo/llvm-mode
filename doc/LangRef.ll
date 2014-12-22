@@ -1743,10 +1743,10 @@
 ;;     complete description; see the C++0x definition of a release
 ;;     sequence.) This corresponds to the C++0x/C1x
 ;;     ``memory_order_release``.
-     acq_rel`` (acquire+release)
+     acq_rel ; (acquire+release)
 ;;     Acts as both an ``acquire`` and ``release`` operation on its
 ;;     address. This corresponds to the C++0x/C1x ``memory_order_acq_rel``.
-     seq_cst`` (sequentially consistent)
+     seq_cst ; (sequentially consistent)
 ;;     In addition to the guarantees of ``acq_rel`` (``acquire`` for an
 ;;     operation that only reads, ``release`` for an operation that only
 ;;     writes), there is a global total order on all
