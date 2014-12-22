@@ -62,11 +62,11 @@
       ; Identifiers
 
       (style
-        "\\<@[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
+        "\\<@\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)\\>"
         'llvm/font/global)
 
       (style
-        "\\<%[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\>"
+        "\\<%\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)\\>"
         'llvm/font/local)
 
       ; Linkage Types
