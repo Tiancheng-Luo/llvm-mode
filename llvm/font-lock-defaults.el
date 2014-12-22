@@ -276,6 +276,11 @@
         "datalayout")
 
       ; Target Triple
+
+      (keywords
+        "target" ; Assuming duplicates are OK
+        "triple")
+
       ; Atomic Memory Ordering Constraints
       ; Fast-Math Flags
       ; Use-list Order Directives
