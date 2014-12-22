@@ -69,6 +69,11 @@
         "\\<%\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)\\>"
         'llvm/font/local)
 
+      ; Module Structure
+
+      (keywords
+        "declare")
+
       ; Linkage Types
 
       (attributes
