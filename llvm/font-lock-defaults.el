@@ -264,6 +264,11 @@
         "attributes")
 
       ; Module-Level Inline Assembly
+
+      (keywords
+        "module"
+        "asm")
+
       ; Data Layout
       ; Target Triple
       ; Atomic Memory Ordering Constraints
