@@ -191,7 +191,7 @@
         "signext"
         "inreg"
         "byval"
-        "inalloc"
+        "inalloca"
         "sret"
         "align" ; <n>
         "noalias"
