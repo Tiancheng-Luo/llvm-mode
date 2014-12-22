@@ -1,5 +1,5 @@
-(defcustom llvm/assume-capitalized-types t
-  "Whether to assume capitalized identifiers are types."
+(defcustom llvm/assume-camelcase-types t
+  "Whether to assume camelcased identifiers are types."
   :group 'llvm'
   :type 'boolean)
 
@@ -89,8 +89,6 @@
 (defconst llvm/font-lock-defaults
   (eval-when-compile
     (let* ( (NAME "\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
-            (TYPE "\\(?:[_]*[A-Z][a-z][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
-
             (__attributes (list))
             (__constants  (list))
             (__keywords   (list))
@@ -121,9 +119,9 @@
         (concat "\\<%" NAME "\\>")
         'llvm/font/local)
 
-      (if llvm/assume-capitalized-types
+      (if llvm/assume-camelcase-types
         (style
-          (concat "\\<\\(?:[@%]" TYPE "\\)\\>")
+          "\\<[@%][_]*[A-Z][a-z]*\\>"
           'llvm/font/type))
 
       ; Module Structure
