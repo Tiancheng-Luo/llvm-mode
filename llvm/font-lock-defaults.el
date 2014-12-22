@@ -24,6 +24,12 @@
       :inherit 'font-lock-variable-name-face))
   "Font for local variables.")
 
+(defface llvm/font/metadata
+  '((t
+      :foreground "#A49CFB"
+      :inherit 'font-lock-variable-name-face))
+  "Font for metadata.")
+
 (defface llvm/font/type
   '((t
       :inherit 'font-lock-type-face))
@@ -35,11 +41,14 @@
 (defconst llvm/font/global    'llvm/font/global)
 (defconst llvm/font/keyword   'llvm/font/keyword)
 (defconst llvm/font/local     'llvm/font/local)
+(defconst llvm/font/metadata  'llvm/font/metadata)
 (defconst llvm/font/type      'llvm/font/type)
 
 (defconst llvm/font-lock-defaults
   (eval-when-compile
-    (let ( (__attributes (list))
+    (let ( (NAME "\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
+
+           (__attributes (list))
            (__constants  (list))
            (__keywords   (list))
            (__types      (list))
@@ -62,11 +71,11 @@
       ; Identifiers
 
       (style
-        "\\<@\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)\\>"
+        (concat "\\<@" NAME "\\>")
         'llvm/font/global)
 
       (style
-        "\\<%\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)\\>"
+        (concat "\\<%" NAME "\\>")
         'llvm/font/local)
 
       ; Module Structure
@@ -145,6 +154,11 @@
       ; Aliases
       ; Comdats
       ; Named Metadata
+
+      (style
+        (concat "\\<!" NAME "\\>")
+        'llvm/font/metadata)
+
       ; Parameter Attributes
       ; Garbage Collector Names
       ; Prefix Data
