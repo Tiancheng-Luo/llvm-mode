@@ -3,6 +3,12 @@
       :inherit 'font-lock-preprocessor-face))
   "Font for attributes.")
 
+(defface llvm/font/comdat
+  '((t
+      :foreground "#DE2CC9"
+      :inherit 'font-lock-preprocessor-face))
+  "Font for COMDAT selection kinds.")
+
 (defface llvm/font/constant
   '((t
       :inherit 'font-lock-constant-face))
@@ -37,6 +43,7 @@
 
 ;; @see http://lists.gnu.org/archive/html/help-gnu-emacs/2014-03/msg00130.html
 (defconst llvm/font/attribute 'llvm/font/attribute)
+(defconst llvm/font/comdat    'llvm/font/comdat)
 (defconst llvm/font/constant  'llvm/font/constant)
 (defconst llvm/font/global    'llvm/font/global)
 (defconst llvm/font/keyword   'llvm/font/keyword)
@@ -139,7 +146,9 @@
       ; Global Variables
 
       (attributes
-        "constant")
+        "constant"
+        "global"
+        "section")
 
       ; Functions
       ; define [linkage] [visibility] [DLLStorageClass]
@@ -153,6 +162,22 @@
 
       ; Aliases
       ; Comdats
+
+      (keywords
+        "comdat")
+
+      (style
+        (concat
+          "\\<"
+          (regexp-opt
+            '( "any"
+               "exactmatch"
+               "largest"
+               "noduplicates"
+               "samesize"))
+          "\\>")
+        'llvm/font/comdat)
+
       ; Named Metadata
 
       (style
