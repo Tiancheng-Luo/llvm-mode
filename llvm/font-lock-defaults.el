@@ -353,6 +353,10 @@
         "ppc_fp128")
 
       ; X86_mmx Type
+
+      (types
+        "x86_mmx")
+
       ; Pointer Type
       ; Vector Type
       ; Label Type
