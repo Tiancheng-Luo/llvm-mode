@@ -9,6 +9,7 @@
     (modify-syntax-entry ?% "w" result)
     (modify-syntax-entry ?. "w" result)
     (modify-syntax-entry ?! "w" result)
+    (modify-syntax-entry ?: "w" result)
 
     result)
   "Syntax table for `llvm-mode'")

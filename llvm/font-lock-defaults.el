@@ -43,6 +43,12 @@
       :inherit 'font-lock-keyword-face))
   "Font for keywords")
 
+(defface llvm/font/label
+  '((t
+      :foreground "#751A69"
+      :inherit 'font-lock-preprocessor-face))
+  "Font for labels.")
+
 (defface llvm/font/local
   '((t
       :inherit 'font-lock-variable-name-face))
@@ -68,6 +74,7 @@
 (defconst llvm/font/fast-math-flag     'llvm/font/fast-math-flag)
 (defconst llvm/font/global             'llvm/font/global)
 (defconst llvm/font/keyword            'llvm/font/keyword)
+(defconst llvm/font/label              'llvm/font/label)
 (defconst llvm/font/local              'llvm/font/local)
 (defconst llvm/font/metadata           'llvm/font/metadata)
 (defconst llvm/font/type               'llvm/font/type)
@@ -363,6 +370,10 @@
 
       (types
         "label")
+
+      (style
+        (concat "\\<" NAME ":\\>") ; No syntax definition in the reference
+        'llvm/font/label)
 
       ; Metadata Type
 
