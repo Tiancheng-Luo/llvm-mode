@@ -41,7 +41,6 @@
 
 (defface llvm/font/global
   '((t
-      :underline t
       :inherit 'font-lock-variable-name-face))
   "Font for global variables.")
 
@@ -52,12 +51,13 @@
 
 (defface llvm/font/label
   '((t
-      :foreground "#751A69"
+      :foreground "#A16F4F"
       :inherit 'font-lock-preprocessor-face))
   "Font for labels.")
 
 (defface llvm/font/local
   '((t
+      :foreground "#A81A69"
       :inherit 'font-lock-variable-name-face))
   "Font for local variables.")
 
