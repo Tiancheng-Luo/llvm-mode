@@ -365,6 +365,11 @@
         "x86_mmx")
 
       ; Pointer Type
+
+      (style
+        "\\*"
+        'font-lock-warning-face)
+
       ; Vector Type
       ; Label Type
 
