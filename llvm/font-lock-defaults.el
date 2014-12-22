@@ -3,6 +3,12 @@
       :inherit 'font-lock-preprocessor-face))
   "Font for attributes.")
 
+(defface llvm/font/attribute-group-id
+  '((t
+      :foreground "#DECF2C"
+      :inherit 'font-lock-preprocessor-face))
+  "Font for attribute group identifiers.")
+
 (defface llvm/font/comdat
   '((t
       :foreground "#DE2CC9"
@@ -42,14 +48,15 @@
   "Font for constants.")
 
 ;; @see http://lists.gnu.org/archive/html/help-gnu-emacs/2014-03/msg00130.html
-(defconst llvm/font/attribute 'llvm/font/attribute)
-(defconst llvm/font/comdat    'llvm/font/comdat)
-(defconst llvm/font/constant  'llvm/font/constant)
-(defconst llvm/font/global    'llvm/font/global)
-(defconst llvm/font/keyword   'llvm/font/keyword)
-(defconst llvm/font/local     'llvm/font/local)
-(defconst llvm/font/metadata  'llvm/font/metadata)
-(defconst llvm/font/type      'llvm/font/type)
+(defconst llvm/font/attribute          'llvm/font/attribute)
+(defconst llvm/font/attribute-group-id 'llvm/font/attribute-group-id)
+(defconst llvm/font/comdat             'llvm/font/comdat)
+(defconst llvm/font/constant           'llvm/font/constant)
+(defconst llvm/font/global             'llvm/font/global)
+(defconst llvm/font/keyword            'llvm/font/keyword)
+(defconst llvm/font/local              'llvm/font/local)
+(defconst llvm/font/metadata           'llvm/font/metadata)
+(defconst llvm/font/type               'llvm/font/type)
 
 (defconst llvm/font-lock-defaults
   (eval-when-compile
@@ -208,6 +215,12 @@
 
       ; Prefix Data
       ; Prologue Data
+      ; Attribute Groups
+
+      (style
+        (concat "\\<#" NAME "\\>") ; FIXME: doesn't work
+        'llvm/font/attribute-group-id)
+
       ; Function Attributes
 
       (attributes
