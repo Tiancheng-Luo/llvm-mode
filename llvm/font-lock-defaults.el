@@ -365,6 +365,10 @@
         "label")
 
       ; Metadata Type
+
+      (types
+        "metadata")
+
       ; Aggregate Types
       ; Array Type
       ; Structure Type
