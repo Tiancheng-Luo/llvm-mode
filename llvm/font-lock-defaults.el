@@ -101,6 +101,9 @@
             (cons pattern font)
             __result)))
 
+      (defun style-words (words font)
+        (style (concat "\\<" (regexp-opt words) "\\>") font))
+
       (defun attributes (&rest args) (setq __attributes (nconc args __attributes)))
       (defun constants  (&rest args) (setq __constants  (nconc args __constants )))
       (defun keywords   (&rest args) (setq __keywords   (nconc args __keywords  )))
@@ -206,16 +209,12 @@
       (keywords
         "comdat")
 
-      (style
-        (concat
-          "\\<"
-          (regexp-opt
-            '( "any"
-               "exactmatch"
-               "largest"
-               "noduplicates"
-               "samesize"))
-          "\\>")
+      (style-words
+        '( "any"
+           "exactmatch"
+           "largest"
+           "noduplicates"
+           "samesize")
         'llvm/font/comdat)
 
       ; Named Metadata
@@ -316,31 +315,23 @@
 
       ; Atomic Memory Ordering Constraints
 
-      (style
-        (concat
-          "\\<"
-          (regexp-opt
-            '( "unordered"
-               "monotonic"
-               "acquire"
-               "release"
-               "acq_rel"
-               "seq_cst"))
-          "\\>")
+      (style-words
+        '( "unordered"
+           "monotonic"
+           "acquire"
+           "release"
+           "acq_rel"
+           "seq_cst")
         'llvm/font/atomic-ordering)
 
       ; Fast-Math Flags
 
-      (style
-        (concat
-          "\\<"
-          (regexp-opt
-            '( "nnan"
-               "ninf"
-               "nsz"
-               "arcp"
-               "fast"))
-          "\\>")
+      (style-words
+        '( "nnan"
+           "ninf"
+           "nsz"
+           "arcp"
+           "fast")
         'llvm/font/fast-math-flag)
 
       ; Use-list Order Directives
@@ -540,10 +531,10 @@
 
       ;; End of declarations
 
-      (style (concat "\\<" (regexp-opt __attributes) "\\>") 'llvm/font/attribute)
-      (style (concat "\\<" (regexp-opt __constants ) "\\>") 'llvm/font/constant )
-      (style (concat "\\<" (regexp-opt __keywords  ) "\\>") 'llvm/font/keyword  )
-      (style (concat "\\<" (regexp-opt __types     ) "\\>") 'llvm/font/type     )
+      (style-words __attributes 'llvm/font/attribute)
+      (style-words __constants  'llvm/font/constant )
+      (style-words __keywords   'llvm/font/keyword  )
+      (style-words __types      'llvm/font/type     )
 
       __result))
 
