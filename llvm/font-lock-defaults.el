@@ -187,7 +187,8 @@
       (attributes
         "constant"
         "global"
-        "section")
+        "section"
+        "unnamed_addr")
 
       ; Functions
       ; define [linkage] [visibility] [DLLStorageClass]
