@@ -44,6 +44,12 @@
       :inherit 'font-lock-variable-name-face))
   "Font for global variables.")
 
+(defface llvm/font/condition
+  '((t
+      :foreground "#ED5139"
+      :inherit 'font-lock-keyword-face))
+  "Font for condition kinds.")
+
 (defface llvm/font/keyword
   '((t
       :inherit 'font-lock-keyword-face))
@@ -77,6 +83,7 @@
 (defconst llvm/font/attribute          'llvm/font/attribute)
 (defconst llvm/font/attribute-group-id 'llvm/font/attribute-group-id)
 (defconst llvm/font/comdat             'llvm/font/comdat)
+(defconst llvm/font/condition          'llvm/font/condition)
 (defconst llvm/font/constant           'llvm/font/constant)
 (defconst llvm/font/fast-math-flag     'llvm/font/fast-math-flag)
 (defconst llvm/font/global             'llvm/font/global)
@@ -528,6 +535,36 @@
         "call"
         "va_arg"
         "landingpad")
+
+      (style-words
+        '( "eq"
+           "ne"
+           "ugt"
+           "uge"
+           "ult"
+           "ule"
+           "sgt"
+           "sge"
+           "slt"
+           "sle"
+
+           ; "false" TODO
+           "oeq"
+           "ogt"
+           "oge"
+           "olt"
+           "ole"
+           "one"
+           "ord"
+           "ueq"
+           "ugt"
+           "uge"
+           "ult"
+           "ule"
+           "une"
+           "uno")
+           ; "true") TODO
+        'llvm/font/condition)
 
       ;; End of declarations
 

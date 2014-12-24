@@ -6328,18 +6328,18 @@
 ;; The '``icmp``' instruction takes three operands. The first operand is
 ;; the condition code indicating the kind of comparison to perform. It is
 ;; not a value, just a keyword. The possible condition code are:
-;;
-;; #. ``eq``: equal
-;; #. ``ne``: not equal
-;; #. ``ugt``: unsigned greater than
-;; #. ``uge``: unsigned greater or equal
-;; #. ``ult``: unsigned less than
-;; #. ``ule``: unsigned less or equal
-;; #. ``sgt``: signed greater than
-;; #. ``sge``: signed greater or equal
-;; #. ``slt``: signed less than
-;; #. ``sle``: signed less or equal
-;;
+
+        eq  ; equal
+        ne  ; not equal
+        ugt  ; unsigned greater than
+        uge  ; unsigned greater or equal
+        ult  ; unsigned less than
+        ule  ; unsigned less or equal
+        sgt  ; signed greater than
+        sge  ; signed greater or equal
+        slt  ; signed less than
+        sle  ; signed less or equal
+
 ;; The remaining two arguments must be :ref:`integer <t_integer>` or
 ;; :ref:`pointer <t_pointer>` or integer :ref:`vector <t_vector>` typed. They
 ;; must also be identical types.
@@ -6425,24 +6425,24 @@
 ;; The '``fcmp``' instruction takes three operands. The first operand is
 ;; the condition code indicating the kind of comparison to perform. It is
 ;; not a value, just a keyword. The possible condition code are:
-;;
-;; #. ``false``: no comparison, always returns false
-;; #. ``oeq``: ordered and equal
-;; #. ``ogt``: ordered and greater than
-;; #. ``oge``: ordered and greater than or equal
-;; #. ``olt``: ordered and less than
-;; #. ``ole``: ordered and less than or equal
-;; #. ``one``: ordered and not equal
-;; #. ``ord``: ordered (no nans)
-;; #. ``ueq``: unordered or equal
-;; #. ``ugt``: unordered or greater than
-;; #. ``uge``: unordered or greater than or equal
-;; #. ``ult``: unordered or less than
-;; #. ``ule``: unordered or less than or equal
-;; #. ``une``: unordered or not equal
-;; #. ``uno``: unordered (either nans)
-;; #. ``true``: no comparison, always returns true
-;;
+
+        false  ; no comparison, always returns false
+        oeq  ; ordered and equal
+        ogt  ; ordered and greater than
+        oge  ; ordered and greater than or equal
+        olt  ; ordered and less than
+        ole  ; ordered and less than or equal
+        one  ; ordered and not equal
+        ord  ; ordered (no nans)
+        ueq  ; unordered or equal
+        ugt  ; unordered or greater than
+        uge  ; unordered or greater than or equal
+        ult  ; unordered or less than
+        ule  ; unordered or less than or equal
+        une  ; unordered or not equal
+        uno  ; unordered (either nans)
+        true  ; no comparison, always returns true
+
 ;; *Ordered* means that neither operand is a QNAN while *unordered* means
 ;; that either operand may be a QNAN.
 ;;
