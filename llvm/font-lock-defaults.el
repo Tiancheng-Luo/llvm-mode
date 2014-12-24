@@ -401,6 +401,10 @@
       ; Array Type
       ; Structure Type
       ; Opaque Structure Types
+
+      (keywords
+        "opaque")
+
       ; Boolean Constants
 
       (constants
