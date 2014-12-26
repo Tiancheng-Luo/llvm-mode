@@ -131,7 +131,7 @@
 
       (if llvm/assume-camelcase-types
         (style
-          "\\<[@%][_]*[A-Z][a-z]*\\>"
+          "\\<[@%][_]*[A-Z][a-z0-9]*\\>"
           'llvm/font/type))
 
       ; Module Structure
