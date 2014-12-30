@@ -95,7 +95,7 @@
 
 (defconst llvm/font-lock-defaults
   (eval-when-compile
-    (let* ( (NAME "\\(?:[-a-zA-Z$\._][-a-zA-Z$\._0-9]*\\|[0-9]+\\)")
+    (let* ( (NAME "\\(?:[a-zA-Z$\._][a-zA-Z$\._0-9]*\\|[0-9]+\\)")
             (__attributes (list))
             (__constants  (list))
             (__keywords   (list))
@@ -131,7 +131,7 @@
 
       (if llvm/assume-camelcase-types
         (style
-          "\\<[@%][_]*[A-Z][a-z0-9]*\\>"
+          "\\<%[A-Z][-a-zA-Z$\._0-9]*\\>"
           'llvm/font/type))
 
       ; Module Structure
