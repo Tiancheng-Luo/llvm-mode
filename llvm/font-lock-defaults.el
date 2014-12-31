@@ -537,6 +537,7 @@
         "fcmp"
         "phi"
         "select"
+        "tail"
         "call"
         "va_arg"
         "landingpad")
