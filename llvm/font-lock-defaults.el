@@ -470,7 +470,12 @@
         "fdiv"
         "urem"
         "srem"
-        "frem")
+        "frem"
+
+        "nuw"
+        "nsw"
+
+        "exact")
 
       ; Bitwise Binary Operations
 
