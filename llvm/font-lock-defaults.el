@@ -126,6 +126,10 @@
         'llvm/font/global)
 
       (style
+        (concat "\\<@\".+\"\\>")
+        'llvm/font/global)
+
+      (style
         (concat "\\<%" NAME "\\>")
         'llvm/font/local)
 
@@ -211,6 +215,10 @@
         "define")
 
       ; Aliases
+
+      (keywords
+        "alias")
+
       ; Comdats
 
       (keywords
@@ -397,6 +405,7 @@
 
       ; Aggregate Types
       ; Array Type
+      ;   XXX: handled after constants to workaround priority
       ; Structure Type
       ; Opaque Structure Types
 
@@ -409,17 +418,19 @@
         "true"
         "false")
 
-      ; Integer Constants
-
-      (style
-        "\\<[-]?[0-9]+\\>"
-        'llvm/font/constant)
-
+      ; Integer Constants - handled in `Floating point constants`
       ; Floating point constants
 
       (style
-        "\\<[-]?[0-9]+\.[0-9]*\\([eE][-+]?[0-9]+\\)?\\>"
+        "\\<[-]?[0-9]+\\(?:.[0-9]*\\([eE][-+]?[0-9]+\\)?\\)?\\>"
         'llvm/font/constant)
+
+      ; Array Type
+      ;   Spacing determined by what llvm parser accepts
+
+      (style
+        "\[ *[0-9]+ +x +.+?\]" ; This would not work correctly with nesting
+        'llvm/font/type)
 
       ; Null Pointer Constants
 
@@ -428,6 +439,11 @@
 
       ; Structure Constants
       ; Array constants
+
+      (style
+        "\\<[c!]?\\(\".*\"\\)\\>" ; Also handles regular strings
+        '(1 'llvm/font/constant))
+
       ; Vector constants
       ; Zero initialization
       ; Metadata node
