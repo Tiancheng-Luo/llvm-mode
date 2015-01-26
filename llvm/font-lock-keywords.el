@@ -1,99 +1,39 @@
+(require 'llvm/face/atomic-ordering)
+(require 'llvm/face/attribute)
+(require 'llvm/face/attribute-group-id)
+(require 'llvm/face/comdat)
+(require 'llvm/face/condition)
+(require 'llvm/face/constant)
+(require 'llvm/face/fast-math-flag)
+(require 'llvm/face/global)
+(require 'llvm/face/keyword)
+(require 'llvm/face/label)
+(require 'llvm/face/local)
+(require 'llvm/face/metadata)
+(require 'llvm/face/type)
+
 (defcustom llvm/assume-camelcase-types t
   "Whether to assume camelcased identifiers are types."
-  :group 'llvm'
+  :group 'llvm/group
   :type 'boolean)
 
-;;;;;;;;;;;
-
-(defface llvm/font/atomic-ordering
-  '((t
-      :foreground "#D65C04"
-      :inherit 'font-lock-preprocessor-face))
-  "Font for atomic orderings.")
-
-(defface llvm/font/attribute
-  '((t
-      :inherit 'font-lock-preprocessor-face))
-  "Font for attributes.")
-
-(defface llvm/font/attribute-group-id
-  '((t
-      :foreground "#DECF2C"
-      :inherit 'font-lock-preprocessor-face))
-  "Font for attribute group identifiers.")
-
-(defface llvm/font/comdat
-  '((t
-      :foreground "#DE2CC9"
-      :inherit 'font-lock-preprocessor-face))
-  "Font for COMDAT selection kinds.")
-
-(defface llvm/font/constant
-  '((t
-      :inherit 'font-lock-constant-face))
-  "Font for constants.")
-
-(defface llvm/font/fast-math-flag
-  '((t
-      :foreground "#D1C62E"
-      :inherit 'font-lock-preprocessor-face))
-  "Font for fast math flags.")
-
-(defface llvm/font/global
-  '((t
-      :inherit 'font-lock-variable-name-face))
-  "Font for global variables.")
-
-(defface llvm/font/condition
-  '((t
-      :foreground "#ED5139"
-      :inherit 'font-lock-keyword-face))
-  "Font for condition kinds.")
-
-(defface llvm/font/keyword
-  '((t
-      :inherit 'font-lock-keyword-face))
-  "Font for keywords")
-
-(defface llvm/font/label
-  '((t
-      :foreground "#A16F4F"
-      :inherit 'font-lock-preprocessor-face))
-  "Font for labels.")
-
-(defface llvm/font/local
-  '((t
-      :foreground "#A81A69"
-      :inherit 'font-lock-variable-name-face))
-  "Font for local variables.")
-
-(defface llvm/font/metadata
-  '((t
-      :foreground "#A49CFB"
-      :inherit 'font-lock-variable-name-face))
-  "Font for metadata.")
-
-(defface llvm/font/type
-  '((t
-      :inherit 'font-lock-type-face))
-  "Font for constants.")
-
+;; FIXME
 ;; @see http://lists.gnu.org/archive/html/help-gnu-emacs/2014-03/msg00130.html
-(defconst llvm/font/atomic-ordering    'llvm/font/atomic-ordering)
-(defconst llvm/font/attribute          'llvm/font/attribute)
-(defconst llvm/font/attribute-group-id 'llvm/font/attribute-group-id)
-(defconst llvm/font/comdat             'llvm/font/comdat)
-(defconst llvm/font/condition          'llvm/font/condition)
-(defconst llvm/font/constant           'llvm/font/constant)
-(defconst llvm/font/fast-math-flag     'llvm/font/fast-math-flag)
-(defconst llvm/font/global             'llvm/font/global)
-(defconst llvm/font/keyword            'llvm/font/keyword)
-(defconst llvm/font/label              'llvm/font/label)
-(defconst llvm/font/local              'llvm/font/local)
-(defconst llvm/font/metadata           'llvm/font/metadata)
-(defconst llvm/font/type               'llvm/font/type)
+(defconst llvm/face/atomic-ordering    'llvm/face/atomic-ordering)
+(defconst llvm/face/attribute          'llvm/face/attribute)
+(defconst llvm/face/attribute-group-id 'llvm/face/attribute-group-id)
+(defconst llvm/face/comdat             'llvm/face/comdat)
+(defconst llvm/face/condition          'llvm/face/condition)
+(defconst llvm/face/constant           'llvm/face/constant)
+(defconst llvm/face/fast-math-flag     'llvm/face/fast-math-flag)
+(defconst llvm/face/global             'llvm/face/global)
+(defconst llvm/face/keyword            'llvm/face/keyword)
+(defconst llvm/face/label              'llvm/face/label)
+(defconst llvm/face/local              'llvm/face/local)
+(defconst llvm/face/metadata           'llvm/face/metadata)
+(defconst llvm/face/type               'llvm/face/type)
 
-(defconst llvm/font-lock-defaults
+(defconst llvm/font-lock-keywords
   (eval-when-compile
     (let* ( (NAME "\\(?:[a-zA-Z$\._][a-zA-Z$\._0-9]*\\|[0-9]+\\)")
             (__attributes (list))
@@ -102,14 +42,14 @@
             (__types      (list))
             (__result     (list)))
 
-      (defun style (pattern font)
+      (defun style (pattern face)
         (setq __result
           (cons
-            (cons pattern font)
+            (cons pattern face)
             __result)))
 
-      (defun style-words (words font)
-        (style (concat "\\<" (regexp-opt words) "\\>") font))
+      (defun style-words (words face)
+        (style (concat "\\<" (regexp-opt words) "\\>") face))
 
       (defun attributes (&rest args) (setq __attributes (nconc args __attributes)))
       (defun constants  (&rest args) (setq __constants  (nconc args __constants )))
@@ -123,20 +63,20 @@
 
       (style
         (concat "\\<@" NAME "\\>")
-        'llvm/font/global)
+        'llvm/face/global)
 
       (style
         (concat "\\<@\".+\"\\>")
-        'llvm/font/global)
+        'llvm/face/global)
 
       (style
         (concat "\\<%" NAME "\\>")
-        'llvm/font/local)
+        'llvm/face/local)
 
       (if llvm/assume-camelcase-types
         (style
           "\\<%[A-Z][-a-zA-Z$\._0-9]*\\>"
-          'llvm/font/type))
+          'llvm/face/type))
 
       ; Module Structure
 
@@ -230,13 +170,13 @@
            "largest"
            "noduplicates"
            "samesize")
-        'llvm/font/comdat)
+        'llvm/face/comdat)
 
       ; Named Metadata
 
       (style
         (concat "\\<!" NAME "\\>")
-        'llvm/font/metadata)
+        'llvm/face/metadata)
 
       ; Parameter Attributes
 
@@ -266,7 +206,7 @@
 
       (style
         (concat "\\<#" NAME "\\>")
-        'llvm/font/attribute-group-id)
+        'llvm/face/attribute-group-id)
 
       ; Function Attributes
 
@@ -337,7 +277,7 @@
            "release"
            "acq_rel"
            "seq_cst")
-        'llvm/font/atomic-ordering)
+        'llvm/face/atomic-ordering)
 
       ; Fast-Math Flags
 
@@ -347,7 +287,7 @@
            "nsz"
            "arcp"
            "fast")
-        'llvm/font/fast-math-flag)
+        'llvm/face/fast-math-flag)
 
       ; Use-list Order Directives
 
@@ -365,7 +305,7 @@
 
       (style
         "\\<i[0-9]+\\>"
-        'llvm/font/type)
+        'llvm/face/type)
 
       ; Floating Point Types
 
@@ -396,7 +336,7 @@
 
       (style
         (concat "\\<" NAME ":\\>") ; No syntax definition in the reference
-        'llvm/font/label)
+        'llvm/face/label)
 
       ; Metadata Type
 
@@ -423,14 +363,14 @@
 
       (style
         "\\<[-]?[0-9]+\\(?:.[0-9]*\\([eE][-+]?[0-9]+\\)?\\)?\\>"
-        'llvm/font/constant)
+        'llvm/face/constant)
 
       ; Array Type
       ;   Spacing determined by what llvm parser accepts
 
       (style
         "\[ *[0-9]+ +x +.+?\]" ; This would not work correctly with nesting
-        'llvm/font/type)
+        'llvm/face/type)
 
       ; Null Pointer Constants
 
@@ -442,7 +382,7 @@
 
       (style
         "\\<[c!]?\\(\".*\"\\)\\>" ; Also handles regular strings
-        '(1 'llvm/font/constant))
+        '(1 'llvm/face/constant))
 
       ; Vector constants
       ; Zero initialization
@@ -586,17 +526,17 @@
            "une"
            "uno")
            ; "true") TODO
-        'llvm/font/condition)
+        'llvm/face/condition)
 
       ;; End of declarations
 
-      (style-words __attributes 'llvm/font/attribute)
-      (style-words __constants  'llvm/font/constant )
-      (style-words __keywords   'llvm/font/keyword  )
-      (style-words __types      'llvm/font/type     )
+      (style-words __attributes 'llvm/face/attribute)
+      (style-words __constants  'llvm/face/constant )
+      (style-words __keywords   'llvm/face/keyword  )
+      (style-words __types      'llvm/face/type     )
 
       __result))
 
-  "`font-lock-defaults' for `llvm-mode'.")
+  "`font-lock-keywords' for `llvm-mode'.")
 
-(provide 'llvm/font-lock-defaults)
+(provide 'llvm/font-lock-keywords)

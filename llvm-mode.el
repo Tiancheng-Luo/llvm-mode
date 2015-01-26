@@ -1,26 +1,39 @@
+(require 'llvm/font-lock-keywords)
+(require 'llvm/indent-line)
+(require 'llvm/syntax-table)
+
+(defcustom llvm-mode-hook nil
+  "Normal hook run when entering `llvm-mode'."
+  :group 'llvm/options
+  :type 'hook)
+
 (defun llvm-mode ()
   "Major mode for editing LLVM assembly."
   (interactive)
   (kill-all-local-variables)
 
-  (require 'llvm/font-lock-defaults)
-  (require 'llvm/indent-line-function)
-  (require 'llvm/syntax-table)
+  (set
+    (make-local-variable `font-lock-defaults)
+    '(llvm/font-lock-keywords))
 
-  (set (make-local-variable `font-lock-defaults)  '(llvm/font-lock-defaults))
-  (set (make-local-variable `indent-line-function) 'llvm/indent-line-function)
+  (set
+    (make-local-variable `indent-line-function)
+    'llvm/indent-line)
 
-  (set-syntax-table llvm/syntax-table)
+  (set-syntax-table
+    llvm/syntax-table)
 
-  (setq major-mode 'llvm-mode)
-  (setq mode-name "LLVM mode")
+  (setq
+    major-mode
+    'llvm-mode)
 
-  (run-hooks 'llvm-mode-hook)
+  (setq
+    mode-name
+    "LLVM mode")
 
-  (font-lock-fontify-buffer))
+  (font-lock-fontify-buffer)
 
-(defvar llvm-mode-hook
-  nil
-  "Hook for `llvm-mode.")
+  (run-hooks
+    'llvm/hook))
 
 (provide 'llvm-mode)

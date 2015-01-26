@@ -1,17 +1,19 @@
-(defcustom llvm/indent/offset 4
+(require 'llvm/group)
+
+(defcustom llvm/indent-offset tab-width
   "Default indentation offset for `llvm-mode'."
-  :group 'llvm
+  :group 'llvm/group
   :safe 'integerp
   :type 'integer)
 
-(defun llvm/indent-line-function ()
+(defun llvm/indent-line ()
   "`indent-line-function' for `llvm-mode'."
 
   (let ((left  (llvm/occurrences-backward "{"))
         (right (llvm/occurrences-backward "}")))
 
     (if (not (< left right))
-      (indent-line-to (* llvm/indent/offset (- left right))))))
+      (indent-line-to (* llvm/indent-offset (- left right))))))
 
 ;; Helpers
 
@@ -33,4 +35,4 @@
 
       count)))
 
-(provide 'llvm/indent-line-function)
+(provide 'llvm/indent-line)
